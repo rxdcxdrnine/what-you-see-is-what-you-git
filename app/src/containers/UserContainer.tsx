@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import User from "../components/User";
+import User from "../components/user";
 import { RootState } from "../modules";
 import { getGithubProfile } from "../modules/user/saga";
 
@@ -14,6 +14,7 @@ const UserContainer = () => {
 
     dispatch(getGithubProfile(username));
   }, [dispatch]);
+
   return (
     <>
       <User profile={profile} />
