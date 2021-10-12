@@ -15,11 +15,7 @@ const UserContainer = () => {
     dispatch(getGithubProfile(username));
   }, [dispatch]);
 
-  return (
-    <>
-      <User profile={profile} />
-    </>
-  );
+  return <User profile={profile} />;
 };
 
 export default UserContainer;

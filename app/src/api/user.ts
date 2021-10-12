@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
+// fetchGithubProfile
 export interface GithubProfile {
   login: string;
   id: number;
@@ -35,10 +36,59 @@ export interface GithubProfile {
   updated_at: Date;
 }
 
+// fetchGithubPushs
 const fetchGithubProfile: (
   username: string
 ) => Promise<AxiosResponse<GithubProfile>> = (username: string) =>
   axios.get(`http://api.github.com/users/${username}`);
 
-const UserApi = { fetchGithubProfile };
+type GithubPush = {
+  id: string;
+  type: string;
+  actor: Actor;
+  repo: {
+    id: number;
+    name: string;
+    url: string;
+  };
+  payload: {
+    push_id: number;
+    size: number;
+    distinct_size: number;
+    ref: string;
+    head: string;
+    before: string;
+    commits: Commit[];
+  };
+  public: boolean;
+  created_at: Date;
+  org: Actor;
+};
+
+type Actor = {
+  id: number;
+  login: string;
+  display_login?: string;
+  gravatar_id: string;
+  url: string;
+  avatar_url: string;
+};
+
+type Commit = {
+  sha: string;
+  author: {
+    email: string;
+    name: string;
+  };
+  message: string;
+  distinct: boolean;
+  url: string;
+};
+
+const fetchGithubPushs: (
+  username: string
+) => Promise<AxiosResponse<GithubPush[]>> = (username: string) =>
+  axios.get(`http://api.github.com/users/${username}/events`);
+
+const UserApi = { fetchGithubProfile, fetchGithubPushs };
 export default UserApi;

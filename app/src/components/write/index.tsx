@@ -1,15 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@toast-ui/react-editor";
 
+import { PushState } from "../../modules/write";
+
+import Choose from "./Choose";
+
 import "@toast-ui/editor/dist/toastui-editor.css";
-import "../styles/write.css";
+import "../../styles/write.css";
 
 type WriteProps = {
   markdown: string;
+  pushs: PushState[];
+  onClickPushs: React.MouseEventHandler<HTMLButtonElement>;
   onChangeCreator: (editorRef: React.RefObject<Editor>) => () => void;
 };
 
-const Write = ({ markdown, onChangeCreator }: WriteProps) => {
+const Write = ({
+  markdown,
+  pushs,
+  onClickPushs,
+  onChangeCreator,
+}: WriteProps) => {
   const editorRef = useRef<Editor>(null);
   const [initialValue, setInitialValue] = useState<string>("");
 
@@ -20,16 +31,7 @@ const Write = ({ markdown, onChangeCreator }: WriteProps) => {
 
   return (
     <div className="write-container">
-      <div className="choose-container">
-        <div className="choose-button-wrapper">
-          <div className="choose-button">PUSHS</div>
-          <div className="choose-button">GISTS</div>
-          <div className="choose-button">IMAGES</div>
-        </div>
-        <div className="choose-content-container">
-          <div>CHOOSE</div>
-        </div>
-      </div>
+      <Choose pushs={pushs} onClickPushs={onClickPushs} />
       {initialValue ? (
         <Editor
           height="500px"
@@ -38,7 +40,9 @@ const Write = ({ markdown, onChangeCreator }: WriteProps) => {
           onChange={onChangeCreator(editorRef)}
         />
       ) : null}
-      <div className="write-footer" />
+      <div className="write-footer">
+        <button className="write-save-button">SAVE</button>
+      </div>
     </div>
   );
 };

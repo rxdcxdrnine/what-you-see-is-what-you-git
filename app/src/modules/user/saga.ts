@@ -5,11 +5,11 @@ import {
   SagaReturnType,
   takeEvery,
 } from "@redux-saga/core/effects";
+import { createAction } from "@reduxjs/toolkit";
 
 import UserApi from "../../api/user";
 
 import { setError, updateProfile } from ".";
-import { createAction } from "@reduxjs/toolkit";
 
 export const getGithubProfile = createAction<string>("user/getGithubProfile");
 
@@ -46,12 +46,12 @@ function* fetchGithubProfile(action: ReturnType<typeof getGithubProfile>) {
   }
 }
 
-function* GithubProfileSaga() {
+function* githubProfileSaga() {
   yield takeEvery(getGithubProfile.type, fetchGithubProfile);
 }
 
 function* userSaga() {
-  yield all([GithubProfileSaga()]);
+  yield all([githubProfileSaga()]);
 }
 
 export default userSaga;
