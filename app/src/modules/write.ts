@@ -6,7 +6,7 @@ type writeState = {
 };
 
 const initialState: writeState = {
-  markdown: "",
+  markdown: "# sample",
   html: "",
 };
 

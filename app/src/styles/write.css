@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+}
+
+.write-page {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+.write-container {
+  display: flex;
+  flex-direction: column;
+  width: 50rem;
+  border-left: 0.1rem solid;
+  border-right: 0.1rem solid;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.choose-container {
+  flex-grow: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 0.1rem solid;
+  margin-bottom: 0.5rem;
+}
+
+.choose-button-wrapper {
+  display: flex;
+  justify-content: space-around;
+  height: 10%;
+  border: 0.1rem solid;
+  margin: 0.5rem;
+}
+
+.choose-button {
+  width: 25%;
+  border: 0.1rem solid;
+  text-align: center;
+  margin: 0.5rem;
+}
+
+.choose-content-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.1rem solid;
+  margin: 0.5rem;
+}
+
+.editor-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.write-footer {
+  margin-top: 0.5rem;
+}
