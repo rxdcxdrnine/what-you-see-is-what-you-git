@@ -10,15 +10,19 @@ import "../../styles/write.css";
 
 type WriteProps = {
   markdown: string;
-  pushs: PushState[];
-  onClickPushs: React.MouseEventHandler<HTMLButtonElement>;
+  pushes: PushState[];
+  onSave: React.MouseEventHandler<HTMLButtonElement>;
+  onClickItem: (type: string, index: number) => void;
+  onClickPushButton: React.MouseEventHandler<HTMLButtonElement>;
   onChangeCreator: (editorRef: React.RefObject<Editor>) => () => void;
 };
 
 const Write = ({
   markdown,
-  pushs,
-  onClickPushs,
+  pushes,
+  onSave,
+  onClickItem,
+  onClickPushButton,
   onChangeCreator,
 }: WriteProps) => {
   const editorRef = useRef<Editor>(null);
@@ -31,7 +35,11 @@ const Write = ({
 
   return (
     <div className="write-container">
-      <Choose pushs={pushs} onClickPushs={onClickPushs} />
+      <Choose
+        pushes={pushes}
+        onClickItem={onClickItem}
+        onClickPushButton={onClickPushButton}
+      />
       {initialValue ? (
         <Editor
           height="500px"
@@ -41,7 +49,9 @@ const Write = ({
         />
       ) : null}
       <div className="write-footer">
-        <button className="write-save-button">SAVE</button>
+        <button className="write-save-button" type="submit" onClick={onSave}>
+          SAVE
+        </button>
       </div>
     </div>
   );

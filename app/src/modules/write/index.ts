@@ -4,37 +4,63 @@ export type PushState = {
   pushId: number;
   repoName: string;
   branchName: string;
-  commits: string[];
+  commitUrls: string[];
+  uploadedAt: Date;
 };
 
-type writeState = {
+type WriteState = {
   markdown: string;
   html: string;
-  pushs: PushState[];
+  pushes: PushState[];
+  selectedItem: {
+    type: string;
+    index: number;
+  };
+  errorMessage: string;
 };
 
-const initialState: writeState = {
+const initialState: WriteState = {
   markdown: "# sample",
   html: "",
-  pushs: [],
+  pushes: [],
+  selectedItem: {
+    type: "",
+    index: 0,
+  },
+  errorMessage: "",
 };
 
 const writeSlice = createSlice({
   name: "write",
   initialState,
   reducers: {
-    updateMarkdown(state: writeState, action: PayloadAction<string>) {
+    updateMarkdown(state: WriteState, action: PayloadAction<string>) {
       state.markdown = action.payload;
     },
-    updateHtml(state: writeState, action: PayloadAction<string>) {
+    updateHtml(state: WriteState, action: PayloadAction<string>) {
       state.html = action.payload;
     },
-    updatePushs(state: writeState, action: PayloadAction<PushState[]>) {
-      state.pushs = action.payload;
+    updatePushes(state: WriteState, action: PayloadAction<PushState[]>) {
+      state.pushes = action.payload;
+    },
+    updateWriteError(state: WriteState, action: PayloadAction<string>) {
+      state.errorMessage = action.payload;
+    },
+    updateSelectedItem(
+      state: WriteState,
+      action: PayloadAction<{ type: string; index: number }>
+    ) {
+      state.selectedItem = action.payload;
     },
   },
 });
 
-export const { updateMarkdown, updateHtml, updatePushs } = writeSlice.actions;
+export const {
+  updateMarkdown,
+  updateHtml,
+  updatePushes,
+  updateSelectedItem,
+  updateWriteError,
+} = writeSlice.actions;
 
 export default writeSlice;

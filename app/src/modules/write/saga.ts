@@ -8,18 +8,17 @@ import {
 import { createAction } from "@reduxjs/toolkit";
 
 import UserApi from "../../api/user";
-import { setError } from "../user";
+import WriteApi, { PushPost } from "../../api/write";
 
-import { PushState, updatePushs } from ".";
+import { PushState, updatePushes, updateWriteError } from ".";
 
-export const getGithubPushs = createAction<string>("user/getGithubPushs");
+// getGithubPushes
+export const fetchGithubPushes = createAction<string>("write/fetchGithubPushs");
 
-type SagaResponse = SagaReturnType<typeof UserApi.fetchGithubPushs>;
-
-function* fetchGithubPushs(action: ReturnType<typeof getGithubPushs>) {
+function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
   try {
-    const res: SagaResponse = yield call(
-      UserApi.fetchGithubPushs,
+    const res: SagaReturnType<typeof UserApi.fetchGithubPushes> = yield call(
+      UserApi.fetchGithubPushes,
       action.payload
     );
 
@@ -31,22 +30,46 @@ function* fetchGithubPushs(action: ReturnType<typeof getGithubPushs>) {
           pushId: event.payload.push_id,
           repoName: event.repo.name,
           branchName: event.payload.ref,
-          commits: event.payload.commits.map((commit) => commit.sha),
+          commitUrls: event.payload.commits.map((commit) => commit.url),
+          uploadedAt: event.created_at,
         });
       }
     }
-    yield put(updatePushs(pushs));
+    yield put(updatePushes(pushs));
   } catch (e: any) {
-    yield put(setError(e.message));
+    yield put(updateWriteError(e.message));
   }
 }
 
-function* githubPushsSaga() {
-  yield takeEvery(getGithubPushs.type, fetchGithubPushs);
+function* getGithubPushesSaga() {
+  yield takeEvery(fetchGithubPushes.type, getGithubPushes);
+}
+
+// savePushWrite
+export const savePushPost = createAction<PushPost>("write/savePushPost");
+
+function* postPushPost(action: ReturnType<typeof savePushPost>) {
+  console.log(action.payload);
+  try {
+    const res: SagaReturnType<typeof WriteApi.savePushPost> = yield call(
+      WriteApi.savePushPost,
+      action.payload
+    );
+
+    if (res.status === 200) {
+      alert("성공적으로 저장되었습니다.");
+    }
+  } catch (e: any) {
+    yield put(updateWriteError(e.message));
+  }
+}
+
+function* postPushPostSaga() {
+  yield takeEvery(savePushPost.type, postPushPost);
 }
 
 function* writeSaga() {
-  yield all([githubPushsSaga()]);
+  yield all([getGithubPushesSaga(), postPushPostSaga()]);
 }
 
 export default writeSaga;

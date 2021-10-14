@@ -85,10 +85,10 @@ type Commit = {
   url: string;
 };
 
-const fetchGithubPushs: (
+const fetchGithubPushes: (
   username: string
 ) => Promise<AxiosResponse<GithubPush[]>> = (username: string) =>
   axios.get(`http://api.github.com/users/${username}/events`);
 
-const UserApi = { fetchGithubProfile, fetchGithubPushs };
+const UserApi = { fetchGithubProfile, fetchGithubPushes };
 export default UserApi;

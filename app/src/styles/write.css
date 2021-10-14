@@ -54,6 +54,7 @@ body {
 .choose-content {
   border: 0.1rem solid;
   margin: 0.1rem 0.5rem;
+  cursor: pointer;
 }
 
 .editor-container {
