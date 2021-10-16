@@ -5,17 +5,28 @@ export type PushState = {
   repoName: string;
   branchName: string;
   commitUrls: string[];
-  uploadedAt: Date;
+  uploadDate: Date;
 };
+
+export type GistState = {
+  gistId: string;
+  gistDescription: string;
+  gistFilenames: string[];
+  uploadDate: Date;
+};
+
+export type SelectedItemState =
+  | { type: ""; item: null }
+  | { type: "push"; item: PushState }
+  | { type: "gist"; item: GistState }
+  | { type: "file"; item: File };
 
 type WriteState = {
   markdown: string;
   html: string;
   pushes: PushState[];
-  selectedItem: {
-    type: string;
-    index: number;
-  };
+  gists: GistState[];
+  selectedItem: SelectedItemState;
   errorMessage: string;
 };
 
@@ -23,10 +34,8 @@ const initialState: WriteState = {
   markdown: "# sample",
   html: "",
   pushes: [],
-  selectedItem: {
-    type: "",
-    index: 0,
-  },
+  gists: [],
+  selectedItem: { type: "", item: null },
   errorMessage: "",
 };
 
@@ -43,14 +52,17 @@ const writeSlice = createSlice({
     updatePushes(state: WriteState, action: PayloadAction<PushState[]>) {
       state.pushes = action.payload;
     },
-    updateWriteError(state: WriteState, action: PayloadAction<string>) {
-      state.errorMessage = action.payload;
+    updateGists(state: WriteState, action: PayloadAction<GistState[]>) {
+      state.gists = action.payload;
     },
     updateSelectedItem(
       state: WriteState,
-      action: PayloadAction<{ type: string; index: number }>
+      action: PayloadAction<SelectedItemState>
     ) {
       state.selectedItem = action.payload;
+    },
+    updateWriteError(state: WriteState, action: PayloadAction<string>) {
+      state.errorMessage = action.payload;
     },
   },
 });
@@ -59,6 +71,7 @@ export const {
   updateMarkdown,
   updateHtml,
   updatePushes,
+  updateGists,
   updateSelectedItem,
   updateWriteError,
 } = writeSlice.actions;

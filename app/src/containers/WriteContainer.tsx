@@ -1,40 +1,69 @@
 import { Editor } from "@toast-ui/react-editor";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Write from "../components/write";
 import { RootState } from "../modules";
-import { updateMarkdown, updateSelectedItem } from "../modules/write";
-import { fetchGithubPushes, savePushPost } from "../modules/write/saga";
+import {
+  SelectedItemState,
+  updateMarkdown,
+  updateSelectedItem,
+} from "../modules/write";
+import {
+  fetchGithubGists,
+  fetchGithubPushes,
+  saveGistPost,
+  saveImagePost,
+  savePushPost,
+} from "../modules/write/saga";
 
 const WriteContainer = () => {
-  const { markdown, pushes, selectedItem } = useSelector(
+  const { markdown, pushes, gists, selectedItem } = useSelector(
     (state: RootState) => state.write
   );
   const dispatch = useDispatch();
+
+  const [selectedButton, setSelectedButton] = useState<
+    "" | "push" | "gist" | "file"
+  >("");
 
   const onChangeCreator = (editorRef: React.RefObject<Editor>) => () => {
     const markdown = editorRef.current?.getInstance().getMarkdown() || "";
     dispatch(updateMarkdown(markdown));
   };
 
-  const onClickPushButton = (e: any) => {
+  const onClickButton = (e: any) => {
+    const button: "push" | "gist" | "file" = e.target.name;
+
+    setSelectedButton(button);
+    if (selectedButton !== button) {
+      dispatch(updateSelectedItem({ type: "", item: null }));
+    }
+
     const username: string = process.env
       .REACT_APP_SAMPLE_GITHUB_USERNAME as string;
 
-    dispatch(fetchGithubPushes(username));
+    if (button === "push" && pushes.length === 0) {
+      dispatch(fetchGithubPushes(username));
+    }
+    if (button === "gist" && gists.length === 0) {
+      dispatch(fetchGithubGists(username));
+    }
   };
 
-  const onClickItem = (type: string, index: number) => {
-    dispatch(updateSelectedItem({ type, index }));
+  const onClickItem = (item: SelectedItemState) => {
+    dispatch(updateSelectedItem(item));
   };
 
   const onSave = (e: any) => {
-    switch (selectedItem.type) {
-      case "PUSH":
-        dispatch(savePushPost({ ...pushes[selectedItem.index], markdown }));
-        break;
-      default:
-        break;
+    if (selectedItem.type === "push") {
+      dispatch(savePushPost({ ...selectedItem.item, markdown }));
+    }
+    if (selectedItem.type === "gist") {
+      dispatch(saveGistPost({ ...selectedItem.item, markdown }));
+    }
+    if (selectedItem.type === "file") {
+      dispatch(saveImagePost({ image: selectedItem.item, markdown }));
     }
   };
 
@@ -42,9 +71,11 @@ const WriteContainer = () => {
     <Write
       markdown={markdown}
       pushes={pushes}
+      gists={gists}
+      selectedButton={selectedButton}
       onSave={onSave}
+      onClickButton={onClickButton}
       onClickItem={onClickItem}
-      onClickPushButton={onClickPushButton}
       onChangeCreator={onChangeCreator}
     />
   );

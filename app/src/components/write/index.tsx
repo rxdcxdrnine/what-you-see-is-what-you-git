@@ -1,28 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@toast-ui/react-editor";
 
-import { PushState } from "../../modules/write";
+import ItemList from "./ItemList";
+import { GistState, PushState, SelectedItemState } from "../../modules/write";
 
-import Choose from "./Choose";
-
-import "@toast-ui/editor/dist/toastui-editor.css";
 import "../../styles/write.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 type WriteProps = {
   markdown: string;
   pushes: PushState[];
+  gists: GistState[];
+  selectedButton: "" | "push" | "gist" | "file";
   onSave: React.MouseEventHandler<HTMLButtonElement>;
-  onClickItem: (type: string, index: number) => void;
-  onClickPushButton: React.MouseEventHandler<HTMLButtonElement>;
+  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
+  onClickItem: (item: SelectedItemState) => void;
   onChangeCreator: (editorRef: React.RefObject<Editor>) => () => void;
 };
 
 const Write = ({
   markdown,
   pushes,
+  gists,
+  selectedButton,
   onSave,
   onClickItem,
-  onClickPushButton,
+  onClickButton,
   onChangeCreator,
 }: WriteProps) => {
   const editorRef = useRef<Editor>(null);
@@ -35,10 +38,12 @@ const Write = ({
 
   return (
     <div className="write-container">
-      <Choose
+      <ItemList
         pushes={pushes}
+        gists={gists}
+        selectedButton={selectedButton}
         onClickItem={onClickItem}
-        onClickPushButton={onClickPushButton}
+        onClickButton={onClickButton}
       />
       {initialValue ? (
         <Editor

@@ -8,7 +8,6 @@ import {
 import { createAction } from "@reduxjs/toolkit";
 
 import UserApi from "../../api/user";
-
 import { updateUserError, updateProfile } from ".";
 
 export const fetchGithubProfile = createAction<string>("user/getGithubProfile");
