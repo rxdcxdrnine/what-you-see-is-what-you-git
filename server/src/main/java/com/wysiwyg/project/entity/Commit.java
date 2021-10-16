@@ -1,11 +1,9 @@
 package com.wysiwyg.project.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +22,27 @@ public class Commit extends BaseEntity {
     private String commitSha;
 
     @Column(nullable = false)
-    private Integer additions;
+    private Long additions;
 
     @Column(nullable = false)
-    private Integer deletions;
+    private Long deletions;
 
     @Column(nullable = false)
-    private LocalDateTime uploadedDate;
+    private LocalDateTime uploadDate;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Push push;
 
     @OneToMany(mappedBy = "commit")
-    private List<File> files = new ArrayList<>();
+    private List<CommitFile> commitFiles = new ArrayList<>();
+
+    @Builder()
+    public Commit(String commitSha, Long additions, Long deletions, LocalDateTime uploadDate, Push push) {
+        this.commitSha = commitSha;
+        this.additions = additions;
+        this.deletions = deletions;
+        this.uploadDate = uploadDate;
+        this.push = push;
+    }
 }

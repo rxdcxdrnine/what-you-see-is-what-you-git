@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class GithubPushPostDto {
+public class PushPostSaveDto {
     private Long pushId;
     private String repoName;
     private String branchName;

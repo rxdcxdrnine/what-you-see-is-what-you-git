@@ -11,14 +11,16 @@ import UserApi from "../../api/user";
 import { setError, updateProfile } from ".";
 import { createAction } from "@reduxjs/toolkit";
 
-export const getGithubProfile = createAction<string>("user/getGithubProfile");
+export const fetchGithubProfile = createAction<string>(
+  "user/fetchGithubProfile"
+);
 
 type SagaResponse = SagaReturnType<typeof UserApi.fetchGithubProfile>;
 
-function* fetchGithubProfile(action: ReturnType<typeof getGithubProfile>) {
+function* getGithubProfile(action: ReturnType<typeof fetchGithubProfile>) {
   try {
     const res: SagaResponse = yield call(
-      UserApi.fetchGithubProfile,
+      UserApi.getGithubProfile,
       action.payload
     );
     const {
@@ -47,7 +49,7 @@ function* fetchGithubProfile(action: ReturnType<typeof getGithubProfile>) {
 }
 
 function* GithubProfileSaga() {
-  yield takeEvery(getGithubProfile.type, fetchGithubProfile);
+  yield takeEvery(fetchGithubProfile.type, getGithubProfile);
 }
 
 function* userSaga() {

@@ -7,8 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -22,13 +20,16 @@ public abstract class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(nullable = false)
     private LocalDateTime uploadDate;
+
+    private String markdown;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "post")
-    private List<Commit> commits = new ArrayList<>();
+    public Post(LocalDateTime uploadDate, String markdown) {
+        this.uploadDate = uploadDate;
+        this.markdown = markdown;
+    }
 }

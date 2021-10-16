@@ -1,24 +1,36 @@
 package com.wysiwyg.project.entity;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorValue("PUSH")
 @Getter
 @ToString
 public class Push extends Post {
 
-    @Column(nullable = false)
-    private int pushId;
+    private Long pushId;
 
-    @Column(nullable = false)
-    private String repositoryName;
+    private String repoName;
 
-    @Column(nullable = false)
     private String branchName;
+
+    @OneToMany(mappedBy = "push")
+    private List<Commit> commits = new ArrayList<>();
+
+    @Builder
+    public Push(Long pushId, String repoName, String branchName, LocalDateTime uploadDate, String markdown) {
+        super(uploadDate, markdown);
+        this.pushId = pushId;
+        this.repoName = repoName;
+        this.branchName = branchName;
+    }
 }

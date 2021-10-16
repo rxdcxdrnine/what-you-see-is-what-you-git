@@ -1,24 +1,26 @@
 package com.wysiwyg.project.entity;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @DiscriminatorValue("GIST")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 public class Gist extends Post {
 
-    @Column(nullable = false)
-    private int gistId;
+    private String gistId;
 
-    @Column(nullable = false)
     private String gistDescription;
+
+    @Builder
+    public Gist(String gistId, String gistDescription, LocalDateTime uploadDate, String markdown) {
+        super(uploadDate, markdown);
+        this.gistId = gistId;
+        this.gistDescription = gistDescription;
+    }
 }
