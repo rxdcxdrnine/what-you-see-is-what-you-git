@@ -1,11 +1,12 @@
 import WriteContainer from "../containers/WriteContainer";
 
+import "../styles/write.css";
+
 const WriteView = () => {
   return (
-    <>
-      <div>WriteView</div>
+    <div className="write-page">
       <WriteContainer />
-    </>
+    </div>
   );
 };
 

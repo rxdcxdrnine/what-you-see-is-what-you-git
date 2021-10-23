@@ -35,12 +35,12 @@ const userSlice = createSlice({
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
     },
-    setError(state: UserState, action: PayloadAction<string>) {
+    updateUserError(state: UserState, action: PayloadAction<string>) {
       state.errorMessage = action.payload;
     },
   },
 });
 
-export const { updateProfile, setError } = userSlice.actions;
+export const { updateProfile, updateUserError } = userSlice.actions;
 
 export default userSlice;

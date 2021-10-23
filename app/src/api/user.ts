@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
+// fetchGithubProfile
 export interface GithubProfile {
   login: string;
   id: number;
