@@ -1,0 +1,51 @@
+package com.wysiwyg.project.service;
+
+import com.wysiwyg.project.client.GithubClient;
+import com.wysiwyg.project.client.commit.GithubCommit;
+import com.wysiwyg.project.client.commit.GithubCommitFile;
+import com.wysiwyg.project.dto.PushPostSaveDto;
+import com.wysiwyg.project.entity.Commit;
+import com.wysiwyg.project.entity.CommitFile;
+import com.wysiwyg.project.entity.Push;
+import com.wysiwyg.project.repository.CommitFileRepository;
+import com.wysiwyg.project.repository.CommitRepository;
+import com.wysiwyg.project.repository.PushPostRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PushPostService {
+
+    private final PushPostRepository pushPostRepository;
+    private final CommitRepository commitRepository;
+    private final CommitFileRepository commitFileRepository;
+    private final GithubClient githubClient;
+
+    @Transactional
+    public void save(PushPostSaveDto dto) {
+        // save push post
+        Push push = dto.toEntity();
+        pushPostRepository.save(push);
+
+        List<String> commitUrls = dto.getCommitUrls();
+
+        // save commit
+        for(String commitUrl : commitUrls) {
+            GithubCommit githubCommit = githubClient.getGithubCommit(commitUrl);
+            Commit commit = githubCommit.toEntity(push);
+            commitRepository.save(commit);
+
+            // save commitFile
+            List<GithubCommitFile> githubCommitFiles = List.of(githubCommit.getFiles());
+            for (GithubCommitFile githubCommitFile: githubCommitFiles) {
+                CommitFile commitFile = githubCommitFile.toEntity(commit);
+                commitFileRepository.save(commitFile);
+            }
+        }
+    }
+}

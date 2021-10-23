@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -17,6 +19,17 @@ public class WysiwygApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WysiwygApplication.class, args);
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5000");
+            }
+        };
     }
 
     @Bean

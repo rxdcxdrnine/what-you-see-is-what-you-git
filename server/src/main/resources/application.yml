@@ -7,7 +7,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
+
+app:
+  upload:
+    dir: D:/dev/what-you-see-is-what-you-get/backend/server/src/main/resources/images

@@ -17,7 +17,7 @@ type SagaResponse = SagaReturnType<typeof UserApi.fetchGithubProfile>;
 function* getGithubProfile(action: ReturnType<typeof fetchGithubProfile>) {
   try {
     const res: SagaResponse = yield call(
-      UserApi.fetchGithubProfile,
+      UserApi.getGithubProfile,
       action.payload
     );
     const {
