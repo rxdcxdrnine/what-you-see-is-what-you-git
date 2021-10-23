@@ -4,11 +4,11 @@ import Profile from "./Profile";
 
 import "../../styles/user.css";
 
-type userProps = {
+type UserProps = {
   profile: ProfileState;
 };
 
-const User = ({ profile }: userProps) => {
+const User = ({ profile }: UserProps) => {
   return (
     <div className="user-container">
       <Profile profile={profile} />
