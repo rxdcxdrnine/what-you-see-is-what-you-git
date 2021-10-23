@@ -10,14 +10,16 @@ import { createAction } from "@reduxjs/toolkit";
 import UserApi from "../../api/user";
 import { updateUserError, updateProfile } from ".";
 
-export const fetchGithubProfile = createAction<string>("user/getGithubProfile");
+export const fetchGithubProfile = createAction<string>(
+  "user/fetchGithubProfile"
+);
 
 type SagaResponse = SagaReturnType<typeof UserApi.fetchGithubProfile>;
 
 function* getGithubProfile(action: ReturnType<typeof fetchGithubProfile>) {
   try {
     const res: SagaResponse = yield call(
-      UserApi.getGithubProfile,
+      UserApi.fetchGithubProfile,
       action.payload
     );
     const {

@@ -12,7 +12,9 @@ import WriteApi, { GistPost, ImagePost, PushPost } from "../../api/write";
 import { PushState, updatePushes, updateWriteError } from ".";
 
 // fetchGithubPushes
-export const fetchGithubPushes = createAction<string>("write/fetchGithubPushs");
+export const fetchGithubPushes = createAction<string>(
+  "write/fetchGithubPushes"
+);
 
 function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
   try {
