@@ -1,22 +1,53 @@
+import {
+  GistPostState,
+  ImagePostState,
+  PushPostState,
+} from "../../modules/user";
+import GistPosts from "./GistPosts";
+import ImagePosts from "./ImagePosts";
+import PushPosts from "./PushPosts";
+
 import "../../styles/user.css";
 
-const Post = () => {
+type PostProps = {
+  status: "all" | "push" | "gist" | "image";
+  username: string;
+  pushPosts: PushPostState[];
+  gistPosts: GistPostState[];
+  imagePosts: ImagePostState[];
+  onClickCategory: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+const Post = ({
+  status,
+  username,
+  pushPosts,
+  gistPosts,
+  imagePosts,
+  onClickCategory,
+}: PostProps) => {
   return (
     <div className="post-container">
       <div className="button-wrapper">
-        <div className="button">PUSHS</div>
-        <div className="button">GISTS</div>
-        <div className="button">IMAGES</div>
+        <button name="push" className="button" onClick={onClickCategory}>
+          PUSHS
+        </button>
+        <button name="gist" className="button" onClick={onClickCategory}>
+          GISTS
+        </button>
+        <button name="image" className="button" onClick={onClickCategory}>
+          IMAGES
+        </button>
       </div>
-      <div className="post-wrapper">
-        <div>POST</div>
-      </div>
-      <div className="post-wrapper">
-        <div>POST</div>
-      </div>
-      <div className="post-wrapper">
-        <div>POST</div>
-      </div>
+      {status === "push" ? (
+        <PushPosts pushPosts={pushPosts} />
+      ) : status === "gist" ? (
+        <GistPosts gistPosts={gistPosts} username={username} />
+      ) : status === "image" ? (
+        <ImagePosts imagePosts={imagePosts} />
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

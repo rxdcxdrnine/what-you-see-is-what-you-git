@@ -4,7 +4,7 @@ export type PushState = {
   pushId: number;
   repoName: string;
   branchName: string;
-  commitUrls: string[];
+  commitUrls?: string[];
   uploadDate: Date;
 };
 

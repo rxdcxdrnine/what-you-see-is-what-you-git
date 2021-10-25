@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { GistPostState, ImagePostState, PushPostState } from "../modules/user";
 
 // fetchGithubProfile
 export interface GithubProfile {
@@ -41,5 +42,25 @@ const fetchGithubProfile: (
 ) => Promise<AxiosResponse<GithubProfile>> = (username: string) =>
   axios.get(`http://api.github.com/users/${username}`);
 
-const UserApi = { fetchGithubProfile };
+const fetchPushPosts: (
+  userId: number
+) => Promise<AxiosResponse<PushPostState[]>> = (userId: number) =>
+  axios.get(`http://localhost:8080/posts/push?userId=${userId}`);
+
+const fetchGistPosts: (
+  userId: number
+) => Promise<AxiosResponse<GistPostState[]>> = (userId: number) =>
+  axios.get(`http://localhost:8080/posts/gist?userId=${userId}`);
+
+const fetchImagePosts: (
+  userId: number
+) => Promise<AxiosResponse<ImagePostState[]>> = (userId: number) =>
+  axios.get(`http://localhost:8080/posts/image?userId=${userId}`);
+
+const UserApi = {
+  fetchGithubProfile,
+  fetchPushPosts,
+  fetchGistPosts,
+  fetchImagePosts,
+};
 export default UserApi;

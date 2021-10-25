@@ -1905,6 +1905,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-embed-gist@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-embed-gist/-/react-embed-gist-1.0.0.tgz#8a231f405a57723331f1790d1fa415922a06a12d"
+  integrity sha512-wGr7XP6/cRMzkOFh/BqxybyANPW9/1VkqylWgWy+j8hcm4w3fAFq2D1he+WP9GzxPGkhFG+u3h6geo5cyas1xA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.16":
   version "7.1.18"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.18.tgz#2bf8fd56ebaae679a90ebffe48ff73717c438e04"
@@ -9296,6 +9303,13 @@ react-dom@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-embed-gist@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-embed-gist/-/react-embed-gist-1.0.12.tgz#96dccdb278d71f83698b82f68abceaa71e00b9b7"
+  integrity sha512-NcKsv5UKtHtzx8mDfi6L+3ZB76SUAw2paXuv48+0KnDNwiLwh5gK1gEf7wnfXie18Quq/VBu4mUf0wOajIM3bA==
+  dependencies:
+    react "^17.0.2"
 
 react-error-overlay@^6.0.9:
   version "6.0.9"
