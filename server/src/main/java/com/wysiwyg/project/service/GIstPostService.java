@@ -1,5 +1,6 @@
 package com.wysiwyg.project.service;
 
+import com.wysiwyg.project.dto.GistPostFetchDto;
 import com.wysiwyg.project.dto.GistPostSaveDto;
 import com.wysiwyg.project.entity.Gist;
 import com.wysiwyg.project.entity.GistFile;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,10 @@ public class GIstPostService {
                     .build();
             gistFileRepository.save(gistFile);
         }
+    }
+
+    public List<GistPostFetchDto> findByUserId(Long userId) {
+        List<Gist> gists = gistPostRepository.searchByUserId(userId);
+        return gists.stream().map(GistPostFetchDto::new).collect(Collectors.toList());
     }
 }

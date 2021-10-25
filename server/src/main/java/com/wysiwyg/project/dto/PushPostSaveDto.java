@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class PushPostSaveDto {
+    private Long userId;
     private Long pushId;
     private String repoName;
     private String branchName;
@@ -17,6 +18,7 @@ public class PushPostSaveDto {
 
     public Push toEntity() {
         return Push.builder()
+                .userId(userId)
                 .pushId(pushId)
                 .repoName(repoName)
                 .branchName(branchName)

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class GistPostSaveDto {
+    private Long userId;
     private String gistId;
     private String gistDescription;
     private List<String> gistFilenames;
@@ -16,6 +17,7 @@ public class GistPostSaveDto {
 
     public Gist toEntity() {
         return Gist.builder()
+                .userId(userId)
                 .gistId(gistId)
                 .gistDescription(gistDescription)
                 .uploadDate(uploadDate)

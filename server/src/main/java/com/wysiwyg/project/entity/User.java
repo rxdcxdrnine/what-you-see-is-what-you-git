@@ -1,9 +1,6 @@
 package com.wysiwyg.project.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +15,8 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
+    private Long githubId;
 
     @Column(length = 39, nullable = false)
     private String userName;
@@ -45,4 +44,11 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     List<Post> posts = new ArrayList<>();
+
+    @Builder
+    public User(String userName, String profileName, String avatarUrl) {
+        this.userName = userName;
+        this.profileName = profileName;
+        this.avatarUrl = avatarUrl;
+    }
 }

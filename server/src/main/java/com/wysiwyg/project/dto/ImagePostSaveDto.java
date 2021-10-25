@@ -6,12 +6,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class ImagePostSaveDto {
+    private Long userId;
     private MultipartFile image;
     private String markdown;
 
-    public Image toEntity() {
+    public Image toEntity(String filename) {
         return Image.builder()
-                .imageFilename(image.getOriginalFilename())
+                .userId(userId)
+                .imageFilename(filename)
                 .markdown(markdown)
                 .build();
     }

@@ -63,6 +63,8 @@ out/
 ### VS Code ###
 .vscode/
 
+### static image ###
+images/
 
 # models
 

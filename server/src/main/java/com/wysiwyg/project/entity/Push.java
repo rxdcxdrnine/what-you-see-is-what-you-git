@@ -27,8 +27,8 @@ public class Push extends Post {
     private List<Commit> commits = new ArrayList<>();
 
     @Builder
-    public Push(Long pushId, String repoName, String branchName, LocalDateTime uploadDate, String markdown) {
-        super(uploadDate, markdown);
+    public Push(Long pushId, String repoName, String branchName, LocalDateTime uploadDate, String markdown, Long userId) {
+        super(uploadDate, markdown, userId);
         this.pushId = pushId;
         this.repoName = repoName;
         this.branchName = branchName;
