@@ -36,7 +36,7 @@ public class GIstPostService {
     }
 
     public List<GistPostFetchDto> findByUserId(Long userId) {
-        List<Gist> gists = gistPostRepository.searchByUserId(userId);
+        List<Gist> gists = gistPostRepository.findByUserUserId(userId);
         return gists.stream().map(GistPostFetchDto::new).collect(Collectors.toList());
     }
 }

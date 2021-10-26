@@ -51,7 +51,7 @@ public class PushPostService {
     }
 
     public List<PushPostFetchDto> findByUserId(Long userId) {
-        List<Push> pushes = pushPostRepository.searchByUserId(userId);
+        List<Push> pushes = pushPostRepository.findByUserUserId(userId);
         return pushes.stream().map(PushPostFetchDto::new).collect(Collectors.toList());
     }
 }
