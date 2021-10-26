@@ -1,4 +1,5 @@
 import {
+  commitState,
   GistPostState,
   ImagePostState,
   PushPostState,
@@ -9,38 +10,50 @@ import { GistPosts, ImagePosts, PushPosts } from "./PostItems";
 
 type PostProps = {
   status: "all" | "push" | "gist" | "image";
-  username: string;
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
-  onClickCategory: React.MouseEventHandler<HTMLButtonElement>;
+  commits: commitState[];
+  isOpenModal: boolean;
+  onOpenModal: (postId: number) => void;
+  onCloseModal: () => void;
+  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const Post = ({
   status,
-  username,
   pushPosts,
   gistPosts,
   imagePosts,
-  onClickCategory,
+  commits,
+  isOpenModal,
+  onOpenModal,
+  onCloseModal,
+  onClickButton,
 }: PostProps) => {
   return (
     <div className="post-container">
       <div className="button-wrapper">
-        <button name="push" className="button" onClick={onClickCategory}>
+        <button name="push" className="button" onClick={onClickButton}>
           PUSHS
         </button>
-        <button name="gist" className="button" onClick={onClickCategory}>
+        <button name="gist" className="button" onClick={onClickButton}>
           GISTS
         </button>
-        <button name="image" className="button" onClick={onClickCategory}>
+        <button name="image" className="button" onClick={onClickButton}>
           IMAGES
         </button>
       </div>
       {status === "push" ? (
-        <PushPosts pushPosts={pushPosts} />
+        <PushPosts
+          pushPosts={pushPosts}
+          commits={commits}
+          isOpenModal={isOpenModal}
+          onOpenModal={onOpenModal}
+          onCloseModal={onCloseModal}
+        />
       ) : status === "gist" ? (
-        <GistPosts gistPosts={gistPosts} username={username} />
+        <GistPosts gistPosts={gistPosts} />
       ) : status === "image" ? (
         <ImagePosts imagePosts={imagePosts} />
       ) : (

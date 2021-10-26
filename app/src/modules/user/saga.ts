@@ -17,6 +17,8 @@ import {
   updateGistPosts,
   ImagePostState,
   updateImagePosts,
+  commitState,
+  updateCommits,
 } from ".";
 
 export const fetchGithubProfile = createAction<string>(
@@ -119,12 +121,33 @@ function* getImagePostsSaga() {
   yield takeEvery(fetchImagePosts.type, getImagePosts);
 }
 
+export const fetchCommits = createAction<number>("user/fetchCommits");
+
+export function* getCommits(action: ReturnType<typeof fetchCommits>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.fetchCommits> = yield call(
+      UserApi.fetchCommits,
+      action.payload
+    );
+
+    const commits: commitState[] = res.data;
+    yield put(updateCommits(commits));
+  } catch (e: any) {
+    yield put(updateUserError(e.message));
+  }
+}
+
+function* getCommitsSaga() {
+  yield takeEvery(fetchCommits.type, getCommits);
+}
+
 function* userSaga() {
   yield all([
     githubProfileSaga(),
     getPushPostsSaga(),
     getGistPostsSaga(),
     getImagePostsSaga(),
+    getCommitsSaga(),
   ]);
 }
 

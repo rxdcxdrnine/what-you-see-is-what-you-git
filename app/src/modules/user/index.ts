@@ -28,10 +28,29 @@ export type ImagePostState = {
   markdown: string;
 };
 
+export type commitState = {
+  commitId: number;
+  commitSha: string;
+  additions: number;
+  deletions: number;
+  uploadDate: Date;
+  commitFiles: commitFileState[];
+};
+
+export type commitFileState = {
+  commitFileId: number;
+  fileSha: string;
+  fileName: number;
+  fileStatus: string;
+  additions: number;
+  deletions: number;
+};
+
 export type PostsState = {
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
+  commits: commitState[];
   status: "all" | "push" | "gist" | "image";
 };
 
@@ -56,6 +75,7 @@ const initialState: UserState = {
     pushPosts: [],
     gistPosts: [],
     imagePosts: [],
+    commits: [],
     status: "all",
   },
   errorMessage: "",
@@ -83,6 +103,9 @@ const userSlice = createSlice({
       state.posts.imagePosts = action.payload;
       state.posts.status = "image";
     },
+    updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
+      state.posts.commits = action.payload;
+    },
     updateUserError(state: UserState, action: PayloadAction<string>) {
       state.errorMessage = action.payload;
     },
@@ -94,6 +117,7 @@ export const {
   updatePushPosts,
   updateGistPosts,
   updateImagePosts,
+  updateCommits,
   updateUserError,
 } = userSlice.actions;
 

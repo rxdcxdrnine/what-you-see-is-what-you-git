@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
@@ -7,14 +7,17 @@ import {
   fetchGithubProfile,
   fetchImagePosts,
   fetchPushPosts,
+  fetchCommits,
 } from "../modules/user/saga";
 
 const UserContainer = () => {
   const profile = useSelector((state: RootState) => state.user.profile);
-  const { status, pushPosts, gistPosts, imagePosts } = useSelector(
+  const { status, pushPosts, gistPosts, imagePosts, commits } = useSelector(
     (state: RootState) => state.user.posts
   );
   const dispatch = useDispatch();
+
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
     const username: string = process.env
@@ -23,7 +26,7 @@ const UserContainer = () => {
     dispatch(fetchGithubProfile(username));
   }, [dispatch]);
 
-  const onClickCategory = (e: any) => {
+  const onClickButton = (e: any) => {
     if (e.target.name === "push") {
       dispatch(fetchPushPosts(profile.userId));
     } else if (e.target.name === "gist") {
@@ -33,6 +36,17 @@ const UserContainer = () => {
     }
   };
 
+  const onOpenModal = (postId: number) => {
+    setIsOpenModal(true);
+    if (status === "push") {
+      dispatch(fetchCommits(postId));
+    }
+  };
+
+  const onCloseModal = () => {
+    setIsOpenModal(false);
+  };
+
   return (
     <User
       profile={profile}
@@ -40,7 +54,11 @@ const UserContainer = () => {
       pushPosts={pushPosts}
       gistPosts={gistPosts}
       imagePosts={imagePosts}
-      onClickCategory={onClickCategory}
+      commits={commits}
+      isOpenModal={isOpenModal}
+      onOpenModal={onOpenModal}
+      onCloseModal={onCloseModal}
+      onClickButton={onClickButton}
     />
   );
 };

@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { GistState, PushState } from "../modules/write";
 
+const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
+
 type GithubPush = {
   id: string;
   type: string;
@@ -115,7 +117,7 @@ export type PushPostSave = PushState & {
 const savePushPost: (
   pushPost: PushPostSave
 ) => Promise<AxiosResponse<PushPostSave>> = (pushPost: PushPostSave) =>
-  axios.post("http://localhost:8080/posts/push", pushPost);
+  axios.post(`${serverUrl}/posts/push`, pushPost);
 
 export type GistPostSave = GistState & {
   userId: number;
@@ -125,7 +127,7 @@ export type GistPostSave = GistState & {
 const saveGistPost: (
   gistPost: GistPostSave
 ) => Promise<AxiosResponse<GistPostSave>> = (gistPost: GistPostSave) =>
-  axios.post("http://localhost:8080/posts/gist", gistPost);
+  axios.post(`${serverUrl}/posts/gist`, gistPost);
 
 export type ImagePostSave = {
   userId: number;
@@ -144,7 +146,7 @@ const saveImagePost: (
       formData.append(key, value);
     }
   }
-  return axios.post("http://localhost:8080/posts/image", formData, {
+  return axios.post(`${serverUrl}/posts/image`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

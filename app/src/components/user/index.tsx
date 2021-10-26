@@ -1,4 +1,5 @@
 import {
+  commitState,
   GistPostState,
   ImagePostState,
   ProfileState,
@@ -15,7 +16,11 @@ type UserProps = {
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
-  onClickCategory: React.MouseEventHandler<HTMLButtonElement>;
+  commits: commitState[];
+  isOpenModal: boolean;
+  onOpenModal: (postId: number) => void;
+  onCloseModal: () => void;
+  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const User = ({
@@ -24,18 +29,25 @@ const User = ({
   pushPosts,
   gistPosts,
   imagePosts,
-  onClickCategory,
+  commits,
+  isOpenModal,
+  onOpenModal,
+  onCloseModal,
+  onClickButton,
 }: UserProps) => {
   return (
     <div className="user-container">
       <Profile profile={profile} />
       <Post
         status={status}
-        username={profile.userName}
         pushPosts={pushPosts}
         gistPosts={gistPosts}
         imagePosts={imagePosts}
-        onClickCategory={onClickCategory}
+        commits={commits}
+        isOpenModal={isOpenModal}
+        onOpenModal={onOpenModal}
+        onCloseModal={onCloseModal}
+        onClickButton={onClickButton}
       />
     </div>
   );
