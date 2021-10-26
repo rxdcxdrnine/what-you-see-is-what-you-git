@@ -1,4 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { GistState, PushState } from "../modules/write";
+
+const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
 
 type GithubPush = {
   id: string;
@@ -106,44 +109,44 @@ const fetchGithubGists: (
 ) => Promise<AxiosResponse<GithubGist[]>> = (username: string) =>
   axios.get(`http://api.github.com/users/${username}/gists`);
 
-export type PushPost = {
-  pushId: number;
-  repoName: string;
-  branchName: string;
-  commitUrls: string[];
-  uploadDate: Date;
+export type PushPostSave = PushState & {
+  userId: number;
   markdown: string;
 };
 
-const savePushPost: (pushPost: PushPost) => Promise<AxiosResponse<PushPost>> = (
-  pushPost: PushPost
-) => axios.post("http://localhost:8080/posts/push", pushPost);
+const savePushPost: (
+  pushPost: PushPostSave
+) => Promise<AxiosResponse<PushPostSave>> = (pushPost: PushPostSave) =>
+  axios.post(`${serverUrl}/posts/push`, pushPost);
 
-export type GistPost = {
-  gistId: string;
-  gistDescription: string;
-  gistFilenames: string[];
-  uploadDate: Date;
+export type GistPostSave = GistState & {
+  userId: number;
   markdown: string;
 };
 
-const saveGistPost: (gistPost: GistPost) => Promise<AxiosResponse<GistPost>> = (
-  gistPost: GistPost
-) => axios.post("http://localhost:8080/posts/gist", gistPost);
+const saveGistPost: (
+  gistPost: GistPostSave
+) => Promise<AxiosResponse<GistPostSave>> = (gistPost: GistPostSave) =>
+  axios.post(`${serverUrl}/posts/gist`, gistPost);
 
-export type ImagePost = {
+export type ImagePostSave = {
+  userId: number;
   image: File;
   markdown: string;
 };
 
 const saveImagePost: (
-  imagePost: ImagePost
-) => Promise<AxiosResponse<ImagePost>> = (imagePost: ImagePost) => {
+  imagePost: ImagePostSave
+) => Promise<AxiosResponse<ImagePostSave>> = (imagePost: ImagePostSave) => {
   const formData: FormData = new FormData();
   for (const [key, value] of Object.entries(imagePost)) {
-    formData.append(key, value);
+    if (typeof value === "number") {
+      formData.append(key, value.toString());
+    } else {
+      formData.append(key, value);
+    }
   }
-  return axios.post("http://localhost:8080/posts/image", formData, {
+  return axios.post(`${serverUrl}/posts/image`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

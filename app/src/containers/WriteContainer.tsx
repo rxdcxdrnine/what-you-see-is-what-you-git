@@ -18,6 +18,7 @@ import {
 } from "../modules/write/saga";
 
 const WriteContainer = () => {
+  const { userId } = useSelector((state: RootState) => state.user.profile);
   const { markdown, pushes, gists, selectedItem } = useSelector(
     (state: RootState) => state.write
   );
@@ -57,13 +58,13 @@ const WriteContainer = () => {
 
   const onSave = (e: any) => {
     if (selectedItem.type === "push") {
-      dispatch(savePushPost({ ...selectedItem.item, markdown }));
+      dispatch(savePushPost({ ...selectedItem.item, userId, markdown }));
     }
     if (selectedItem.type === "gist") {
-      dispatch(saveGistPost({ ...selectedItem.item, markdown }));
+      dispatch(saveGistPost({ ...selectedItem.item, userId, markdown }));
     }
     if (selectedItem.type === "file") {
-      dispatch(saveImagePost({ image: selectedItem.item, markdown }));
+      dispatch(saveImagePost({ image: selectedItem.item, userId, markdown }));
     }
   };
 

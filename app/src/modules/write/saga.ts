@@ -8,7 +8,11 @@ import {
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
 
-import WriteApi, { GistPost, ImagePost, PushPost } from "../../api/write";
+import WriteApi, {
+  GistPostSave,
+  ImagePostSave,
+  PushPostSave,
+} from "../../api/write";
 import { PushState, updatePushes, updateWriteError } from ".";
 
 // fetchGithubPushes
@@ -77,7 +81,7 @@ function* getGithubGistsSaga() {
 }
 
 // savePushPost
-export const savePushPost = createAction<PushPost>("write/savePushPost");
+export const savePushPost = createAction<PushPostSave>("write/savePushPost");
 
 function* postPushPost(action: ReturnType<typeof savePushPost>) {
   try {
@@ -99,7 +103,7 @@ function* postPushPostSaga() {
 }
 
 // saveGistPost
-export const saveGistPost = createAction<GistPost>("write/saveGistPost");
+export const saveGistPost = createAction<GistPostSave>("write/saveGistPost");
 
 function* postGistPost(action: ReturnType<typeof saveGistPost>) {
   try {
@@ -121,7 +125,7 @@ function* postGistPostSaga() {
 }
 
 // saveImagePost
-export const saveImagePost = createAction<ImagePost>("write/saveImagePost");
+export const saveImagePost = createAction<ImagePostSave>("write/saveImagePost");
 
 function* postImagePost(action: ReturnType<typeof saveImagePost>) {
   try {
