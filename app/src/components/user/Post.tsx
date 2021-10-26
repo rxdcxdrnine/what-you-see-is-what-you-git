@@ -3,11 +3,9 @@ import {
   ImagePostState,
   PushPostState,
 } from "../../modules/user";
-import GistPosts from "./GistPosts";
-import ImagePosts from "./ImagePosts";
-import PushPosts from "./PushPosts";
 
 import "../../styles/user.css";
+import { GistPosts, ImagePosts, PushPosts } from "./PostItems";
 
 type PostProps = {
   status: "all" | "push" | "gist" | "image";
