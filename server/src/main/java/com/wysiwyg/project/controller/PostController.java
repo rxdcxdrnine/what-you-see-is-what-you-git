@@ -1,8 +1,8 @@
 package com.wysiwyg.project.controller;
 
 import com.wysiwyg.project.dto.*;
-import com.wysiwyg.project.entity.Push;
-import com.wysiwyg.project.service.GIstPostService;
+import com.wysiwyg.project.service.CommitService;
+import com.wysiwyg.project.service.GistPostService;
 import com.wysiwyg.project.service.ImagePostService;
 import com.wysiwyg.project.service.PushPostService;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,18 @@ import java.util.List;
 public class PostController {
 
     private final PushPostService pushPostService;
-    private final GIstPostService gistPostService;
+    private final GistPostService gistPostService;
     private final ImagePostService imagePostService;
+    private final CommitService commitService;
 
     @GetMapping("/push")
     public List<PushPostFetchDto> fetchPushPost(@RequestParam(required = true) Long userId) {
         return pushPostService.findByUserId(userId);
+    }
+
+    @GetMapping("/commit")
+    public List<CommitFetchDto> fetchCommits(@RequestParam(required = true) Long postId) {
+        return commitService.findByPostId(postId);
     }
 
     @PostMapping("/push")

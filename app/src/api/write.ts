@@ -143,9 +143,6 @@ const saveImagePost: (
   for (const [key, value] of Object.entries(imagePost)) {
     formData.append(key, value);
   }
-  for (const [key, value] of Object.entries(formData)) {
-    console.log(key, " : ", value);
-  }
   return axios.post("http://localhost:8080/posts/image", formData, {
     headers: {
       "Content-Type": "multipart/form-data",

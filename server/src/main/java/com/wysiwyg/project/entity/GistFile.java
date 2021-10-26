@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,10 +16,11 @@ public class GistFile extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gistFileId;
 
-    private String gistFilename;
+    @Column(name = "gist_file_name")
+    private String filename;
 
     @Builder
-    public GistFile(String gistFilename) {
-        this.gistFilename = gistFilename;
+    public GistFile(String filename) {
+        this.filename = filename;
     }
 }

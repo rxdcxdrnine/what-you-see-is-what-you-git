@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class GIstPostService {
+public class GistPostService {
 
     private final GistPostRepository gistPostRepository;
     private final GistFileRepository gistFileRepository;
@@ -29,7 +29,7 @@ public class GIstPostService {
         // save gist files
         for (String filename : dto.getGistFilenames()) {
             GistFile gistFile = GistFile.builder()
-                    .gistFilename(filename)
+                    .filename(filename)
                     .build();
             gistFileRepository.save(gistFile);
         }
