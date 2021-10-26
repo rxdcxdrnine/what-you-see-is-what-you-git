@@ -3,6 +3,7 @@ package com.wysiwyg.project.service;
 import com.wysiwyg.project.client.GithubClient;
 import com.wysiwyg.project.client.commit.GithubCommit;
 import com.wysiwyg.project.client.commit.GithubCommitFile;
+import com.wysiwyg.project.dto.PushPostFetchDto;
 import com.wysiwyg.project.dto.PushPostSaveDto;
 import com.wysiwyg.project.entity.Commit;
 import com.wysiwyg.project.entity.CommitFile;
@@ -14,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +48,10 @@ public class PushPostService {
                 commitFileRepository.save(commitFile);
             }
         }
+    }
+
+    public List<PushPostFetchDto> findByUserId(Long userId) {
+        List<Push> pushes = pushPostRepository.findByUserUserId(userId);
+        return pushes.stream().map(PushPostFetchDto::new).collect(Collectors.toList());
     }
 }

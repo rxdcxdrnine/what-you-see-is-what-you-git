@@ -14,13 +14,13 @@ public class CommitFile extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commitFileId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "commit_file_sha")
     private String fileSha;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "commit_file_name")
     private String fileName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "commit_file_status")
     private String fileStatus;
 
     @Column(nullable = false)

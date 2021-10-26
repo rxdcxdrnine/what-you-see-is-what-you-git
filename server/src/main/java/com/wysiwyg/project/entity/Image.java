@@ -16,8 +16,8 @@ public class Image extends Post {
     private String imageFilename;
 
     @Builder
-    public Image(String imageFilename, String markdown) {
-        super(null, markdown);
+    public Image(String imageFilename, String markdown, Long userId) {
+        super(null, markdown, userId);
         this.imageFilename = imageFilename;
     }
 }

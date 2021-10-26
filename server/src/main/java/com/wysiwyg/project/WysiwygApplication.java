@@ -3,6 +3,7 @@ package com.wysiwyg.project;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,8 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.persistence.EntityManager;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -52,4 +55,8 @@ public class WysiwygApplication {
         return webClient;
     }
 
+    @Bean
+    public JPAQueryFactory jpaQueryFactory(EntityManager em){
+        return new JPAQueryFactory(em);
+    }
 }
