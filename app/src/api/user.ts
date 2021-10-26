@@ -1,7 +1,15 @@
 import axios, { AxiosResponse } from "axios";
+import {
+  commitState,
+  GistPostState,
+  ImagePostState,
+  PushPostState,
+} from "../modules/user";
+
+const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
 
 // fetchGithubProfile
-export interface GithubProfile {
+export type GithubProfile = {
   login: string;
   id: number;
   node_id: string;
@@ -34,12 +42,36 @@ export interface GithubProfile {
   following: number;
   created_at: Date;
   updated_at: Date;
-}
+};
 
 const fetchGithubProfile: (
   username: string
 ) => Promise<AxiosResponse<GithubProfile>> = (username: string) =>
   axios.get(`http://api.github.com/users/${username}`);
 
-const UserApi = { fetchGithubProfile };
+const fetchPushPosts: (
+  userId: number
+) => Promise<AxiosResponse<PushPostState[]>> = (userId: number) =>
+  axios.get(`${serverUrl}/posts/push?userId=${userId}`);
+
+const fetchGistPosts: (
+  userId: number
+) => Promise<AxiosResponse<GistPostState[]>> = (userId: number) =>
+  axios.get(`${serverUrl}/posts/gist?userId=${userId}`);
+
+const fetchImagePosts: (
+  userId: number
+) => Promise<AxiosResponse<ImagePostState[]>> = (userId: number) =>
+  axios.get(`${serverUrl}/posts/image?userId=${userId}`);
+
+const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
+  (postId: number) => axios.get(`${serverUrl}/posts/commit?postId=${postId}`);
+
+const UserApi = {
+  fetchGithubProfile,
+  fetchPushPosts,
+  fetchGistPosts,
+  fetchImagePosts,
+  fetchCommits,
+};
 export default UserApi;

@@ -16,7 +16,6 @@ const ItemPush = ({ pushes, onClickItem }: ItemPushProps) => {
         >
           <div>repo name: {push.repoName}</div>
           <div>branch name: {push.branchName}</div>
-          <div>commits: {push.commitUrls.length}</div>
         </div>
       ))}
     </>
