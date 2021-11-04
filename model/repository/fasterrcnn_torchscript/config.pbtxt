@@ -1,6 +1,5 @@
 name: "fasterrcnn_torchscript"
 platform: "pytorch_libtorch"
-max_batch_size: 1
 input [
   {
     name: "IMAGE__0",
@@ -15,8 +14,8 @@ output [
     dims: [-1, 4]
   },
   {
-    name: "LABLES__1",
-    data_type: TYPE_INT32,
+    name: "LABELS__1",
+    data_type: TYPE_INT64,
     dims: [-1]
   },
   {
