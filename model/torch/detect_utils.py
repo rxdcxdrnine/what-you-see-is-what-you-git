@@ -47,4 +47,3 @@ def draw_boxes(boxes, classes, labels, image):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2, 
                     lineType=cv2.LINE_AA)
     return image
-    
