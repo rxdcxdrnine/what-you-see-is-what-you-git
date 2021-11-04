@@ -1,4 +1,4 @@
-COCO_INSTANCE_CATEGORY_NAMES = [
+COCO_NAMES = [
     "__background__",
     "person",
     "bicycle",
