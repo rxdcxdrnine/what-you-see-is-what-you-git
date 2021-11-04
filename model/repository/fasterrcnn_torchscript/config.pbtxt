@@ -1,0 +1,26 @@
+name: "fasterrcnn_torchscript"
+platform: "pytorch_libtorch"
+input [
+  {
+    name: "IMAGE__0",
+    data_type: TYPE_FP32,
+    dims: [3, -1, -1]
+  }
+]
+output [
+  {
+    name: "BOXES__0",
+    data_type: TYPE_FP32,
+    dims: [-1, 4]
+  },
+  {
+    name: "LABELS__1",
+    data_type: TYPE_INT64,
+    dims: [-1]
+  },
+  {
+    name: "SCORES__2",
+    data_type: TYPE_FP32,
+    dims: [-1]
+  }
+]

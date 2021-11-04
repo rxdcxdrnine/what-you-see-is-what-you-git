@@ -72,3 +72,7 @@ images/
 *.onnx
 *.graphdef
 *.pt
+
+# python
+venv/
+__pycache__/
