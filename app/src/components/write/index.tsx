@@ -47,7 +47,7 @@ const Write = ({
       />
       {initialValue ? (
         <Editor
-          height="500px"
+          height="450px"
           initialValue={initialValue}
           ref={editorRef}
           onChange={onChangeCreator(editorRef)}

@@ -12,33 +12,44 @@ body {
   display: flex;
   flex-direction: column;
   width: 50rem;
-  border-left: 0.1rem solid;
-  border-right: 0.1rem solid;
+  /* border-left: 0.1rem solid;
+  border-right: 0.1rem solid; */
   padding-left: 3rem;
   padding-right: 3rem;
+
+  border-radius: 0px;
+  background: #ffffff;
+  box-shadow: 20px 20px 60px #c9c9c9, -20px -20px 60px #ffffff;
 }
 
 .choose-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 0.1rem solid;
-  margin-bottom: 0.5rem;
+  /* border: 0.1rem solid; */
+  margin-bottom: 2rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .choose-button-wrapper {
   display: flex;
   justify-content: space-around;
   height: 10%;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
 .choose-button {
   width: 25%;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   text-align: center;
-  margin: 0.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .choose-content-container {
@@ -47,14 +58,22 @@ body {
   flex-direction: column;
   justify-content: center;
   overflow: scroll;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   margin: 0.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 9px 9px 18px #dbdbdb, -9px -9px 18px #ffffff;
 }
 
 .choose-content {
-  border: 0.1rem solid;
-  margin: 0.1rem 0.5rem;
+  /* border: 0.1rem solid; */
+  margin: 0.2rem 0.5rem;
   cursor: pointer;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 8px #949494, -5px -5px 8px #ffffff;
 }
 
 .editor-container {
@@ -73,7 +92,11 @@ body {
 }
 
 .write-save-button {
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   width: 3rem;
   height: 1.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
