@@ -25,7 +25,7 @@ const ItemPush = ({ pushes, onClickItem }: ItemPushProps) => {
             backgroundColor: index === selected ? "#e9ecef" : "#ffffff",
           }}
         >
-          <div>
+          <div className="choose-content">
             <div>repo name: {push.repoName}</div>
             <div>branch name: {push.branchName}</div>
           </div>
