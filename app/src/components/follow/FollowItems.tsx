@@ -31,9 +31,10 @@ const FollowItems = ({
                   src={user.avatarUrl}
                 />
                 <div className="follow-item">
-                  <div>{user.userId}</div>
-                  <div>{user.userName}</div>
-                  <div>{user.profileName}</div>
+                  <div>
+                    <div>{user.userName}</div>
+                    <div>{user.profileName}</div>
+                  </div>
                 </div>
                 <button
                   className="follow-item-button"
@@ -53,9 +54,10 @@ const FollowItems = ({
                 src={following.avatarUrl}
               />
               <div className="follow-item">
-                <div>{following.userId}</div>
-                <div>{following.userName}</div>
-                <div>{following.profileName}</div>
+                <div>
+                  <div>{following.userName}</div>
+                  <div>{following.profileName}</div>
+                </div>
               </div>
               <button
                 className="follow-item-button"
@@ -73,9 +75,10 @@ const FollowItems = ({
                 src={follower.avatarUrl}
               />
               <div className="follow-item">
-                <div>{follower.userId}</div>
-                <div>{follower.userName}</div>
-                <div>{follower.profileName}</div>
+                <div>
+                  <div>{follower.userName}</div>
+                  <div>{follower.profileName}</div>
+                </div>
               </div>
             </div>
           ))}

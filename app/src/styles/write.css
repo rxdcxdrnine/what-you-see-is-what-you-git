@@ -56,20 +56,29 @@ body {
   height: 350px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  overflow: scroll;
+  /* border: 0.1rem solid; */
+  margin: 0.5rem;
+}
+
+.choose-image-container {
+  height: 350px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   overflow: scroll;
   /* border: 0.1rem solid; */
   margin: 0.5rem;
-
-  border-radius: 5px;
-  background: #ffffff;
-  box-shadow: 9px 9px 18px #dbdbdb, -9px -9px 18px #ffffff;
 }
 
-.choose-content {
-  /* border: 0.1rem solid; */
-  margin: 0.2rem 0.5rem;
+.choose-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.5rem 0.5rem;
   cursor: pointer;
+  min-height: 4rem;
 
   border-radius: 5px;
   background: #ffffff;

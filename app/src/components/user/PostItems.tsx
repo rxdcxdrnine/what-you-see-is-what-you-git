@@ -11,8 +11,6 @@ import Gist from "../../utils/react-gist/Gist";
 
 import Commit from "./Commit";
 
-import "../../styles/user.css";
-
 type PushPostsProps = {
   pushPosts: PushPostState[];
   commits: commitState[];
@@ -31,6 +29,17 @@ export const PushPosts = ({
   return (
     <>
       <Modal
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            width: "70%",
+            height: "70%",
+            transform: "translate(-50%, -50%)",
+          },
+        }}
         isOpen={isOpenModal}
         ariaHideApp={false}
         onRequestClose={() => onCloseModal()}
@@ -40,24 +49,26 @@ export const PushPosts = ({
         </div>
         <Commit commits={commits} onCloseModal={onCloseModal} />
       </Modal>
-      {pushPosts.map((pushPost) => (
-        <div
-          key={pushPost.postId}
-          className="post-wrapper"
-          onClick={() => onOpenModal(pushPost.postId)}
-          style={{ cursor: "pointer" }}
-        >
-          <div>
-            <div>{pushPost.pushId}</div>
-            <div>{pushPost.repoName}</div>
-            <div>{pushPost.branchName}</div>
-            <div>{pushPost.uploadDate}</div>
+      {pushPosts.map((pushPost) => {
+        return (
+          <div
+            key={pushPost.postId}
+            className="post-wrapper"
+            onClick={() => onOpenModal(pushPost.postId)}
+            style={{ cursor: "pointer" }}
+          >
+            <div>
+              <h2>{pushPost.uploadDate.split("T")[0]}</h2>
+              <div>{pushPost.pushId}</div>
+              <div>{pushPost.repoName}</div>
+              <div>{pushPost.branchName}</div>
+            </div>
+            <div className="viewer-wrapper">
+              <Viewer initialValue={pushPost.markdown} />
+            </div>
           </div>
-          <div className="viewer-wrapper">
-            <Viewer initialValue={pushPost.markdown} />
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </>
   );
 };
@@ -72,8 +83,8 @@ export const GistPosts = ({ gistPosts }: GistPostsProps) => {
       {gistPosts.map((gistPost) => (
         <div key={gistPost.postId} className="post-wrapper">
           <div>
+            <h2>{gistPost.uploadDate.split("T")[0]}</h2>
             <Gist id={gistPost.gistId} />
-            <div>{gistPost.uploadDate}</div>
           </div>
           <div className="viewer-wrapper">
             <Viewer initialValue={gistPost.markdown} />
@@ -95,11 +106,9 @@ export const ImagePosts = ({ imagePosts }: ImageProps) => {
     <>
       {imagePosts.map((imagePost) => (
         <div key={imagePost.postId} className="post-wrapper">
-          <img
-            width="300"
-            src={baseUrl + imagePost.imageFilename}
-            alt="imagePost"
-          />
+          <div className="image-wrapper">
+            <img src={baseUrl + imagePost.imageFilename} alt="imagePost" />
+          </div>
           <div className="viewer-wrapper">
             <Viewer initialValue={imagePost.markdown} />
           </div>

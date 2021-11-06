@@ -32,7 +32,10 @@ const Follow = ({
 }: FollowProps) => {
   return (
     <div className="follow-container">
-      <FollowHeader onClickButton={onClickButton} />
+      <FollowHeader
+        selectedButton={selectedButton}
+        onClickButton={onClickButton}
+      />
 
       {selectedButton === "search" ? (
         <FollowSearch

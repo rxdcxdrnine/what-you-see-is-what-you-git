@@ -101,22 +101,13 @@ body {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   /* border: 0.1rem solid; */
-
-  border-radius: 5px;
-  background: #ffffff;
-  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
-.button-wrapper {
+.button-container {
   display: flex;
   justify-content: space-around;
-  height: 7.5%;
   /* border: 0.1rem solid; */
   margin: 0.5rem;
-
-  border-radius: 5px;
-  background: #ffffff;
-  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .button {
@@ -124,6 +115,7 @@ body {
   /* border: 0.1rem solid; */
   text-align: center;
   margin: 0.5rem;
+  height: 2.5rem;
 
   border-radius: 5px;
   background: #ffffff;
@@ -139,13 +131,25 @@ body {
 .post-wrapper {
   /* border: 0.1rem solid; */
   margin: 0.5rem;
+  padding-left: 0.5rem;
 
   border-radius: 5px;
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
+.image-wrapper {
+  margin: 0.5rem;
+  padding-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .viewer-wrapper {
   /* border: 0.1rem solid; */
-  margin: 0.5rem;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 0.1rem solid lightgray;
 }

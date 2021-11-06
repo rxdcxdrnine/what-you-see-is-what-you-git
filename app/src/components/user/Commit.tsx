@@ -13,6 +13,7 @@ const Commit = ({ commits, onCloseModal }: CommitProps) => {
 
   return (
     <>
+      <h2 style={{ marginLeft: "0.5rem" }}>Commits</h2>
       {commits.map((commit, index) => (
         <div key={commit.commitId}>
           <div
@@ -25,7 +26,10 @@ const Commit = ({ commits, onCloseModal }: CommitProps) => {
             <div>{commit.uploadDate}</div>
           </div>
           {index === dropInd && (
-            <CommitFiles commitFiles={commit.commitFiles} />
+            <CommitFiles
+              commitSha={commit.commitSha}
+              commitFiles={commit.commitFiles}
+            />
           )}
         </div>
       ))}
@@ -36,17 +40,19 @@ const Commit = ({ commits, onCloseModal }: CommitProps) => {
 export default Commit;
 
 type CommitFilesProps = {
+  commitSha: string;
   commitFiles: commitFileState[];
 };
 
-const CommitFiles = ({ commitFiles }: CommitFilesProps) => {
+const CommitFiles = ({ commitSha, commitFiles }: CommitFilesProps) => {
   return (
     <div>
+      <h2 style={{ marginLeft: "0.5rem" }}>Files: Commit {commitSha}</h2>
       {commitFiles.map((commitFile) => (
         <div
           key={commitFile.commitFileId}
           className="post-wrapper"
-          style={{ backgroundColor: "#dddddd" }}
+          style={{ backgroundColor: "#f0f0f0" }}
         >
           <div>{commitFile.fileSha}</div>
           <div>{commitFile.fileName}</div>

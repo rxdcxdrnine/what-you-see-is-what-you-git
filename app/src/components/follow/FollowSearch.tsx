@@ -19,7 +19,12 @@ const FollowSearch = ({
         value={searchKey}
         onChange={(e) => setSearchKey(e.target.value)}
       />
-      <button onClick={() => onClickSearch(searchKey)}>search</button>
+      <button
+        className="follow-search-button"
+        onClick={() => onClickSearch(searchKey)}
+      >
+        search
+      </button>
     </div>
   );
 };
