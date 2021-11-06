@@ -5,14 +5,14 @@ export type PushState = {
   repoName: string;
   branchName: string;
   commitUrls?: string[];
-  uploadDate: Date;
+  uploadDate: string;
 };
 
 export type GistState = {
   gistId: string;
   gistDescription: string;
   gistFilenames: string[];
-  uploadDate: Date;
+  uploadDate: string;
 };
 
 export type SelectedItemState =

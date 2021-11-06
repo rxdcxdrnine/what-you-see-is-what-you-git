@@ -33,7 +33,7 @@ export type commitState = {
   commitSha: string;
   additions: number;
   deletions: number;
-  uploadDate: Date;
+  uploadDate: string;
   commitFiles: commitFileState[];
 };
 

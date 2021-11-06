@@ -22,7 +22,7 @@ type GithubPush = {
     commits: Commit[];
   };
   public: boolean;
-  created_at: Date;
+  created_at: string;
   org: Actor;
 };
 
@@ -63,8 +63,8 @@ type GithubGist = {
   html_url: string;
   files: GithubGistFile[];
   public: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
   description: string;
   comments: number;
   user: null;

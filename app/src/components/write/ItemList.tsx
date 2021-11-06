@@ -21,23 +21,50 @@ const ItemList = ({
   return (
     <div className="choose-container">
       <div className="choose-button-wrapper">
-        <button className="choose-button" name="push" onClick={onClickButton}>
+        <button
+          className="choose-button"
+          name="push"
+          onClick={onClickButton}
+          style={{
+            backgroundColor: selectedButton === "push" ? "#e9ecef" : "#ffffff",
+          }}
+        >
           PUSHS
         </button>
-        <button className="choose-button" name="gist" onClick={onClickButton}>
+        <button
+          className="choose-button"
+          name="gist"
+          onClick={onClickButton}
+          style={{
+            backgroundColor: selectedButton === "gist" ? "#e9ecef" : "#ffffff",
+          }}
+        >
           GISTS
         </button>
-        <button className="choose-button" name="file" onClick={onClickButton}>
+        <button
+          className="choose-button"
+          name="file"
+          onClick={onClickButton}
+          style={{
+            backgroundColor: selectedButton === "file" ? "#e9ecef" : "#ffffff",
+          }}
+        >
           IMAGES
         </button>
       </div>
       <div className="choose-content-container">
         {selectedButton === "push" ? (
-          <ItemPush pushes={pushes} onClickItem={onClickItem} />
+          <div className="choose-content-container">
+            <ItemPush pushes={pushes} onClickItem={onClickItem} />
+          </div>
         ) : selectedButton === "gist" ? (
-          <ItemGist gists={gists} onClickItem={onClickItem} />
+          <div className="choose-content-container">
+            <ItemGist gists={gists} onClickItem={onClickItem} />
+          </div>
         ) : selectedButton === "file" ? (
-          <ItemImage onClickItem={onClickItem} />
+          <div className="choose-image-container">
+            <ItemImage onClickItem={onClickItem} />
+          </div>
         ) : null}
       </div>
     </div>

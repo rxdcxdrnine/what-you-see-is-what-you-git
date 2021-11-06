@@ -21,10 +21,12 @@ body {
   display: flex;
   flex-direction: column;
   width: 50rem;
-  border-left: 0.1rem solid;
-  border-right: 0.1rem solid;
   padding-left: 3rem;
   padding-right: 3rem;
+
+  border-radius: 0px;
+  background: #ffffff;
+  box-shadow: 20px 20px 60px #c9c9c9, -20px -20px 60px #ffffff;
 }
 
 .profile-container {
@@ -33,8 +35,12 @@ body {
 }
 
 .profile-left {
-  border: 0.1rem solid;
   padding: 0.5rem;
+  /* border: 0.1rem solid; */
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .profile-image {
@@ -58,8 +64,12 @@ body {
   align-items: center;
   height: 100%;
   width: 100%;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   margin-bottom: 0.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .grass-wrapper {
@@ -71,21 +81,16 @@ body {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   margin-top: 0.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .count-wrapper {
   text-align: center;
-}
-
-.grass-container {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0.1rem solid;
-  margin-bottom: 0.5rem;
 }
 
 .post-container {
@@ -95,22 +100,26 @@ body {
   overflow: scroll;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
 }
 
-.button-wrapper {
+.button-container {
   display: flex;
   justify-content: space-around;
-  height: 5%;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
 .button {
   width: 25%;
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   text-align: center;
   margin: 0.5rem;
+  height: 2.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .modal-header {
@@ -120,11 +129,27 @@ body {
 }
 
 .post-wrapper {
-  border: 0.1rem solid;
+  /* border: 0.1rem solid; */
   margin: 0.5rem;
+  padding-left: 0.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.image-wrapper {
+  margin: 0.5rem;
+  padding-left: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .viewer-wrapper {
-  border: 0.1rem solid;
-  margin: 0.5rem;
+  /* border: 0.1rem solid; */
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 0.1rem solid lightgray;
 }

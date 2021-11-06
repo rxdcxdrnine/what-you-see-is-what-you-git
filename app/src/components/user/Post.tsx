@@ -32,34 +32,57 @@ const Post = ({
   onClickButton,
 }: PostProps) => {
   return (
-    <div className="post-container">
-      <div className="button-wrapper">
-        <button name="push" className="button" onClick={onClickButton}>
+    <>
+      <div className="button-container">
+        <button
+          name="push"
+          className="button"
+          onClick={onClickButton}
+          style={{
+            backgroundColor: status === "push" ? "#e9ecef" : "#ffffff",
+          }}
+        >
           PUSHS
         </button>
-        <button name="gist" className="button" onClick={onClickButton}>
+        <button
+          name="gist"
+          className="button"
+          onClick={onClickButton}
+          style={{
+            backgroundColor: status === "gist" ? "#e9ecef" : "#ffffff",
+          }}
+        >
           GISTS
         </button>
-        <button name="image" className="button" onClick={onClickButton}>
+        <button
+          name="image"
+          className="button"
+          onClick={onClickButton}
+          style={{
+            backgroundColor: status === "image" ? "#e9ecef" : "#ffffff",
+          }}
+        >
           IMAGES
         </button>
       </div>
-      {status === "push" ? (
-        <PushPosts
-          pushPosts={pushPosts}
-          commits={commits}
-          isOpenModal={isOpenModal}
-          onOpenModal={onOpenModal}
-          onCloseModal={onCloseModal}
-        />
-      ) : status === "gist" ? (
-        <GistPosts gistPosts={gistPosts} />
-      ) : status === "image" ? (
-        <ImagePosts imagePosts={imagePosts} />
-      ) : (
-        <div></div>
-      )}
-    </div>
+      <div className="post-container">
+        {status === "push" ? (
+          <PushPosts
+            pushPosts={pushPosts}
+            commits={commits}
+            isOpenModal={isOpenModal}
+            onOpenModal={onOpenModal}
+            onCloseModal={onCloseModal}
+          />
+        ) : status === "gist" ? (
+          <GistPosts gistPosts={gistPosts} />
+        ) : status === "image" ? (
+          <ImagePosts imagePosts={imagePosts} />
+        ) : (
+          <div></div>
+        )}
+      </div>
+    </>
   );
 };
 
