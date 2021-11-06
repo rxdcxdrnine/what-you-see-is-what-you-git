@@ -4,7 +4,6 @@ import { Editor } from "@toast-ui/react-editor";
 import ItemList from "./ItemList";
 import { GistState, PushState, SelectedItemState } from "../../modules/write";
 
-import "../../styles/write.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
 type WriteProps = {
@@ -37,7 +36,7 @@ const Write = ({
   }, []);
 
   return (
-    <div className="write-container">
+    <>
       <ItemList
         pushes={pushes}
         gists={gists}
@@ -58,7 +57,7 @@ const Write = ({
           SAVE
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

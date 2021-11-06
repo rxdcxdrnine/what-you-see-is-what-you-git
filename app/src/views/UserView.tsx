@@ -1,11 +1,11 @@
+import Layout from "../components/layout";
 import UserContainer from "../containers/UserContainer";
-import "../styles/user.css";
 
 const UserView = () => {
   return (
-    <div className="user-page">
+    <Layout>
       <UserContainer />
-    </div>
+    </Layout>
   );
 };
 

@@ -8,8 +8,6 @@ import {
 import Post from "./Post";
 import Profile from "./Profile";
 
-import "../../styles/user.css";
-
 type UserProps = {
   profile: ProfileState;
   status: "all" | "push" | "gist" | "image";
@@ -36,7 +34,7 @@ const User = ({
   onClickButton,
 }: UserProps) => {
   return (
-    <div className="user-container">
+    <>
       <Profile profile={profile} />
       <Post
         status={status}
@@ -49,7 +47,7 @@ const User = ({
         onCloseModal={onCloseModal}
         onClickButton={onClickButton}
       />
-    </div>
+    </>
   );
 };
 
