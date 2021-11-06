@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* border: 0.1rem solid; */
   margin-bottom: 2rem;
 
   border-radius: 5px;
@@ -14,13 +13,11 @@
   display: flex;
   justify-content: space-around;
   height: 10%;
-  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
 .choose-button {
   width: 25%;
-  /* border: 0.1rem solid; */
   text-align: center;
 
   border-radius: 5px;
@@ -34,7 +31,6 @@
   flex-direction: column;
   justify-content: flex-start;
   overflow: scroll;
-  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
@@ -44,7 +40,6 @@
   flex-direction: column;
   justify-content: center;
   overflow: scroll;
-  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
@@ -81,7 +76,6 @@
 }
 
 .write-save-button {
-  /* border: 0.1rem solid; */
   width: 3rem;
   height: 1.5rem;
 
