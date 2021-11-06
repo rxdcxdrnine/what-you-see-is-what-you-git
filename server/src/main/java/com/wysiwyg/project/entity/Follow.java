@@ -1,9 +1,6 @@
 package com.wysiwyg.project.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -24,4 +21,10 @@ public class Follow extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "follower_id")
     private User follower;
+
+    @Builder
+    public Follow(User following, User follower) {
+        this.following = following;
+        this.follower = follower;
+    }
 }
