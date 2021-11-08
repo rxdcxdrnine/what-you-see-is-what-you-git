@@ -1,32 +1,7 @@
-body {
-  margin: 0;
-}
-
-.write-page {
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-}
-
-.write-container {
-  display: flex;
-  flex-direction: column;
-  width: 50rem;
-  /* border-left: 0.1rem solid;
-  border-right: 0.1rem solid; */
-  padding-left: 3rem;
-  padding-right: 3rem;
-
-  border-radius: 0px;
-  background: #ffffff;
-  box-shadow: 20px 20px 60px #c9c9c9, -20px -20px 60px #ffffff;
-}
-
 .choose-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* border: 0.1rem solid; */
   margin-bottom: 2rem;
 
   border-radius: 5px;
@@ -38,13 +13,11 @@ body {
   display: flex;
   justify-content: space-around;
   height: 10%;
-  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
 .choose-button {
   width: 25%;
-  /* border: 0.1rem solid; */
   text-align: center;
 
   border-radius: 5px;
@@ -58,7 +31,6 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   overflow: scroll;
-  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
@@ -68,7 +40,6 @@ body {
   flex-direction: column;
   justify-content: center;
   overflow: scroll;
-  /* border: 0.1rem solid; */
   margin: 0.5rem;
 }
 
@@ -86,6 +57,7 @@ body {
 }
 
 .choose-content {
+  margin: 1rem;
 }
 
 .editor-container {
@@ -104,7 +76,6 @@ body {
 }
 
 .write-save-button {
-  /* border: 0.1rem solid; */
   width: 3rem;
   height: 1.5rem;
 

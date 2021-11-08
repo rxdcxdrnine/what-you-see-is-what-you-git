@@ -107,7 +107,11 @@ export const ImagePosts = ({ imagePosts }: ImageProps) => {
       {imagePosts.map((imagePost) => (
         <div key={imagePost.postId} className="post-wrapper">
           <div className="image-wrapper">
-            <img src={baseUrl + imagePost.imageFilename} alt="imagePost" />
+            <img
+              className="image-post"
+              src={baseUrl + imagePost.imageFilename}
+              alt="imagePost"
+            />
           </div>
           <div className="viewer-wrapper">
             <Viewer initialValue={imagePost.markdown} />

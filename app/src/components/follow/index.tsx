@@ -31,7 +31,7 @@ const Follow = ({
   setSearchKey,
 }: FollowProps) => {
   return (
-    <div className="follow-container">
+    <>
       <FollowHeader
         selectedButton={selectedButton}
         onClickButton={onClickButton}
@@ -53,7 +53,7 @@ const Follow = ({
         onClickAdd={onClickAdd}
         onClickRemove={onClickRemove}
       />
-    </div>
+    </>
   );
 };
 

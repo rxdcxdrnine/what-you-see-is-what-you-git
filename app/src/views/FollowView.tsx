@@ -1,12 +1,13 @@
+import Layout from "../components/layout";
 import FollowContainer from "../containers/FollowContainer";
 
-import "../styles/follow.css";
+import "../styles/layout.css";
 
 const FollowView = () => {
   return (
-    <div className="follow-page">
+    <Layout>
       <FollowContainer />
-    </div>
+    </Layout>
   );
 };
 

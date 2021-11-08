@@ -1,12 +1,12 @@
+import Layout from "../components/layout";
 import WriteContainer from "../containers/WriteContainer";
-
-import "../styles/write.css";
+import "../styles/layout.css";
 
 const WriteView = () => {
   return (
-    <div className="write-page">
+    <Layout>
       <WriteContainer />
-    </div>
+    </Layout>
   );
 };
 
