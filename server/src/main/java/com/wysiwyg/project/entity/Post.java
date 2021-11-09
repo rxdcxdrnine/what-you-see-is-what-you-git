@@ -24,7 +24,10 @@ public abstract class Post extends BaseEntity {
 
     private String markdown;
 
-    @ManyToOne
+    @Column(name = "type", insertable = false, updatable = false)
+    private String type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 

@@ -54,7 +54,16 @@ public class PostController {
     }
 
     @GetMapping("/count")
-    public List<PostCountFetchDto> fetchPostCount(@RequestParam(required = true) Long userId) {
+    public List<PostCountDto> fetchPostCount(@RequestParam(required = true) Long userId) {
         return postService.countByDate(userId);
+    }
+
+    @GetMapping("/all")
+    public List<PostFetchDto> fetchAllPost(
+            @RequestParam(required = true) Long userId,
+            @RequestParam(required = false) String regDate
+    ) {
+        PostSearchCondition condition = new PostSearchCondition(userId, regDate);
+        return postService.searchByUserId(condition);
     }
 }
