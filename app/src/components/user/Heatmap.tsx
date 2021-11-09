@@ -2,16 +2,15 @@ import { useState } from "react";
 import DayPicker from "react-day-picker";
 
 import "react-day-picker/lib/style.css";
+import { HeatmapState } from "../../modules/user";
 import "../../styles/user.css";
 
-const Heatmap = () => {
-  const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
+type HeatmapProps = {
+  heatmap: HeatmapState;
+};
 
-  const contribCount: { [key: string]: number } = {
-    "2021-11-01": 1,
-    "2021-11-02": 2,
-    "2021-11-03": 3,
-  };
+const Heatmap = ({ heatmap }: HeatmapProps) => {
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
 
   const modifiersStyles = {
     selected: {
@@ -32,7 +31,7 @@ const Heatmap = () => {
       ("0" + (day.getMonth() + 1)).slice(-2) +
       "-" +
       ("0" + day.getDate()).slice(-2);
-    const color = colors[contribCount[date] ? contribCount[date] : 0];
+    const color = colors[heatmap[date] ? heatmap[date] : 0];
 
     return (
       <div

@@ -58,7 +58,7 @@ export const PushPosts = ({
             style={{ cursor: "pointer" }}
           >
             <div>
-              <h2>{pushPost.uploadDate.split("T")[0]}</h2>
+              <h2>{pushPost.regDate.split("T")[0]}</h2>
               <div>{pushPost.pushId}</div>
               <div>{pushPost.repoName}</div>
               <div>{pushPost.branchName}</div>
@@ -83,7 +83,7 @@ export const GistPosts = ({ gistPosts }: GistPostsProps) => {
       {gistPosts.map((gistPost) => (
         <div key={gistPost.postId} className="post-wrapper">
           <div>
-            <h2>{gistPost.uploadDate.split("T")[0]}</h2>
+            <h2>{gistPost.regDate.split("T")[0]}</h2>
             <Gist id={gistPost.gistId} />
           </div>
           <div className="viewer-wrapper">
@@ -106,6 +106,7 @@ export const ImagePosts = ({ imagePosts }: ImageProps) => {
     <>
       {imagePosts.map((imagePost) => (
         <div key={imagePost.postId} className="post-wrapper">
+          <h2>{imagePost.regDate.split("T")[0]}</h2>
           <div className="image-wrapper">
             <img
               className="image-post"

@@ -3,6 +3,7 @@ import {
   commitState,
   GistPostState,
   ImagePostState,
+  PostCount,
   PushPostState,
 } from "../modules/user";
 
@@ -67,11 +68,15 @@ const fetchImagePosts: (
 const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
   (postId: number) => axios.get(`${serverUrl}/posts/commit?postId=${postId}`);
 
+const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
+  (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);
+
 const UserApi = {
   fetchGithubProfile,
   fetchPushPosts,
   fetchGistPosts,
   fetchImagePosts,
   fetchCommits,
+  fetchPostCount,
 };
 export default UserApi;

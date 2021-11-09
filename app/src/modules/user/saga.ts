@@ -19,6 +19,9 @@ import {
   updateImagePosts,
   commitState,
   updateCommits,
+  updateHeatmap,
+  HeatmapState,
+  PostCount,
 } from ".";
 
 export const fetchGithubProfile = createAction<string>(
@@ -141,6 +144,32 @@ function* getCommitsSaga() {
   yield takeEvery(fetchCommits.type, getCommits);
 }
 
+export const fetchPostCount = createAction<number>("user/fetchPostCount");
+
+export function* getPostCount(action: ReturnType<typeof fetchPostCount>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.fetchPostCount> = yield call(
+      UserApi.fetchPostCount,
+      action.payload
+    );
+
+    const postCounts: PostCount[] = res.data;
+
+    let heatmap: HeatmapState = {};
+    postCounts.forEach(({ date, count }) => {
+      heatmap[date] = count;
+    });
+
+    yield put(updateHeatmap(heatmap));
+  } catch (e: any) {
+    yield put(updateUserError(e.message));
+  }
+}
+
+export function* getPostCountSaga() {
+  yield takeEvery(fetchPostCount.type, getPostCount);
+}
+
 function* userSaga() {
   yield all([
     githubProfileSaga(),
@@ -148,6 +177,7 @@ function* userSaga() {
     getGistPostsSaga(),
     getImagePostsSaga(),
     getCommitsSaga(),
+    getPostCountSaga(),
   ]);
 }
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   commitState,
   GistPostState,
+  HeatmapState,
   ImagePostState,
   ProfileState,
   PushPostState,
@@ -19,6 +20,7 @@ type UserProps = {
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
+  heatmap: HeatmapState;
   isOpenModal: boolean;
   onOpenModal: (postId: number) => void;
   onCloseModal: () => void;
@@ -32,6 +34,7 @@ const User = ({
   gistPosts,
   imagePosts,
   commits,
+  heatmap,
   isOpenModal,
   onOpenModal,
   onCloseModal,
@@ -40,6 +43,7 @@ const User = ({
   const [selectedView, setSelectedView] = useState<"map" | "list">("map");
 
   const onClickView = (e: any) => {
+    onClickButton(e);
     setSelectedView(e.target.name);
   };
 
@@ -70,7 +74,7 @@ const User = ({
       </div>
 
       {selectedView === "map" ? (
-        <Heatmap />
+        <Heatmap heatmap={heatmap} />
       ) : (
         <Post
           status={status}

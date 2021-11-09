@@ -15,17 +15,20 @@ export type ProfileState = {
 export type PushPostState = PushState & {
   postId: number;
   markdown: string;
+  regDate: string;
 };
 
 export type GistPostState = GistState & {
   postId: number;
   markdown: string;
+  regDate: string;
 };
 
 export type ImagePostState = {
   postId: number;
   imageFilename: string;
   markdown: string;
+  regDate: string;
 };
 
 export type commitState = {
@@ -54,9 +57,19 @@ export type PostsState = {
   status: "all" | "push" | "gist" | "image";
 };
 
+export type PostCount = {
+  date: string;
+  count: number;
+};
+
+export type HeatmapState = {
+  [date: string]: number;
+};
+
 type UserState = {
   profile: ProfileState;
   posts: PostsState;
+  heatmap: HeatmapState;
   errorMessage: string;
 };
 
@@ -78,6 +91,7 @@ const initialState: UserState = {
     commits: [],
     status: "all",
   },
+  heatmap: {},
   errorMessage: "",
 };
 
@@ -106,6 +120,9 @@ const userSlice = createSlice({
     updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
       state.posts.commits = action.payload;
     },
+    updateHeatmap(state: UserState, action: PayloadAction<HeatmapState>) {
+      state.heatmap = action.payload;
+    },
     updateUserError(state: UserState, action: PayloadAction<string>) {
       state.errorMessage = action.payload;
     },
@@ -118,6 +135,7 @@ export const {
   updateGistPosts,
   updateImagePosts,
   updateCommits,
+  updateHeatmap,
   updateUserError,
 } = userSlice.actions;
 
