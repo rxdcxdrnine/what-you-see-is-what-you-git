@@ -1,6 +1,7 @@
 package com.wysiwyg.project.client;
 
 import com.wysiwyg.project.client.commit.GithubCommit;
+import com.wysiwyg.project.client.gist.GithubGist;
 import com.wysiwyg.project.client.profile.GithubProfile;
 import com.wysiwyg.project.client.push.GithubPushEvent;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,10 @@ public class GithubClient {
         return githubProfile;
     }
 
-    public List<GithubPushEvent> getGithubPushes() {
+    public List<GithubPushEvent> getGithubPushes(String username) {
 
         Mono<GithubPushEvent[]> githubEventsMono = webClient.get()
-                .uri("https://api.github.com/users/rxdcxdrnine/events")
+                .uri("https://api.github.com/users/" + username + "/events")
                 .retrieve()
                 .bodyToMono(GithubPushEvent[].class);
 
@@ -54,4 +55,15 @@ public class GithubClient {
         GithubCommit githubCommit = githubCommitMono.block();
         return githubCommit;
     }
+
+    public List<GithubGist> getGithubGists(String username) {
+
+        Mono<GithubGist[]> githubGistsMono = webClient.get()
+                .uri("https://api.github.com/users/" + username + "/gists")
+                .retrieve()
+                .bodyToMono(GithubGist[].class);
+
+        GithubGist[] githubGists = githubGistsMono.block();
+        return Arrays.stream(githubGists).collect(Collectors.toList());
+     }
 }

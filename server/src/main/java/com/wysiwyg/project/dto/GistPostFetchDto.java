@@ -13,6 +13,7 @@ public class GistPostFetchDto {
 
     private String gistId;
     private String gistDescription;
+    private LocalDateTime regDate;
 
     public GistPostFetchDto(Gist gist) {
         this.postId = gist.getPostId();
@@ -21,5 +22,6 @@ public class GistPostFetchDto {
 
         this.gistId = gist.getGistId();
         this.gistDescription = gist.getGistDescription();
+        this.regDate = gist.getRegDate();
     }
 }
