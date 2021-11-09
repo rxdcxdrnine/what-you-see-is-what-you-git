@@ -7,7 +7,7 @@ import {
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
 
-import UserApi from "../../api/user";
+import UserApi, { PostSearchCondition } from "../../api/user";
 import {
   updateUserError,
   updateProfile,
@@ -22,6 +22,8 @@ import {
   updateHeatmap,
   HeatmapState,
   PostCount,
+  AllPostState,
+  updateAllPosts,
 } from ".";
 
 export const fetchGithubProfile = createAction<string>(
@@ -170,6 +172,29 @@ export function* getPostCountSaga() {
   yield takeEvery(fetchPostCount.type, getPostCount);
 }
 
+export const fetchAllPosts =
+  createAction<PostSearchCondition>("user/fetchAllPost");
+
+export function* getAllPosts(action: ReturnType<typeof fetchAllPosts>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.fetchAllPosts> = yield call(
+      UserApi.fetchAllPosts,
+      action.payload
+    );
+    console.log(res.data);
+
+    const allPosts: AllPostState[] = res.data;
+    console.log(allPosts);
+    yield put(updateAllPosts(allPosts));
+  } catch (e: any) {
+    updateUserError(e.message);
+  }
+}
+
+export function* getAllPostsSaga() {
+  yield takeEvery(fetchAllPosts.type, getAllPosts);
+}
+
 function* userSaga() {
   yield all([
     githubProfileSaga(),
@@ -178,6 +203,7 @@ function* userSaga() {
     getImagePostsSaga(),
     getCommitsSaga(),
     getPostCountSaga(),
+    getAllPostsSaga(),
   ]);
 }
 

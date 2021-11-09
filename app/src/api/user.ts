@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import {
+  AllPostState,
   commitState,
   GistPostState,
   ImagePostState,
@@ -45,6 +46,11 @@ export type GithubProfile = {
   updated_at: string;
 };
 
+export type PostSearchCondition = {
+  userId: number;
+  regDate?: string;
+};
+
 const fetchGithubProfile: (
   username: string
 ) => Promise<AxiosResponse<GithubProfile>> = (username: string) =>
@@ -71,6 +77,18 @@ const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
 const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
   (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);
 
+const fetchAllPosts: ({
+  userId,
+  regDate,
+}: PostSearchCondition) => Promise<AxiosResponse<AllPostState[]>> = ({
+  userId,
+  regDate,
+}: PostSearchCondition) => {
+  let baseUrl = `${serverUrl}/posts/all?userId=${userId}`;
+  if (regDate) baseUrl += `&regDate=${regDate}`;
+  return axios.get(baseUrl);
+};
+
 const UserApi = {
   fetchGithubProfile,
   fetchPushPosts,
@@ -78,5 +96,6 @@ const UserApi = {
   fetchImagePosts,
   fetchCommits,
   fetchPostCount,
+  fetchAllPosts,
 };
 export default UserApi;

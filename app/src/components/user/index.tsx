@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  AllPostState,
   commitState,
   GistPostState,
   HeatmapState,
@@ -16,12 +17,14 @@ import "../../styles/user.css";
 type UserProps = {
   profile: ProfileState;
   status: "all" | "push" | "gist" | "image";
+  allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
   isOpenModal: boolean;
+  onClickDay: (userId: number, regDate: string) => void;
   onOpenModal: (postId: number) => void;
   onCloseModal: () => void;
   onClickButton: React.MouseEventHandler<HTMLButtonElement>;
@@ -36,6 +39,7 @@ const User = ({
   commits,
   heatmap,
   isOpenModal,
+  onClickDay,
   onOpenModal,
   onCloseModal,
   onClickButton,
@@ -74,7 +78,11 @@ const User = ({
       </div>
 
       {selectedView === "map" ? (
-        <Heatmap heatmap={heatmap} />
+        <Heatmap
+          heatmap={heatmap}
+          userId={profile.userId}
+          onClickDay={onClickDay}
+        />
       ) : (
         <Post
           status={status}

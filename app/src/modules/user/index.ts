@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GistState, PushState } from "../write";
+import { GistState, ImageState, PushState } from "../write";
 
 export type ProfileState = {
   userId: number;
@@ -12,24 +12,19 @@ export type ProfileState = {
   followerNum: number;
 };
 
-export type PushPostState = PushState & {
+export type BasePostState = {
   postId: number;
   markdown: string;
   regDate: string;
 };
 
-export type GistPostState = GistState & {
-  postId: number;
-  markdown: string;
-  regDate: string;
-};
+export type PushPostState = PushState & BasePostState;
 
-export type ImagePostState = {
-  postId: number;
-  imageFilename: string;
-  markdown: string;
-  regDate: string;
-};
+export type GistPostState = GistState & BasePostState;
+
+export type ImagePostState = ImageState & BasePostState;
+
+export type AllPostState = PushState & GistState & ImageState & BasePostState;
 
 export type commitState = {
   commitId: number;
@@ -50,6 +45,7 @@ export type commitFileState = {
 };
 
 export type PostsState = {
+  allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
@@ -85,6 +81,7 @@ const initialState: UserState = {
     followerNum: 0,
   },
   posts: {
+    allPosts: [],
     pushPosts: [],
     gistPosts: [],
     imagePosts: [],
@@ -101,6 +98,10 @@ const userSlice = createSlice({
   reducers: {
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
+    },
+    updateAllPosts(state: UserState, action: PayloadAction<AllPostState[]>) {
+      state.posts.allPosts = action.payload;
+      state.posts.status = "all";
     },
     updatePushPosts(state: UserState, action: PayloadAction<PushPostState[]>) {
       state.posts.pushPosts = action.payload;
@@ -136,6 +137,7 @@ export const {
   updateImagePosts,
   updateCommits,
   updateHeatmap,
+  updateAllPosts,
   updateUserError,
 } = userSlice.actions;
 

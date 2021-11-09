@@ -7,9 +7,11 @@ import "../../styles/user.css";
 
 type HeatmapProps = {
   heatmap: HeatmapState;
+  userId: number;
+  onClickDay: (userId: number, regDate: string) => void;
 };
 
-const Heatmap = ({ heatmap }: HeatmapProps) => {
+const Heatmap = ({ heatmap, userId, onClickDay }: HeatmapProps) => {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
 
   const modifiersStyles = {
@@ -46,7 +48,17 @@ const Heatmap = ({ heatmap }: HeatmapProps) => {
     modifiers: DayPicker.DayModifiers,
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
+    const regDate =
+      day.getFullYear() +
+      "-" +
+      ("0" + (day.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + day.getDate()).slice(-2);
+
+    console.log({ day, regDate });
+
     setSelectedDay(day);
+    onClickDay(userId, regDate);
   };
 
   return (

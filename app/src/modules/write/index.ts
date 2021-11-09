@@ -15,6 +15,10 @@ export type GistState = {
   uploadDate: string;
 };
 
+export type ImageState = {
+  imageFilename: string;
+};
+
 export type SelectedItemState =
   | { type: ""; item: null }
   | { type: "push"; item: PushState }

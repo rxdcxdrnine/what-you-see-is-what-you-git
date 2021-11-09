@@ -9,13 +9,13 @@ import {
   fetchPushPosts,
   fetchCommits,
   fetchPostCount,
+  fetchAllPosts,
 } from "../modules/user/saga";
 
 const UserContainer = () => {
   const profile = useSelector((state: RootState) => state.user.profile);
-  const { status, pushPosts, gistPosts, imagePosts, commits } = useSelector(
-    (state: RootState) => state.user.posts
-  );
+  const { status, allPosts, pushPosts, gistPosts, imagePosts, commits } =
+    useSelector((state: RootState) => state.user.posts);
   const heatmap = useSelector((state: RootState) => state.user.heatmap);
   const dispatch = useDispatch();
 
@@ -42,6 +42,10 @@ const UserContainer = () => {
     }
   };
 
+  const onClickDay = (userId: number, regDate: string) => {
+    dispatch(fetchAllPosts({ userId, regDate }));
+  };
+
   const onOpenModal = (postId: number) => {
     setIsOpenModal(true);
     if (status === "push") {
@@ -57,12 +61,14 @@ const UserContainer = () => {
     <User
       profile={profile}
       status={status}
+      allPosts={allPosts}
       pushPosts={pushPosts}
       gistPosts={gistPosts}
       imagePosts={imagePosts}
       commits={commits}
       heatmap={heatmap}
       isOpenModal={isOpenModal}
+      onClickDay={onClickDay}
       onOpenModal={onOpenModal}
       onCloseModal={onCloseModal}
       onClickButton={onClickButton}
