@@ -1,5 +1,3 @@
-import "../../styles/user.css";
-
 type CountProps = {
   dayNum: number;
   followingNum: number;

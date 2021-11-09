@@ -15,6 +15,7 @@ export type ProfileState = {
 export type BasePostState = {
   postId: number;
   markdown: string;
+  type: string;
   regDate: string;
 };
 

@@ -2,14 +2,53 @@ import { Viewer } from "@toast-ui/react-editor";
 import Modal from "react-modal";
 
 import {
+  AllPostState,
   commitState,
   GistPostState,
   ImagePostState,
   PushPostState,
-} from "../../modules/user";
-import Gist from "../../utils/react-gist/Gist";
+} from "../../../modules/user";
+import Gist from "../../../utils/react-gist/Gist";
 
 import Commit from "./Commit";
+import { PostItem } from "./PostItem";
+
+type PostItemsProps = {
+  postItems: AllPostState[];
+  commits: commitState[];
+  isOpenModal: boolean;
+  onOpenModal: (postId: number) => void;
+  onCloseModal: () => void;
+};
+
+export const PostItems = ({
+  postItems,
+  commits,
+  isOpenModal,
+  onOpenModal,
+  onCloseModal,
+}: PostItemsProps) => {
+  return (
+    <div className="post-container">
+      {postItems.map((postItem) => (
+        <div key={postItem.postId}>
+          <PostItem
+            postItem={postItem}
+            commits={commits}
+            isOpenModal={isOpenModal}
+            onOpenModal={onOpenModal}
+            onCloseModal={onCloseModal}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/**
+ * deprecated
+ * TODO - push/gist/image state 를 나누지않고 하나로 통합
+ */
 
 type PushPostsProps = {
   pushPosts: PushPostState[];

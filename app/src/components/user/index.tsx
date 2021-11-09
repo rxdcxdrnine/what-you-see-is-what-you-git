@@ -8,9 +8,9 @@ import {
   ProfileState,
   PushPostState,
 } from "../../modules/user";
-import Heatmap from "./Heatmap";
-import Post from "./Post";
-import Profile from "./Profile";
+
+import Profile from "./profile";
+import Post from "./post";
 
 import "../../styles/user.css";
 
@@ -33,6 +33,7 @@ type UserProps = {
 const User = ({
   profile,
   status,
+  allPosts,
   pushPosts,
   gistPosts,
   imagePosts,
@@ -77,25 +78,22 @@ const User = ({
         </button>
       </div>
 
-      {selectedView === "map" ? (
-        <Heatmap
-          heatmap={heatmap}
-          userId={profile.userId}
-          onClickDay={onClickDay}
-        />
-      ) : (
-        <Post
-          status={status}
-          pushPosts={pushPosts}
-          gistPosts={gistPosts}
-          imagePosts={imagePosts}
-          commits={commits}
-          isOpenModal={isOpenModal}
-          onOpenModal={onOpenModal}
-          onCloseModal={onCloseModal}
-          onClickButton={onClickButton}
-        />
-      )}
+      <Post
+        userId={profile.userId}
+        status={status}
+        allPosts={allPosts}
+        pushPosts={pushPosts}
+        gistPosts={gistPosts}
+        imagePosts={imagePosts}
+        commits={commits}
+        heatmap={heatmap}
+        selectedView={selectedView}
+        isOpenModal={isOpenModal}
+        onOpenModal={onOpenModal}
+        onCloseModal={onCloseModal}
+        onClickDay={onClickDay}
+        onClickButton={onClickButton}
+      />
     </>
   );
 };

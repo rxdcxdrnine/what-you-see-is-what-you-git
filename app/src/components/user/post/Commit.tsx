@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { commitFileState, commitState } from "../../modules/user";
-
-import "../../styles/user.css";
+import { commitFileState, commitState } from "../../../modules/user";
 
 type CommitProps = {
   commits: commitState[];

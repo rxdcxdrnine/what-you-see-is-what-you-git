@@ -1,8 +1,6 @@
-import { ProfileState } from "../../modules/user";
+import { ProfileState } from "../../../modules/user";
 import Count from "./Count";
-import Grass from "./Grass";
-
-import "../../styles/user.css";
+import Readme from "./Readme";
 
 type ProfileProps = {
   profile: ProfileState;
@@ -17,7 +15,7 @@ const Profile = ({ profile }: ProfileProps) => {
         <div>{profile.profileName}</div>
       </div>
       <div className="profile-right">
-        <Grass />
+        <Readme />
         <Count
           dayNum={profile.dayNum}
           followingNum={profile.followingNum}

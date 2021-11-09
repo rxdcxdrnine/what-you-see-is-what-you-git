@@ -181,10 +181,8 @@ export function* getAllPosts(action: ReturnType<typeof fetchAllPosts>) {
       UserApi.fetchAllPosts,
       action.payload
     );
-    console.log(res.data);
 
     const allPosts: AllPostState[] = res.data;
-    console.log(allPosts);
     yield put(updateAllPosts(allPosts));
   } catch (e: any) {
     updateUserError(e.message);

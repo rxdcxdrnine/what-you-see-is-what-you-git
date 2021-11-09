@@ -3,12 +3,10 @@ import {
   GistPostState,
   ImagePostState,
   PushPostState,
-} from "../../modules/user";
-
-import "../../styles/user.css";
+} from "../../../modules/user";
 import { GistPosts, ImagePosts, PushPosts } from "./PostItems";
 
-type PostProps = {
+type PostListProps = {
   status: "all" | "push" | "gist" | "image";
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
@@ -20,7 +18,7 @@ type PostProps = {
   onClickButton: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const Post = ({
+const PostList = ({
   status,
   pushPosts,
   gistPosts,
@@ -30,7 +28,7 @@ const Post = ({
   onOpenModal,
   onCloseModal,
   onClickButton,
-}: PostProps) => {
+}: PostListProps) => {
   return (
     <>
       <div className="button-container">
@@ -86,4 +84,4 @@ const Post = ({
   );
 };
 
-export default Post;
+export default PostList;

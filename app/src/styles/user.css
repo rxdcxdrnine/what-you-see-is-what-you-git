@@ -25,7 +25,7 @@
   margin-left: 0.5rem;
 }
 
-.grass-container {
+.readme-container {
   flex-grow: 1;
   display: flex;
   justify-content: center;
@@ -39,7 +39,7 @@
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
-.grass-wrapper {
+.readme-wrapper {
   font-size: 1.125rem;
 }
 
@@ -71,6 +71,7 @@
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
   margin: 0rem 0.1rem;
+  flex-shrink: 1;
 }
 
 .day-picker-container {
@@ -94,6 +95,15 @@
 
 .DayPicker-Month {
   margin: 1rem;
+}
+
+.heatmap-back-button {
+  width: 3rem;
+  border-radius: 5px;
+  padding: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+  margin: -2rem 0 0 0;
 }
 
 .post-container {
@@ -130,7 +140,7 @@
 
 .post-wrapper {
   margin: 0.5rem;
-  padding-left: 0.5rem;
+  padding: 0 0 0.1rem 0.5rem;
 
   border-radius: 5px;
   background: #ffffff;
