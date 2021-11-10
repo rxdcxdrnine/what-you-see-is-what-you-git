@@ -13,8 +13,9 @@ type HeatmapProps = {
   heatmap: HeatmapState;
   allPosts: AllPostState[];
   commits: commitState[];
-  onClickDay: (userId: number, regDate: string) => void;
+  onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 const dateToString = (date: Date) =>
@@ -34,6 +35,7 @@ const Heatmap = ({
   commits,
   onClickModal,
   onClickDay,
+  onClickDelete,
 }: HeatmapProps) => {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
 
@@ -53,7 +55,7 @@ const Heatmap = ({
   ) => {
     const date = dateToString(day);
     if (heatmap[date]) {
-      onClickDay(userId, date);
+      onClickDay(date);
       setSelectedDay(day);
     } else {
       alert("해당 날짜의 기록이 없습니다.");
@@ -89,6 +91,7 @@ const Heatmap = ({
           postItems={allPosts}
           commits={commits}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       )}
     </>

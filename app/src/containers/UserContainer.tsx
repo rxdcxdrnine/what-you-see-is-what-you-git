@@ -4,12 +4,13 @@ import User from "../components/user";
 import { RootState } from "../modules";
 import {
   fetchGistPosts,
-  fetchGithubProfile,
   fetchImagePosts,
   fetchPushPosts,
   fetchCommits,
   fetchPostCount,
   fetchAllPosts,
+  fetchUserProfile,
+  removePost,
 } from "../modules/user/saga";
 
 export type ComponentState =
@@ -31,10 +32,11 @@ const UserContainer = () => {
   const [component, setComponent] = useState<ComponentState>("heatmap");
 
   useEffect(() => {
-    const username: string = process.env
-      .REACT_APP_SAMPLE_GITHUB_USERNAME as string;
+    const githubId: number = parseInt(
+      process.env.REACT_APP_SAMPLE_GITHUB_ID as string
+    );
 
-    dispatch(fetchGithubProfile(username));
+    dispatch(fetchUserProfile(githubId));
     dispatch(fetchPostCount(profile.userId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,13 +57,19 @@ const UserContainer = () => {
     }
   };
 
-  const onClickDay = (userId: number, regDate: string) => {
+  const onClickDay = (regDate: string) => {
     setComponent("day");
-    dispatch(fetchAllPosts({ userId, regDate }));
+    dispatch(fetchAllPosts({ userId: profile.userId, regDate }));
   };
 
   const onClickModal = (postId: number) => {
     dispatch(fetchCommits(postId));
+  };
+
+  const onClickDelete = (postId: number) => {
+    if (window.confirm("포스트를 삭제하시겠습니까?")) {
+      dispatch(removePost(postId));
+    }
   };
 
   return (
@@ -77,6 +85,7 @@ const UserContainer = () => {
       onClickDay={onClickDay}
       onClickModal={onClickModal}
       onClickComponent={onClickComponent}
+      onClickDelete={onClickDelete}
     />
   );
 };

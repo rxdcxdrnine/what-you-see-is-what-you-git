@@ -21,6 +21,7 @@ type PostListProps = {
   imagePosts: ImagePostState[];
   commits: commitState[];
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 const PostList = ({
@@ -31,6 +32,7 @@ const PostList = ({
   imagePosts,
   commits,
   onClickModal,
+  onClickDelete,
 }: PostListProps) => {
   return (
     <>
@@ -39,17 +41,25 @@ const PostList = ({
           postItems={allPosts}
           commits={commits}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       ) : component === "push" ? (
         <PushPostItems
           pushPostItems={pushPosts}
           commits={commits}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       ) : component === "gist" ? (
-        <GistPostItems gistPostItems={gistPosts} />
+        <GistPostItems
+          gistPostItems={gistPosts}
+          onClickDelete={onClickDelete}
+        />
       ) : component === "image" ? (
-        <ImagePostItems imagePostItems={imagePosts} />
+        <ImagePostItems
+          imagePostItems={imagePosts}
+          onClickDelete={onClickDelete}
+        />
       ) : (
         <div></div>
       )}

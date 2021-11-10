@@ -10,17 +10,20 @@ import Modal from "react-modal";
 import Commit from "./Commit";
 import Gist from "../../../utils/react-gist/Gist";
 import { useState } from "react";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 type PostItemProps = {
   allPostItem: AllPostState;
   commits: commitState[];
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 export const AllPostItem = ({
   allPostItem,
   commits,
   onClickModal,
+  onClickDelete,
 }: PostItemProps) => {
   return (
     <>
@@ -29,11 +32,18 @@ export const AllPostItem = ({
           pushPostItem={allPostItem}
           commits={commits}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       ) : allPostItem.type === "GIST" ? (
-        <GistPostItem gistPostItem={allPostItem} />
+        <GistPostItem
+          gistPostItem={allPostItem}
+          onClickDelete={onClickDelete}
+        />
       ) : allPostItem.type === "IMAGE" ? (
-        <ImagePostItem imagePostItem={allPostItem} />
+        <ImagePostItem
+          imagePostItem={allPostItem}
+          onClickDelete={onClickDelete}
+        />
       ) : null}
     </>
   );
@@ -43,12 +53,14 @@ type PushPostItemProps = {
   pushPostItem: AllPostState | PushPostState;
   commits: commitState[];
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 export const PushPostItem = ({
   pushPostItem,
   commits,
   onClickModal,
+  onClickDelete,
 }: PushPostItemProps) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
@@ -84,14 +96,24 @@ export const PushPostItem = ({
         </div>
         <Commit commits={commits} onCloseModal={onCloseModal} />
       </Modal>
-      <div
-        key={pushPostItem.postId}
-        className="post-wrapper"
-        onClick={() => onOpenModal(pushPostItem.postId)}
-        style={{ cursor: "pointer" }}
-      >
-        <div>
+      <div key={pushPostItem.postId} className="post-wrapper">
+        <div className="post-title">
           <h2>{pushPostItem.regDate.split("T")[0]}</h2>
+          <div className="post-modify">
+            <div>
+              <MdEdit className="post-modify-button" size="20" />
+              <MdDelete
+                className="post-modify-button"
+                onClick={() => onClickDelete(pushPostItem.postId)}
+                size="20"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="modal-click-area"
+          onClick={() => onOpenModal(pushPostItem.postId)}
+        >
           <div>{pushPostItem.pushId}</div>
           <div>{pushPostItem.repoName}</div>
           <div>{pushPostItem.branchName}</div>
@@ -106,14 +128,30 @@ export const PushPostItem = ({
 
 type GistPostItemProps = {
   gistPostItem: AllPostState | GistPostState;
+  onClickDelete: (postId: number) => void;
 };
 
-export const GistPostItem = ({ gistPostItem }: GistPostItemProps) => {
+export const GistPostItem = ({
+  gistPostItem,
+  onClickDelete,
+}: GistPostItemProps) => {
   return (
     <>
       <div key={gistPostItem.postId} className="post-wrapper">
         <div>
-          <h2>{gistPostItem.regDate.split("T")[0]}</h2>
+          <div className="post-title">
+            <h2>{gistPostItem.regDate.split("T")[0]}</h2>
+            <div className="post-modify">
+              <div>
+                <MdEdit className="post-modify-button" size="20" />
+                <MdDelete
+                  className="post-modify-button"
+                  onClick={() => onClickDelete(gistPostItem.postId)}
+                  size="20"
+                />
+              </div>
+            </div>
+          </div>
           <Gist id={gistPostItem.gistId} />
         </div>
         <div className="viewer-wrapper">
@@ -126,14 +164,30 @@ export const GistPostItem = ({ gistPostItem }: GistPostItemProps) => {
 
 type ImagePostItemProps = {
   imagePostItem: AllPostState | ImagePostState;
+  onClickDelete: (postId: number) => void;
 };
 
 const baseUrl: string = process.env.REACT_APP_IMAGE_URL as string;
 
-export const ImagePostItem = ({ imagePostItem }: ImagePostItemProps) => {
+export const ImagePostItem = ({
+  imagePostItem,
+  onClickDelete,
+}: ImagePostItemProps) => {
   return (
     <div key={imagePostItem.postId} className="post-wrapper">
-      <h2>{imagePostItem.regDate.split("T")[0]}</h2>
+      <div className="post-title">
+        <h2>{imagePostItem.regDate.split("T")[0]}</h2>
+        <div className="post-modify">
+          <div>
+            <MdEdit className="post-modify-button" size="20" />
+            <MdDelete
+              className="post-modify-button"
+              onClick={() => onClickDelete(imagePostItem.postId)}
+              size="20"
+            />
+          </div>
+        </div>
+      </div>
       <div className="image-wrapper">
         <img
           className="image-post"

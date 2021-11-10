@@ -20,8 +20,9 @@ type PostProps = {
   imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
-  onClickDay: (userId: number, regDate: string) => void;
+  onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 const Post = ({
@@ -36,6 +37,7 @@ const Post = ({
   heatmap,
   onClickModal,
   onClickDay,
+  onClickDelete,
 }: PostProps) => {
   return (
     <>
@@ -48,6 +50,7 @@ const Post = ({
           commits={commits}
           onClickDay={onClickDay}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       ) : (
         <PostList
@@ -58,6 +61,7 @@ const Post = ({
           imagePosts={imagePosts}
           commits={commits}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       )}
     </>

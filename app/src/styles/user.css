@@ -140,6 +140,14 @@
   margin-bottom: 1rem;
 }
 
+.modal-click-area {
+  border-radius: 5px;
+  background-color: #dbdbdb;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .modal-header {
   display: flex;
   justify-content: flex-end;
@@ -174,4 +182,20 @@
   padding: 1rem;
   border-radius: 5px;
   border: 0.1rem solid lightgray;
+}
+
+.post-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-modify {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.post-modify-button {
+  margin-right: 1rem;
+  cursor: pointer;
 }

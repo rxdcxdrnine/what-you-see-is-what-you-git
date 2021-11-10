@@ -24,9 +24,10 @@ type UserProps = {
   imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
-  onClickDay: (userId: number, regDate: string) => void;
+  onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
   onClickComponent: (component: ComponentState) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 const User = ({
@@ -41,6 +42,7 @@ const User = ({
   onClickDay,
   onClickModal,
   onClickComponent,
+  onClickDelete,
 }: UserProps) => {
   const [view, setView] = useState<"heatmap" | "list">("heatmap");
 
@@ -123,6 +125,7 @@ const User = ({
         heatmap={heatmap}
         onClickModal={onClickModal}
         onClickDay={onClickDay}
+        onClickDelete={onClickDelete}
       />
     </>
   );

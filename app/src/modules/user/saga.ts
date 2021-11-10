@@ -24,46 +24,27 @@ import {
   PostCount,
   AllPostState,
   updateAllPosts,
+  ProfileState,
 } from ".";
 
-export const fetchGithubProfile = createAction<string>(
-  "user/fetchGithubProfile"
-);
+export const fetchUserProfile = createAction<number>("user/fetchUserProfile");
 
-function* getGithubProfile(action: ReturnType<typeof fetchGithubProfile>) {
+function* getUserProfile(action: ReturnType<typeof fetchUserProfile>) {
   try {
-    const res: SagaReturnType<typeof UserApi.fetchGithubProfile> = yield call(
-      UserApi.fetchGithubProfile,
+    const res: SagaReturnType<typeof UserApi.fetchUserProfile> = yield call(
+      UserApi.fetchUserProfile,
       action.payload
     );
-    const {
-      id: githubId,
-      login: userName,
-      name: profileName,
-      avatar_url: avatarUrl,
-      followers: followerNum,
-      following: followingNum,
-    } = res.data;
+    const userProfile: ProfileState = res.data;
 
-    yield put(
-      updateProfile({
-        userId: 1,
-        githubId,
-        userName,
-        profileName,
-        avatarUrl,
-        dayNum: 365,
-        followingNum,
-        followerNum,
-      })
-    );
+    yield put(updateProfile(userProfile));
   } catch (e: any) {
     yield put(updateUserError(e.message));
   }
 }
 
-function* githubProfileSaga() {
-  yield takeEvery(fetchGithubProfile.type, getGithubProfile);
+function* getUserPofileSaga() {
+  yield takeEvery(fetchUserProfile.type, getUserProfile);
 }
 
 export const fetchPushPosts = createAction<number>("user/fetchPushPosts");
@@ -193,15 +174,33 @@ export function* getAllPostsSaga() {
   yield takeEvery(fetchAllPosts.type, getAllPosts);
 }
 
+export const removePost = createAction<number>("user/deletePost");
+
+export function* deletePost(action: ReturnType<typeof removePost>) {
+  try {
+    yield call(UserApi.deletePost, action.payload);
+
+    alert("포스트가 삭제되었습니다.");
+    window.location.reload();
+  } catch (e: any) {
+    updateUserError(e.message);
+  }
+}
+
+export function* deletePostSaga() {
+  yield takeEvery(removePost.type, deletePost);
+}
+
 function* userSaga() {
   yield all([
-    githubProfileSaga(),
+    getUserPofileSaga(),
     getPushPostsSaga(),
     getGistPostsSaga(),
     getImagePostsSaga(),
     getCommitsSaga(),
     getPostCountSaga(),
     getAllPostsSaga(),
+    deletePostSaga(),
   ]);
 }
 

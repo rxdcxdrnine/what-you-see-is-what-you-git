@@ -5,56 +5,21 @@ import {
   GistPostState,
   ImagePostState,
   PostCount,
+  ProfileState,
   PushPostState,
 } from "../modules/user";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
-
-// fetchGithubProfile
-export type GithubProfile = {
-  login: string;
-  id: number;
-  node_id: string;
-  avatar_url: string;
-  gravatar_id: string;
-  url: string;
-  html_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  starred_url: string;
-  subscriptions_url: string;
-  organizations_url: string;
-  repos_url: string;
-  events_url: string;
-  received_events_url: string;
-  type: string;
-  site_admin: boolean;
-  name: string;
-  company: string;
-  blog: string;
-  location: string;
-  email: null;
-  hireable: null;
-  bio: string;
-  twitter_username: null;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  created_at: string;
-  updated_at: string;
-};
 
 export type PostSearchCondition = {
   userId: number;
   regDate?: string;
 };
 
-const fetchGithubProfile: (
-  username: string
-) => Promise<AxiosResponse<GithubProfile>> = (username: string) =>
-  axios.get(`http://api.github.com/users/${username}`);
+const fetchUserProfile: (
+  githubId: number
+) => Promise<AxiosResponse<ProfileState>> = (githubId: number) =>
+  axios.get(`${serverUrl}/users?githubId=${githubId}`);
 
 const fetchPushPosts: (
   userId: number
@@ -89,13 +54,18 @@ const fetchAllPosts: ({
   return axios.get(baseUrl);
 };
 
+const deletePost: (postId: number) => Promise<AxiosResponse<void>> = (
+  postId: number
+) => axios.delete(`${serverUrl}/posts/${postId}`);
+
 const UserApi = {
-  fetchGithubProfile,
+  fetchUserProfile,
   fetchPushPosts,
   fetchGistPosts,
   fetchImagePosts,
   fetchCommits,
   fetchPostCount,
   fetchAllPosts,
+  deletePost,
 };
 export default UserApi;
