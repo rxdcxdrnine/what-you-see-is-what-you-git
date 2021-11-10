@@ -5,6 +5,7 @@ import ItemList from "./ItemList";
 import { GistState, PushState, SelectedItemState } from "../../modules/write";
 
 import "@toast-ui/editor/dist/toastui-editor.css";
+import "../../styles/write.css";
 
 type WriteProps = {
   markdown: string;

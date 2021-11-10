@@ -8,57 +8,75 @@ import {
   fetchImagePosts,
   fetchPushPosts,
   fetchCommits,
+  fetchPostCount,
+  fetchAllPosts,
 } from "../modules/user/saga";
+
+export type ComponentState =
+  | "all"
+  | "push"
+  | "gist"
+  | "image"
+  | "day"
+  | "heatmap";
 
 const UserContainer = () => {
   const profile = useSelector((state: RootState) => state.user.profile);
-  const { status, pushPosts, gistPosts, imagePosts, commits } = useSelector(
+  const { allPosts, pushPosts, gistPosts, imagePosts, commits } = useSelector(
     (state: RootState) => state.user.posts
   );
+  const heatmap = useSelector((state: RootState) => state.user.heatmap);
   const dispatch = useDispatch();
 
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [component, setComponent] = useState<ComponentState>("heatmap");
 
   useEffect(() => {
     const username: string = process.env
       .REACT_APP_SAMPLE_GITHUB_USERNAME as string;
 
     dispatch(fetchGithubProfile(username));
-  }, [dispatch]);
+    dispatch(fetchPostCount(profile.userId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const onClickButton = (e: any) => {
-    if (e.target.name === "push") {
+  const onClickComponent = (component: ComponentState) => {
+    setComponent(component);
+
+    if (component === "all") {
+      dispatch(fetchAllPosts({ userId: profile.userId }));
+    } else if (component === "push") {
       dispatch(fetchPushPosts(profile.userId));
-    } else if (e.target.name === "gist") {
+    } else if (component === "gist") {
       dispatch(fetchGistPosts(profile.userId));
-    } else {
+    } else if (component === "image") {
       dispatch(fetchImagePosts(profile.userId));
+    } else if (component === "heatmap") {
+      dispatch(fetchPostCount(profile.userId));
     }
   };
 
-  const onOpenModal = (postId: number) => {
-    setIsOpenModal(true);
-    if (status === "push") {
-      dispatch(fetchCommits(postId));
-    }
+  const onClickDay = (userId: number, regDate: string) => {
+    setComponent("day");
+    dispatch(fetchAllPosts({ userId, regDate }));
   };
 
-  const onCloseModal = () => {
-    setIsOpenModal(false);
+  const onClickModal = (postId: number) => {
+    dispatch(fetchCommits(postId));
   };
 
   return (
     <User
       profile={profile}
-      status={status}
+      component={component}
+      allPosts={allPosts}
       pushPosts={pushPosts}
       gistPosts={gistPosts}
       imagePosts={imagePosts}
       commits={commits}
-      isOpenModal={isOpenModal}
-      onOpenModal={onOpenModal}
-      onCloseModal={onCloseModal}
-      onClickButton={onClickButton}
+      heatmap={heatmap}
+      onClickDay={onClickDay}
+      onClickModal={onClickModal}
+      onClickComponent={onClickComponent}
     />
   );
 };

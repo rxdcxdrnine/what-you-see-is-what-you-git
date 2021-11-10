@@ -7,7 +7,7 @@ import {
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
 
-import UserApi from "../../api/user";
+import UserApi, { PostSearchCondition } from "../../api/user";
 import {
   updateUserError,
   updateProfile,
@@ -19,6 +19,11 @@ import {
   updateImagePosts,
   commitState,
   updateCommits,
+  updateHeatmap,
+  HeatmapState,
+  PostCount,
+  AllPostState,
+  updateAllPosts,
 } from ".";
 
 export const fetchGithubProfile = createAction<string>(
@@ -141,6 +146,53 @@ function* getCommitsSaga() {
   yield takeEvery(fetchCommits.type, getCommits);
 }
 
+export const fetchPostCount = createAction<number>("user/fetchPostCount");
+
+export function* getPostCount(action: ReturnType<typeof fetchPostCount>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.fetchPostCount> = yield call(
+      UserApi.fetchPostCount,
+      action.payload
+    );
+
+    const postCounts: PostCount[] = res.data;
+
+    let heatmap: HeatmapState = {};
+    postCounts.forEach(({ date, count }) => {
+      heatmap[date] = count;
+    });
+
+    yield put(updateHeatmap(heatmap));
+  } catch (e: any) {
+    yield put(updateUserError(e.message));
+  }
+}
+
+export function* getPostCountSaga() {
+  yield takeEvery(fetchPostCount.type, getPostCount);
+}
+
+export const fetchAllPosts =
+  createAction<PostSearchCondition>("user/fetchAllPost");
+
+export function* getAllPosts(action: ReturnType<typeof fetchAllPosts>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.fetchAllPosts> = yield call(
+      UserApi.fetchAllPosts,
+      action.payload
+    );
+
+    const allPosts: AllPostState[] = res.data;
+    yield put(updateAllPosts(allPosts));
+  } catch (e: any) {
+    updateUserError(e.message);
+  }
+}
+
+export function* getAllPostsSaga() {
+  yield takeEvery(fetchAllPosts.type, getAllPosts);
+}
+
 function* userSaga() {
   yield all([
     githubProfileSaga(),
@@ -148,6 +200,8 @@ function* userSaga() {
     getGistPostsSaga(),
     getImagePostsSaga(),
     getCommitsSaga(),
+    getPostCountSaga(),
+    getAllPostsSaga(),
   ]);
 }
 

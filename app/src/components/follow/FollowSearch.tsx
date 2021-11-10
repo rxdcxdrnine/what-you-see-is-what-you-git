@@ -1,5 +1,3 @@
-import "../../styles/follow.css";
-
 type FollowSearchProps = {
   onClickSearch: (username: string) => void;
   searchKey: string;

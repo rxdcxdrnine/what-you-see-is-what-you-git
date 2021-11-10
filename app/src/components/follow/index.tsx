@@ -3,6 +3,8 @@ import FollowHeader from "./FollowHeader";
 import FollowItems from "./FollowItems";
 import FollowSearch from "./FollowSearch";
 
+import "../../styles/follow.css";
+
 type FollowProps = {
   users: FollowItem[];
   followings: FollowItem[];

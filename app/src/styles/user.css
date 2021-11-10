@@ -4,17 +4,21 @@
 }
 
 .profile-left {
+  display: flex;
   padding: 0.5rem;
 
-  border-radius: 5px;
+  width: 7.5rem;
+  height: 7.5rem;
+
+  border-radius: 50%;
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .profile-image {
   border-radius: 50%;
-  width: 10rem;
-  height: 10rem;
+  width: 7.5rem;
+  height: 7.5rem;
 }
 
 .profile-right {
@@ -22,25 +26,17 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  margin-left: 0.5rem;
+  margin-left: 1.5rem;
 }
 
-.grass-container {
-  flex-grow: 1;
+.profile-name {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  font-size: large;
 
   border-radius: 5px;
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
-}
-
-.grass-wrapper {
-  font-size: 1.125rem;
 }
 
 .count-container {
@@ -59,21 +55,6 @@
   text-align: center;
 }
 
-.post-container {
-  flex-grow: 4;
-  display: flex;
-  flex-direction: column;
-  overflow: scroll;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-around;
-  margin: 0.5rem;
-}
-
 .button {
   width: 25%;
   text-align: center;
@@ -85,6 +66,80 @@
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
+.post-button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.post-select-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.post-select {
+  height: 2rem;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+  margin-left: 0.5rem;
+}
+
+.heatmap-back-button {
+  border-radius: 5px;
+  padding: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+  margin-left: 0.5rem;
+}
+
+.view-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view-button {
+  border-radius: 5px;
+  padding: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+  margin: 0rem 0.1rem;
+  flex-shrink: 1;
+}
+
+.day-picker-container {
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+  margin: 1rem 0;
+}
+
+.day-picker-block {
+  background-color: rgb(240, 239, 239);
+  height: 27px;
+  width: 27px;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.DayPicker-Day {
+  padding: 2px;
+  margin: 0;
+}
+
+.DayPicker-Month {
+  margin: 1rem;
+}
+
+.post-list-container {
+  flex-grow: 4;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .modal-header {
   display: flex;
   justify-content: flex-end;
@@ -93,7 +148,7 @@
 
 .post-wrapper {
   margin: 0.5rem;
-  padding-left: 0.5rem;
+  padding: 0 0 0.1rem 0.5rem;
 
   border-radius: 5px;
   background: #ffffff;

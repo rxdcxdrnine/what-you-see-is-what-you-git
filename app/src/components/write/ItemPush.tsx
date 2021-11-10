@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { PushState, SelectedItemState } from "../../modules/write";
 
-import "../../styles/write.css";
-
 type ItemPushProps = {
   pushes: PushState[];
   onClickItem: (item: SelectedItemState) => void;

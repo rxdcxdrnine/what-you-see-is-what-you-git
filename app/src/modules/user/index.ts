@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GistState, PushState } from "../write";
+import { GistState, ImageState, PushState } from "../write";
 
 export type ProfileState = {
   userId: number;
@@ -12,21 +12,20 @@ export type ProfileState = {
   followerNum: number;
 };
 
-export type PushPostState = PushState & {
+export type BasePostState = {
   postId: number;
   markdown: string;
+  type: string;
+  regDate: string;
 };
 
-export type GistPostState = GistState & {
-  postId: number;
-  markdown: string;
-};
+export type PushPostState = PushState & BasePostState;
 
-export type ImagePostState = {
-  postId: number;
-  imageFilename: string;
-  markdown: string;
-};
+export type GistPostState = GistState & BasePostState;
+
+export type ImagePostState = ImageState & BasePostState;
+
+export type AllPostState = PushState & GistState & ImageState & BasePostState;
 
 export type commitState = {
   commitId: number;
@@ -47,16 +46,26 @@ export type commitFileState = {
 };
 
 export type PostsState = {
+  allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
-  status: "all" | "push" | "gist" | "image";
+};
+
+export type PostCount = {
+  date: string;
+  count: number;
+};
+
+export type HeatmapState = {
+  [date: string]: number;
 };
 
 type UserState = {
   profile: ProfileState;
   posts: PostsState;
+  heatmap: HeatmapState;
   errorMessage: string;
 };
 
@@ -72,12 +81,13 @@ const initialState: UserState = {
     followerNum: 0,
   },
   posts: {
+    allPosts: [],
     pushPosts: [],
     gistPosts: [],
     imagePosts: [],
     commits: [],
-    status: "all",
   },
+  heatmap: {},
   errorMessage: "",
 };
 
@@ -88,20 +98,23 @@ const userSlice = createSlice({
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
     },
+    updateAllPosts(state: UserState, action: PayloadAction<AllPostState[]>) {
+      state.posts.allPosts = action.payload;
+    },
     updatePushPosts(state: UserState, action: PayloadAction<PushPostState[]>) {
       state.posts.pushPosts = action.payload;
-      state.posts.status = "push";
     },
     updateGistPosts(state: UserState, action: PayloadAction<GistPostState[]>) {
       state.posts.gistPosts = action.payload;
-      state.posts.status = "gist";
     },
     updateImagePosts(
       state: UserState,
       action: PayloadAction<ImagePostState[]>
     ) {
       state.posts.imagePosts = action.payload;
-      state.posts.status = "image";
+    },
+    updateHeatmap(state: UserState, action: PayloadAction<HeatmapState>) {
+      state.heatmap = action.payload;
     },
     updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
       state.posts.commits = action.payload;
@@ -114,10 +127,12 @@ const userSlice = createSlice({
 
 export const {
   updateProfile,
+  updateAllPosts,
   updatePushPosts,
   updateGistPosts,
   updateImagePosts,
   updateCommits,
+  updateHeatmap,
   updateUserError,
 } = userSlice.actions;
 

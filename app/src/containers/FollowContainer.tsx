@@ -10,7 +10,6 @@ import {
   saveFollow,
   searchUsers,
 } from "../modules/follow/saga";
-import "../styles/follow.css";
 
 const FollowContainer = () => {
   const { followings, followers, users } = useSelector(
