@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface FollowRepositoryCustom {
 
-    public void create(FollowSaveDto dto);
-    public boolean isExist(FollowSaveDto dto);
-    public List<FollowFetchDto> findFollowersByFollowingId(Long followingId);
-    public List<FollowFetchDto> findFollowingsByFollowerId(Long followerId);
+    void create(FollowSaveDto dto);
+    boolean isExist(FollowSaveDto dto);
+    void delete(Long followId);
+    List<FollowFetchDto> findFollowersByFollowingId(Long followingId);
+    List<FollowFetchDto> findFollowingsByFollowerId(Long followerId);
 }

@@ -65,4 +65,9 @@ public class PostController {
     ) {
         return postService.searchByUserId(new PostSearchCondition(userId, regDate));
     }
+
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable(value = "id") Long postId) {
+        postService.delete(postId);
+    }
 }

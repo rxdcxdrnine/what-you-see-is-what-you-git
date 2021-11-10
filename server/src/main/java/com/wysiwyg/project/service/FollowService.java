@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FollowService {
 
-    private final EntityManager em;
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
@@ -43,6 +42,6 @@ public class FollowService {
 
     @Transactional
     public void delete(Long followId) {
-        followRepository.deleteById(followId);
+        followRepository.delete(followId);
     }
 }

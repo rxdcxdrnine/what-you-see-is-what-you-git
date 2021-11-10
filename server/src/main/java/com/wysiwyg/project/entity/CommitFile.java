@@ -29,7 +29,7 @@ public class CommitFile extends BaseEntity {
     @Column(nullable = false)
     private Long deletions;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commit_id")
     private Commit commit;
 

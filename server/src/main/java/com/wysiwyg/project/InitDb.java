@@ -32,35 +32,38 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit() {
-            User userA = createUser("rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
-            User userB = createUser("handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
-            User userC = createUser("beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
-            User userD = createUser("gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
+            // user
+            User userA = createUser(50660684L, "rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
+            User userB = createUser(45425838L, "handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
+            User userC = createUser(32982728L, "beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
+            User userD = createUser(43772472L, "gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
 
             em.persist(userA);
             em.persist(userB);
             em.persist(userC);
             em.persist(userD);
 
-            Push push = createPush(userA.getUserId(), userA.getUserName());
-            Gist gist = createGist(userA.getUserId(), userA.getUserName());
-            Image image = createImage(userA.getUserId());
+            // post
+            Push push = createPush(userA);
+            Gist gist = createGist(userA);
+            Image image = createImage(userA);
 
             em.persist(push);
             em.persist(gist);
             em.persist(image);
         }
 
-        private User createUser(String userName, String profileName, String avatarUrl) {
+        private User createUser(Long githubId, String userName, String profileName, String avatarUrl) {
             return User.builder()
+                    .githubId(githubId)
                     .userName(userName)
                     .profileName(profileName)
                     .avatarUrl(avatarUrl)
                     .build();
         }
 
-        private Push createPush(Long userId, String username) {
-            List<GithubPushEvent> githubPushEvents = githubClient.getGithubPushes(username);
+        private Push createPush(User user) {
+            List<GithubPushEvent> githubPushEvents = githubClient.getGithubPushes(user.getUserName());
             GithubPushEvent pushEvent = githubPushEvents.get(0);
 
             return Push.builder()
@@ -69,12 +72,12 @@ public class InitDb {
                     .branchName(pushEvent.getPayload().getRef())
                     .uploadDate(pushEvent.getCreatedAt())
                     .markdown("# sample")
-                    .userId(userId)
+                    .user(user)
                     .build();
         }
 
-        private Gist createGist(Long userId, String username) {
-            List<GithubGist> githubGists = githubClient.getGithubGists(username);
+        private Gist createGist(User user) {
+            List<GithubGist> githubGists = githubClient.getGithubGists(user.getUserName());
             GithubGist githubGist = githubGists.get(0);
 
             return Gist.builder()
@@ -82,15 +85,22 @@ public class InitDb {
                     .gistDescription(githubGist.getDescription())
                     .uploadDate(githubGist.getCreatedAt())
                     .markdown("# sample")
-                    .userId(userId)
+                    .user(user)
                     .build();
         }
 
-        private Image createImage(Long userId) {
+        private Image createImage(User user) {
             return Image.builder()
                     .imageFilename("sample_image.jpg")
                     .markdown("# sample")
-                    .userId(userId)
+                    .user(user)
+                    .build();
+        }
+
+        private Follow createFollow(User following, User follower) {
+            return Follow.builder()
+                    .following(following)
+                    .follower(follower)
                     .build();
         }
     }

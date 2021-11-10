@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.wysiwyg.project.entity.QPost.*;
-import static com.wysiwyg.project.entity.QUser.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,8 +28,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return queryFactory
                 .select(new QPostCountDto(formattedDate, post.count()))
                 .from(post)
-                .join(post.user, user)
-                .where(user.userId.eq(userId))
+                .where(post.user.userId.eq(userId))
                 .groupBy(formattedDate)
                 .fetch();
     }
@@ -40,9 +38,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return queryFactory
                 .select(new QPostFetchDto(post))
                 .from(post)
-                .join(post.user, user)
                 .where(regDateEq(condition.getRegDate()),
-                        user.userId.eq(condition.getUserId()))
+                        post.user.userId.eq(condition.getUserId()))
                 .fetch();
     }
 

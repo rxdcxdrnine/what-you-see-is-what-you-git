@@ -16,6 +16,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(nullable = false)
     private Long githubId;
 
     @Column(length = 39, nullable = false)
@@ -26,9 +27,6 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String avatarUrl;
-
-    @Column(nullable = false)
-    private Integer dayNum = 0;
 
     @Column(nullable = false)
     private Integer followingNum = 0;
@@ -45,10 +43,35 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     List<Post> posts = new ArrayList<>();
 
+    public User(Long userId) {
+        this.userId = userId;
+    }
+
     @Builder
-    public User(String userName, String profileName, String avatarUrl) {
+    public User(Long githubId, String userName, String profileName, String avatarUrl) {
+        this.githubId = githubId;
         this.userName = userName;
         this.profileName = profileName;
         this.avatarUrl = avatarUrl;
+    }
+
+    public void addFollowing(Follow follow) {
+        this.followings.add(follow);
+        this.followingNum += 1;
+    }
+
+    public void addFollower(Follow follow) {
+        this.followers.add(follow);
+        this.followerNum += 1;
+    }
+
+    public void deleteFollowing(Follow follow) {
+        this.followings.remove(follow);
+        this.followingNum -= 1;
+    }
+
+    public void deleteFollower(Follow follow) {
+        this.followers.remove(follow);
+        this.followerNum -= 1;
     }
 }

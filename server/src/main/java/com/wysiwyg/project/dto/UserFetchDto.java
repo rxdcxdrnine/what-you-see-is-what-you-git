@@ -10,6 +10,9 @@ public class UserFetchDto {
     private String userName;
     private String profileName;
     private String avatarUrl;
+    private Integer dayNum;
+    private Integer followingNum;
+    private Integer followerNum;
 
     @QueryProjection
     public UserFetchDto(Long userId, String userName, String profileName, String avatarUrl) {
@@ -17,5 +20,15 @@ public class UserFetchDto {
         this.userName = userName;
         this.profileName = profileName;
         this.avatarUrl = avatarUrl;
+    }
+
+    @QueryProjection
+    public UserFetchDto(Long userId, String userName, String profileName, String avatarUrl, Integer followingNum, Integer followerNum) {
+        this.userId = userId;
+        this.userName = userName;
+        this.profileName = profileName;
+        this.avatarUrl = avatarUrl;
+        this.followingNum = followingNum;
+        this.followerNum = followerNum;
     }
 }
