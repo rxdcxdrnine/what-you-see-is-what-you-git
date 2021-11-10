@@ -1,13 +1,15 @@
 import {
   all,
   call,
+  getContext,
   put,
   SagaReturnType,
   takeEvery,
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
+import { History } from "history";
 
-import UserApi, { PostSearchCondition } from "../../api/user";
+import UserApi, { PostSearchCondition, PostUpdate } from "../../api/user";
 import {
   updateUserError,
   updateProfile,
@@ -174,6 +176,29 @@ export function* getAllPostsSaga() {
   yield takeEvery(fetchAllPosts.type, getAllPosts);
 }
 
+export const updatePost = createAction<PostUpdate>("user/updatePost");
+
+export function* putPost(action: ReturnType<typeof updatePost>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.updatePost> = yield call(
+      UserApi.updatePost,
+      action.payload
+    );
+
+    if (res.status === 200) {
+      alert("성공적으로 저장되었습니다.");
+      const history: History = yield getContext("history");
+      history.push("/user");
+    }
+  } catch (e: any) {
+    yield put(updateUserError(e.message));
+  }
+}
+
+export function* putPostSaga() {
+  yield takeEvery(updatePost.type, putPost);
+}
+
 export const removePost = createAction<number>("user/deletePost");
 
 export function* deletePost(action: ReturnType<typeof removePost>) {
@@ -200,6 +225,7 @@ function* userSaga() {
     getCommitsSaga(),
     getPostCountSaga(),
     getAllPostsSaga(),
+    putPostSaga(),
     deletePostSaga(),
   ]);
 }

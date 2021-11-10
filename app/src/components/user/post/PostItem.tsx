@@ -1,4 +1,5 @@
 import { Viewer } from "@toast-ui/react-editor";
+import { Link } from "react-router-dom";
 import {
   AllPostState,
   commitState,
@@ -97,19 +98,7 @@ export const PushPostItem = ({
         <Commit commits={commits} onCloseModal={onCloseModal} />
       </Modal>
       <div key={pushPostItem.postId} className="post-wrapper">
-        <div className="post-title">
-          <h2>{pushPostItem.regDate.split("T")[0]}</h2>
-          <div className="post-modify">
-            <div>
-              <MdEdit className="post-modify-button" size="20" />
-              <MdDelete
-                className="post-modify-button"
-                onClick={() => onClickDelete(pushPostItem.postId)}
-                size="20"
-              />
-            </div>
-          </div>
-        </div>
+        <PostItemTitle postItem={pushPostItem} onClickDelete={onClickDelete} />
         <div
           className="modal-click-area"
           onClick={() => onOpenModal(pushPostItem.postId)}
@@ -138,22 +127,8 @@ export const GistPostItem = ({
   return (
     <>
       <div key={gistPostItem.postId} className="post-wrapper">
-        <div>
-          <div className="post-title">
-            <h2>{gistPostItem.regDate.split("T")[0]}</h2>
-            <div className="post-modify">
-              <div>
-                <MdEdit className="post-modify-button" size="20" />
-                <MdDelete
-                  className="post-modify-button"
-                  onClick={() => onClickDelete(gistPostItem.postId)}
-                  size="20"
-                />
-              </div>
-            </div>
-          </div>
-          <Gist id={gistPostItem.gistId} />
-        </div>
+        <PostItemTitle postItem={gistPostItem} onClickDelete={onClickDelete} />
+        <Gist id={gistPostItem.gistId} />
         <div className="viewer-wrapper">
           <Viewer initialValue={gistPostItem.markdown} />
         </div>
@@ -175,19 +150,7 @@ export const ImagePostItem = ({
 }: ImagePostItemProps) => {
   return (
     <div key={imagePostItem.postId} className="post-wrapper">
-      <div className="post-title">
-        <h2>{imagePostItem.regDate.split("T")[0]}</h2>
-        <div className="post-modify">
-          <div>
-            <MdEdit className="post-modify-button" size="20" />
-            <MdDelete
-              className="post-modify-button"
-              onClick={() => onClickDelete(imagePostItem.postId)}
-              size="20"
-            />
-          </div>
-        </div>
-      </div>
+      <PostItemTitle postItem={imagePostItem} onClickDelete={onClickDelete} />
       <div className="image-wrapper">
         <img
           className="image-post"
@@ -197,6 +160,34 @@ export const ImagePostItem = ({
       </div>
       <div className="viewer-wrapper">
         <Viewer initialValue={imagePostItem.markdown} />
+      </div>
+    </div>
+  );
+};
+
+type PostItemTitleProps = {
+  postItem: PushPostState | GistPostState | ImagePostState;
+  onClickDelete: (postid: number) => void;
+};
+
+const PostItemTitle = ({ postItem, onClickDelete }: PostItemTitleProps) => {
+  return (
+    <div className="post-title">
+      <h2>{postItem.regDate.split("T")[0]}</h2>
+      <div className="post-modify">
+        <div>
+          <Link
+            to={{ pathname: `/update/${postItem.postId}` }}
+            style={{ color: "#000000" }}
+          >
+            <MdEdit className="post-modify-button" size="20" />
+          </Link>
+          <MdDelete
+            className="post-modify-button"
+            onClick={() => onClickDelete(postItem.postId)}
+            size="20"
+          />
+        </div>
       </div>
     </div>
   );

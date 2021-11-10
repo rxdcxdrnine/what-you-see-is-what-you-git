@@ -16,10 +16,20 @@ export type PostSearchCondition = {
   regDate?: string;
 };
 
+export type PostUpdate = {
+  postId: number;
+  payload: {
+    markdown: string;
+  };
+};
+
 const fetchUserProfile: (
   githubId: number
 ) => Promise<AxiosResponse<ProfileState>> = (githubId: number) =>
   axios.get(`${serverUrl}/users?githubId=${githubId}`);
+
+const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
+  (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);
 
 const fetchPushPosts: (
   userId: number
@@ -36,12 +46,6 @@ const fetchImagePosts: (
 ) => Promise<AxiosResponse<ImagePostState[]>> = (userId: number) =>
   axios.get(`${serverUrl}/posts/image?userId=${userId}`);
 
-const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
-  (postId: number) => axios.get(`${serverUrl}/posts/commit?postId=${postId}`);
-
-const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
-  (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);
-
 const fetchAllPosts: ({
   userId,
   regDate,
@@ -53,6 +57,21 @@ const fetchAllPosts: ({
   if (regDate) baseUrl += `&regDate=${regDate}`;
   return axios.get(baseUrl);
 };
+
+const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
+  (postId: number) => axios.get(`${serverUrl}/posts/commit?postId=${postId}`);
+
+const fetchPost: (postId: number) => Promise<AxiosResponse<AllPostState>> = (
+  postId: number
+) => axios.get(`${serverUrl}/posts/${postId}`);
+
+const updatePost: ({
+  postId,
+  payload,
+}: PostUpdate) => Promise<AxiosResponse<void>> = ({
+  postId,
+  payload,
+}: PostUpdate) => axios.put(`${serverUrl}/posts/${postId}`, payload);
 
 const deletePost: (postId: number) => Promise<AxiosResponse<void>> = (
   postId: number
@@ -66,6 +85,8 @@ const UserApi = {
   fetchCommits,
   fetchPostCount,
   fetchAllPosts,
+  fetchPost,
+  updatePost,
   deletePost,
 };
 export default UserApi;
