@@ -18,8 +18,35 @@ public class PostController {
     private final CommitService commitService;
     private final PostService postService;
 
+    @GetMapping("/{id}")
+    public PostFetchDto fetchPost(@PathVariable(value = "id") Long postId) {
+        return postService.searchByPostId(postId);
+    }
+
+    @PutMapping("/{id}")
+    public void updatePost(
+            @PathVariable(value = "id") Long postId,
+            @RequestBody PostUpdateDto dto)
+    {
+        postService.update(postId, dto);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable(value = "id") Long postId) {
+        postService.delete(postId);
+    }
+
+    @GetMapping("/all")
+    public List<PostFetchDto> fetchAllPosts(
+            @RequestParam(required = true) Long userId,
+            @RequestParam(required = false) String regDate
+    ) {
+        return postService.searchByUserId(new PostSearchCondition(userId, regDate));
+    }
+
     @GetMapping("/push")
-    public List<PushPostFetchDto> fetchPushPost(@RequestParam(required = true) Long userId) {
+    public List<PushPostFetchDto> fetchPushPosts(@RequestParam(required = true) Long userId) {
         return pushPostService.findByUserId(userId);
     }
 
@@ -28,24 +55,24 @@ public class PostController {
         return commitService.findByPostId(postId);
     }
 
+    @GetMapping("/gist")
+    public List<GistPostFetchDto> fetchGistPosts(@RequestParam(required = true) Long userId) {
+        return gistPostService.findByUserId(userId);
+    }
+
+    @GetMapping("/image")
+    public List<ImagePostFetchDto> fetchImagePosts(@RequestParam(required = true) Long userId) {
+        return imagePostService.findByUserId(userId);
+    }
+
     @PostMapping("/push")
     public void savePushPost(@RequestBody PushPostSaveDto dto) {
         pushPostService.save(dto);
     }
 
-    @GetMapping("/gist")
-    public List<GistPostFetchDto> fetchGistPost(@RequestParam(required = true) Long userId) {
-        return gistPostService.findByUserId(userId);
-    }
-
     @PostMapping("/gist")
     public void saveGistPost(@RequestBody GistPostSaveDto dto) {
         gistPostService.save(dto);
-    }
-
-    @GetMapping("/image")
-    public List<ImagePostFetchDto> fetchImagePost(@RequestParam(required = true) Long userId) {
-        return imagePostService.findByUserId(userId);
     }
 
     @PostMapping("/image")
@@ -56,18 +83,5 @@ public class PostController {
     @GetMapping("/count")
     public List<PostCountDto> fetchPostCount(@RequestParam(required = true) Long userId) {
         return postService.countByDate(userId);
-    }
-
-    @GetMapping("/all")
-    public List<PostFetchDto> fetchAllPost(
-            @RequestParam(required = true) Long userId,
-            @RequestParam(required = false) String regDate
-    ) {
-        return postService.searchByUserId(new PostSearchCondition(userId, regDate));
-    }
-
-    @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable(value = "id") Long postId) {
-        postService.delete(postId);
     }
 }

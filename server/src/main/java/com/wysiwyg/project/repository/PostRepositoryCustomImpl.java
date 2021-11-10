@@ -24,6 +24,14 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
             , post.regDate
             , ConstantImpl.create("%Y-%m-%d"));
 
+    public PostFetchDto searchByPostId(Long postId) {
+        return queryFactory
+                .select(new QPostFetchDto(post))
+                .from(post)
+                .where(post.postId.eq(postId))
+                .fetchOne();
+    }
+
     public List<PostCountDto> countByDate(Long userId) {
         return queryFactory
                 .select(new QPostCountDto(formattedDate, post.count()))

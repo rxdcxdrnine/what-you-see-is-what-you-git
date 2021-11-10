@@ -36,4 +36,8 @@ public abstract class Post extends BaseEntity {
         this.markdown = markdown;
         this.user = user;
     }
+
+    public void setMarkdown(String markdown) {
+        this.markdown = markdown;
+    }
 }
