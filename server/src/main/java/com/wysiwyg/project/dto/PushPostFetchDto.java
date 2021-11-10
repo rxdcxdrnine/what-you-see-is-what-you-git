@@ -1,5 +1,6 @@
 package com.wysiwyg.project.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.wysiwyg.project.entity.Push;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class PushPostFetchDto {
     private Long pushId;
     private String repoName;
     private String branchName;
+    private LocalDateTime regDate;
 
     public PushPostFetchDto(Push push) {
         this.postId = push.getPostId();
@@ -23,5 +25,6 @@ public class PushPostFetchDto {
         this.pushId = push.getPushId();
         this.repoName = push.getRepoName();
         this.branchName = push.getBranchName();
+        this.regDate = push.getRegDate();
     }
 }

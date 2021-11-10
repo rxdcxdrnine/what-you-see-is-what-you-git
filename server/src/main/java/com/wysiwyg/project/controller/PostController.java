@@ -1,10 +1,7 @@
 package com.wysiwyg.project.controller;
 
 import com.wysiwyg.project.dto.*;
-import com.wysiwyg.project.service.CommitService;
-import com.wysiwyg.project.service.GistPostService;
-import com.wysiwyg.project.service.ImagePostService;
-import com.wysiwyg.project.service.PushPostService;
+import com.wysiwyg.project.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +16,7 @@ public class PostController {
     private final GistPostService gistPostService;
     private final ImagePostService imagePostService;
     private final CommitService commitService;
+    private final PostService postService;
 
     @GetMapping("/push")
     public List<PushPostFetchDto> fetchPushPost(@RequestParam(required = true) Long userId) {
@@ -53,5 +51,18 @@ public class PostController {
     @PostMapping("/image")
     public void saveImagePost(ImagePostSaveDto dto) {
         imagePostService.save(dto);
+    }
+
+    @GetMapping("/count")
+    public List<PostCountDto> fetchPostCount(@RequestParam(required = true) Long userId) {
+        return postService.countByDate(userId);
+    }
+
+    @GetMapping("/all")
+    public List<PostFetchDto> fetchAllPost(
+            @RequestParam(required = true) Long userId,
+            @RequestParam(required = false) String regDate
+    ) {
+        return postService.searchByUserId(new PostSearchCondition(userId, regDate));
     }
 }
