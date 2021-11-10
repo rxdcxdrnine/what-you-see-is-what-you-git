@@ -20,14 +20,14 @@ const Header = () => {
     <header className="header">
       <div className="header-container">
         <div className="header-title">
-          <div>WHAT/YOU/SEE/IS/WHAT/YOU/GIT</div>
+          <div>WHAT-YOU-SEE-IS-WHAT-YOU-GIT</div>
         </div>
         <div className="header-route">
           <Link to="/user" className="text-link">
-            <div>USER &nbsp;/</div>
+            <div>USER &nbsp;</div>
           </Link>
           <Link to="/write" className="text-link">
-            <div>WRITE &nbsp;/</div>
+            <div>WRITE &nbsp;</div>
           </Link>
           <Link to="/follow" className="text-link">
             <div>FOLLOW</div>

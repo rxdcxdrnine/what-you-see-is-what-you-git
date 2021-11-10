@@ -1,3 +1,4 @@
+import { ComponentState } from "../../../containers/UserContainer";
 import {
   AllPostState,
   commitState,
@@ -11,61 +12,52 @@ import PostList from "./PostList";
 
 type PostProps = {
   userId: number;
-  status: "all" | "push" | "gist" | "image";
+  view: "heatmap" | "list";
+  component: ComponentState;
   allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
-  selectedView: "map" | "list";
-  isOpenModal: boolean;
-  onOpenModal: (postId: number) => void;
-  onCloseModal: () => void;
   onClickDay: (userId: number, regDate: string) => void;
-  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
+  onClickModal: (postId: number) => void;
 };
 
 const Post = ({
   userId,
-  status,
+  view,
+  component,
   allPosts,
   pushPosts,
   gistPosts,
   imagePosts,
   commits,
   heatmap,
-  selectedView,
-  isOpenModal,
-  onOpenModal,
-  onCloseModal,
+  onClickModal,
   onClickDay,
-  onClickButton,
 }: PostProps) => {
   return (
     <>
-      {selectedView === "map" ? (
+      {view === "heatmap" ? (
         <Heatmap
           userId={userId}
+          component={component}
           heatmap={heatmap}
           allPosts={allPosts}
           commits={commits}
-          isOpenModal={isOpenModal}
-          onOpenModal={onOpenModal}
-          onCloseModal={onCloseModal}
           onClickDay={onClickDay}
+          onClickModal={onClickModal}
         />
       ) : (
         <PostList
-          status={status}
+          component={component}
+          allPosts={allPosts}
           pushPosts={pushPosts}
           gistPosts={gistPosts}
           imagePosts={imagePosts}
           commits={commits}
-          isOpenModal={isOpenModal}
-          onOpenModal={onOpenModal}
-          onCloseModal={onCloseModal}
-          onClickButton={onClickButton}
+          onClickModal={onClickModal}
         />
       )}
     </>

@@ -1,6 +1,3 @@
-import { Viewer } from "@toast-ui/react-editor";
-import Modal from "react-modal";
-
 import {
   AllPostState,
   commitState,
@@ -8,36 +5,33 @@ import {
   ImagePostState,
   PushPostState,
 } from "../../../modules/user";
-import Gist from "../../../utils/react-gist/Gist";
 
-import Commit from "./Commit";
-import { PostItem } from "./PostItem";
+import {
+  GistPostItem,
+  ImagePostItem,
+  AllPostItem,
+  PushPostItem,
+} from "./PostItem";
 
 type PostItemsProps = {
   postItems: AllPostState[];
   commits: commitState[];
-  isOpenModal: boolean;
-  onOpenModal: (postId: number) => void;
-  onCloseModal: () => void;
+  onClickModal: (postId: number) => void;
 };
 
-export const PostItems = ({
+export const AllPostItems = ({
   postItems,
   commits,
-  isOpenModal,
-  onOpenModal,
-  onCloseModal,
+  onClickModal,
 }: PostItemsProps) => {
   return (
-    <div className="post-container">
+    <div className="post-list-container">
       {postItems.map((postItem) => (
         <div key={postItem.postId}>
-          <PostItem
-            postItem={postItem}
+          <AllPostItem
+            allPostItem={postItem}
             commits={commits}
-            isOpenModal={isOpenModal}
-            onOpenModal={onOpenModal}
-            onCloseModal={onCloseModal}
+            onClickModal={onClickModal}
           />
         </div>
       ))}
@@ -45,119 +39,60 @@ export const PostItems = ({
   );
 };
 
-/**
- * deprecated
- * TODO - push/gist/image state 를 나누지않고 하나로 통합
- */
-
-type PushPostsProps = {
-  pushPosts: PushPostState[];
+type PushPostItemsProps = {
+  pushPostItems: PushPostState[];
   commits: commitState[];
-  isOpenModal: boolean;
-  onOpenModal: (postId: number) => void;
-  onCloseModal: () => void;
+  onClickModal: (postId: number) => void;
 };
 
-export const PushPosts = ({
-  pushPosts,
+export const PushPostItems = ({
+  pushPostItems,
   commits,
-  isOpenModal,
-  onOpenModal,
-  onCloseModal,
-}: PushPostsProps) => {
+  onClickModal,
+}: PushPostItemsProps) => {
   return (
-    <>
-      <Modal
-        style={{
-          content: {
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            width: "70%",
-            height: "70%",
-            transform: "translate(-50%, -50%)",
-          },
-        }}
-        isOpen={isOpenModal}
-        ariaHideApp={false}
-        onRequestClose={() => onCloseModal()}
-      >
-        <div className="modal-header">
-          <button onClick={() => onCloseModal()}>close</button>
+    <div className="post-list-container">
+      {pushPostItems.map((pushPostItem) => (
+        <div key={pushPostItem.postId}>
+          <PushPostItem
+            pushPostItem={pushPostItem}
+            commits={commits}
+            onClickModal={onClickModal}
+          />
         </div>
-        <Commit commits={commits} onCloseModal={onCloseModal} />
-      </Modal>
-      {pushPosts.map((pushPost) => {
-        return (
-          <div
-            key={pushPost.postId}
-            className="post-wrapper"
-            onClick={() => onOpenModal(pushPost.postId)}
-            style={{ cursor: "pointer" }}
-          >
-            <div>
-              <h2>{pushPost.regDate.split("T")[0]}</h2>
-              <div>{pushPost.pushId}</div>
-              <div>{pushPost.repoName}</div>
-              <div>{pushPost.branchName}</div>
-            </div>
-            <div className="viewer-wrapper">
-              <Viewer initialValue={pushPost.markdown} />
-            </div>
-          </div>
-        );
-      })}
-    </>
+      ))}
+    </div>
   );
 };
 
-type GistPostsProps = {
-  gistPosts: GistPostState[];
+type GistPostItemsProps = {
+  gistPostItems: GistPostState[];
 };
 
-export const GistPosts = ({ gistPosts }: GistPostsProps) => {
+export const GistPostItems = ({ gistPostItems }: GistPostItemsProps) => {
   return (
-    <>
-      {gistPosts.map((gistPost) => (
-        <div key={gistPost.postId} className="post-wrapper">
-          <div>
-            <h2>{gistPost.regDate.split("T")[0]}</h2>
-            <Gist id={gistPost.gistId} />
-          </div>
-          <div className="viewer-wrapper">
-            <Viewer initialValue={gistPost.markdown} />
-          </div>
+    <div className="post-list-container">
+      {gistPostItems.map((gistPostItem) => (
+        <div key={gistPostItem.postId}>
+          <GistPostItem gistPostItem={gistPostItem} />
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
-type ImageProps = {
-  imagePosts: ImagePostState[];
+type ImagePostItemsProps = {
+  imagePostItems: ImagePostState[];
 };
 
-const baseUrl: string = process.env.REACT_APP_IMAGE_URL as string;
-
-export const ImagePosts = ({ imagePosts }: ImageProps) => {
+export const ImagePostItems = ({ imagePostItems }: ImagePostItemsProps) => {
   return (
-    <>
-      {imagePosts.map((imagePost) => (
-        <div key={imagePost.postId} className="post-wrapper">
-          <h2>{imagePost.regDate.split("T")[0]}</h2>
-          <div className="image-wrapper">
-            <img
-              className="image-post"
-              src={baseUrl + imagePost.imageFilename}
-              alt="imagePost"
-            />
-          </div>
-          <div className="viewer-wrapper">
-            <Viewer initialValue={imagePost.markdown} />
-          </div>
+    <div className="post-list-container">
+      {imagePostItems.map((imagePostItem) => (
+        <div key={imagePostItem.postId}>
+          <ImagePostItem imagePostItem={imagePostItem} />
         </div>
       ))}
-    </>
+    </div>
   );
 };

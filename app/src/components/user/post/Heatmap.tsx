@@ -2,19 +2,19 @@ import { useState } from "react";
 import DayPicker from "react-day-picker";
 
 import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
-import { PostItems } from "./PostItems";
+import { AllPostItems } from "./PostItems";
 
 import "react-day-picker/lib/style.css";
+import { ComponentState } from "../../../containers/UserContainer";
 
 type HeatmapProps = {
   userId: number;
+  component: ComponentState;
   heatmap: HeatmapState;
   allPosts: AllPostState[];
   commits: commitState[];
-  isOpenModal: boolean;
-  onOpenModal: (postId: number) => void;
-  onCloseModal: () => void;
   onClickDay: (userId: number, regDate: string) => void;
+  onClickModal: (postId: number) => void;
 };
 
 const dateToString = (date: Date) =>
@@ -28,12 +28,11 @@ const colors = ["#dbdbdb", "green", "orange", "red"];
 
 const Heatmap = ({
   userId,
+  component,
   heatmap,
   allPosts,
   commits,
-  isOpenModal,
-  onOpenModal,
-  onCloseModal,
+  onClickModal,
   onClickDay,
 }: HeatmapProps) => {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
@@ -57,7 +56,7 @@ const Heatmap = ({
       onClickDay(userId, date);
       setSelectedDay(day);
     } else {
-      alert("기록이 없습니다");
+      alert("해당 날짜의 기록이 없습니다.");
     }
   };
 
@@ -73,23 +72,7 @@ const Heatmap = ({
 
   return (
     <>
-      {selectedDay ? (
-        <>
-          <button
-            className="heatmap-back-button"
-            onClick={() => setSelectedDay(undefined)}
-          >
-            BACK
-          </button>
-          <PostItems
-            postItems={allPosts}
-            commits={commits}
-            isOpenModal={isOpenModal}
-            onOpenModal={onOpenModal}
-            onCloseModal={onCloseModal}
-          />
-        </>
-      ) : (
+      {component === "heatmap" ? (
         <div className="day-picker-container">
           <DayPicker
             canChangeMonth={false}
@@ -101,6 +84,12 @@ const Heatmap = ({
             onDayClick={handleDayClick}
           />
         </div>
+      ) : (
+        <AllPostItems
+          postItems={allPosts}
+          commits={commits}
+          onClickModal={onClickModal}
+        />
       )}
     </>
   );

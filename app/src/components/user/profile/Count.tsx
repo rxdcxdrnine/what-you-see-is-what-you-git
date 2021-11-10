@@ -1,25 +1,27 @@
+import { ProfileState } from "../../../modules/user";
+
 type CountProps = {
-  dayNum: number;
-  followingNum: number;
-  followerNum: number;
+  profile: ProfileState;
 };
 
-const Count = ({ dayNum, followingNum, followerNum }: CountProps) => {
+const Count = ({ profile }: CountProps) => {
   return (
-    <div className="count-container">
-      <div className="count-wrapper">
-        <h3>DAYS</h3>
-        <p>{dayNum}</p>
+    <>
+      <div className="count-container">
+        <div className="count-wrapper">
+          <h4>DAYS</h4>
+          <p>{profile.dayNum}</p>
+        </div>
+        <div className="count-wrapper">
+          <h4>FOLLOWINGS</h4>
+          <p>{profile.followingNum}</p>
+        </div>
+        <div className="count-wrapper">
+          <h4>FOLLOWERS</h4>
+          <p>{profile.followerNum}</p>
+        </div>
       </div>
-      <div className="count-wrapper">
-        <h3>FOLLOWINGS</h3>
-        <p>{followingNum}</p>
-      </div>
-      <div className="count-wrapper">
-        <h3>FOLLOWERS</h3>
-        <p>{followerNum}</p>
-      </div>
-    </div>
+    </>
   );
 };
 

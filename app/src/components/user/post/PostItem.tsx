@@ -1,58 +1,66 @@
 import { Viewer } from "@toast-ui/react-editor";
-import { AllPostState, commitState } from "../../../modules/user";
+import {
+  AllPostState,
+  commitState,
+  GistPostState,
+  ImagePostState,
+  PushPostState,
+} from "../../../modules/user";
 import Modal from "react-modal";
 import Commit from "./Commit";
 import Gist from "../../../utils/react-gist/Gist";
+import { useState } from "react";
 
 type PostItemProps = {
-  postItem: AllPostState;
+  allPostItem: AllPostState;
   commits: commitState[];
-  isOpenModal: boolean;
-  onOpenModal: (postId: number) => void;
-  onCloseModal: () => void;
+  onClickModal: (postId: number) => void;
 };
 
-export const PostItem = ({
-  postItem,
+export const AllPostItem = ({
+  allPostItem,
   commits,
-  isOpenModal,
-  onOpenModal,
-  onCloseModal,
+  onClickModal,
 }: PostItemProps) => {
   return (
     <>
-      {postItem.type === "PUSH" ? (
+      {allPostItem.type === "PUSH" ? (
         <PushPostItem
-          pushPostItem={postItem}
+          pushPostItem={allPostItem}
           commits={commits}
-          isOpenModal={isOpenModal}
-          onOpenModal={onOpenModal}
-          onCloseModal={onCloseModal}
+          onClickModal={onClickModal}
         />
-      ) : postItem.type === "GIST" ? (
-        <GistPostItem gistPostItem={postItem} />
-      ) : postItem.type === "IMAGE" ? (
-        <ImagePostItem imagePostItem={postItem} />
+      ) : allPostItem.type === "GIST" ? (
+        <GistPostItem gistPostItem={allPostItem} />
+      ) : allPostItem.type === "IMAGE" ? (
+        <ImagePostItem imagePostItem={allPostItem} />
       ) : null}
     </>
   );
 };
 
 type PushPostItemProps = {
-  pushPostItem: AllPostState;
+  pushPostItem: AllPostState | PushPostState;
   commits: commitState[];
-  isOpenModal: boolean;
-  onOpenModal: (postId: number) => void;
-  onCloseModal: () => void;
+  onClickModal: (postId: number) => void;
 };
 
-const PushPostItem = ({
+export const PushPostItem = ({
   pushPostItem,
   commits,
-  isOpenModal,
-  onOpenModal,
-  onCloseModal,
+  onClickModal,
 }: PushPostItemProps) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  const onOpenModal = (postId: number) => {
+    setIsOpenModal(true);
+    onClickModal(postId);
+  };
+
+  const onCloseModal = () => {
+    setIsOpenModal(false);
+  };
+
   return (
     <>
       <Modal
@@ -97,10 +105,10 @@ const PushPostItem = ({
 };
 
 type GistPostItemProps = {
-  gistPostItem: AllPostState;
+  gistPostItem: AllPostState | GistPostState;
 };
 
-const GistPostItem = ({ gistPostItem }: GistPostItemProps) => {
+export const GistPostItem = ({ gistPostItem }: GistPostItemProps) => {
   return (
     <>
       <div key={gistPostItem.postId} className="post-wrapper">
@@ -117,7 +125,7 @@ const GistPostItem = ({ gistPostItem }: GistPostItemProps) => {
 };
 
 type ImagePostItemProps = {
-  imagePostItem: AllPostState;
+  imagePostItem: AllPostState | ImagePostState;
 };
 
 const baseUrl: string = process.env.REACT_APP_IMAGE_URL as string;

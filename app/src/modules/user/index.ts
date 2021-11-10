@@ -51,7 +51,6 @@ export type PostsState = {
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
-  status: "all" | "push" | "gist" | "image";
 };
 
 export type PostCount = {
@@ -87,7 +86,6 @@ const initialState: UserState = {
     gistPosts: [],
     imagePosts: [],
     commits: [],
-    status: "all",
   },
   heatmap: {},
   errorMessage: "",
@@ -102,28 +100,24 @@ const userSlice = createSlice({
     },
     updateAllPosts(state: UserState, action: PayloadAction<AllPostState[]>) {
       state.posts.allPosts = action.payload;
-      state.posts.status = "all";
     },
     updatePushPosts(state: UserState, action: PayloadAction<PushPostState[]>) {
       state.posts.pushPosts = action.payload;
-      state.posts.status = "push";
     },
     updateGistPosts(state: UserState, action: PayloadAction<GistPostState[]>) {
       state.posts.gistPosts = action.payload;
-      state.posts.status = "gist";
     },
     updateImagePosts(
       state: UserState,
       action: PayloadAction<ImagePostState[]>
     ) {
       state.posts.imagePosts = action.payload;
-      state.posts.status = "image";
-    },
-    updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
-      state.posts.commits = action.payload;
     },
     updateHeatmap(state: UserState, action: PayloadAction<HeatmapState>) {
       state.heatmap = action.payload;
+    },
+    updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
+      state.posts.commits = action.payload;
     },
     updateUserError(state: UserState, action: PayloadAction<string>) {
       state.errorMessage = action.payload;
@@ -133,12 +127,12 @@ const userSlice = createSlice({
 
 export const {
   updateProfile,
+  updateAllPosts,
   updatePushPosts,
   updateGistPosts,
   updateImagePosts,
   updateCommits,
   updateHeatmap,
-  updateAllPosts,
   updateUserError,
 } = userSlice.actions;
 
