@@ -49,5 +49,4 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private BooleanExpression regDateEq(String regDate) {
         return regDate == null ? null : formattedDate.eq(regDate);
     }
-
 }

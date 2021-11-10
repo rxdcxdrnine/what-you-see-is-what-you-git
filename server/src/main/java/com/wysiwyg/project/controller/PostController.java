@@ -63,7 +63,6 @@ public class PostController {
             @RequestParam(required = true) Long userId,
             @RequestParam(required = false) String regDate
     ) {
-        PostSearchCondition condition = new PostSearchCondition(userId, regDate);
-        return postService.searchByUserId(condition);
+        return postService.searchByUserId(new PostSearchCondition(userId, regDate));
     }
 }
