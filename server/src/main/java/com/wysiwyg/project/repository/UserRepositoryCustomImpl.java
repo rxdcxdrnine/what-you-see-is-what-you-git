@@ -2,11 +2,13 @@ package com.wysiwyg.project.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wysiwyg.project.dto.QUserFetchDto;
 import com.wysiwyg.project.dto.UserFetchDto;
+import com.wysiwyg.project.dto.UserSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +24,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<UserFetchDto> searchByUserName(String userName) {
+    public List<UserFetchDto> searchByUserName(UserSearchCondition condition) {
         return queryFactory
                 .select(new QUserFetchDto(
                         user.userId,
@@ -31,12 +33,13 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.avatarUrl
                 ))
                 .from(user)
-                .where(user.userName.contains(userName))
+                .where(userIdNotEq(condition.getUserId()),
+                        userNameContains(condition.getUserName()))
                 .fetch();
     }
 
     @Override
-    public UserFetchDto searchByUserId(Long githubId) {
+    public UserFetchDto searchById(UserSearchCondition condition) {
 
         StringTemplate formattedDate = Expressions.stringTemplate(
                 "DATE_FORMAT({0}, {1})"
@@ -46,6 +49,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         UserFetchDto dto = queryFactory
                 .select(new QUserFetchDto(
                         user.userId,
+                        user.githubId,
                         user.userName,
                         user.profileName,
                         user.avatarUrl,
@@ -53,18 +57,37 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.followerNum
                 ))
                 .from(user)
-                .where(user.githubId.eq(githubId))
+                .where(userIdEq(condition.getUserId()),
+                        githubIdEq(condition.getGithubId()))
                 .fetchOne();
 
         List<Tuple> tuples = queryFactory
                 .select(formattedDate, post.postId)
                 .from(post)
                 .join(post.user, user)
-                .where(user.githubId.eq(githubId))
+                .where(userIdEq(condition.getUserId()),
+                        githubIdEq(condition.getGithubId()))
                 .groupBy(formattedDate)
                 .fetch();
 
         dto.setDayNum(tuples.size());
         return dto;
     }
+
+    private BooleanExpression userIdEq(Long userId) {
+        return userId == null ? null : user.userId.eq(userId);
+    }
+
+    private BooleanExpression githubIdEq(Long githubId) {
+        return githubId == null ? null : user.githubId.eq(githubId);
+    }
+
+    private BooleanExpression userIdNotEq(Long userId) {
+        return  userId == null ? null : user.userId.ne(userId);
+    }
+
+    private BooleanExpression userNameContains(String userName) {
+        return userName == null ? null : user.userName.contains(userName);
+    }
+
 }

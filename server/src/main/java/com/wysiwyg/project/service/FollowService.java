@@ -3,6 +3,7 @@ package com.wysiwyg.project.service;
 import com.wysiwyg.project.dto.FollowFetchDto;
 import com.wysiwyg.project.dto.FollowSaveDto;
 import com.wysiwyg.project.dto.UserFetchDto;
+import com.wysiwyg.project.dto.UserSearchCondition;
 import com.wysiwyg.project.entity.Follow;
 import com.wysiwyg.project.entity.User;
 import com.wysiwyg.project.repository.FollowRepository;
@@ -36,8 +37,8 @@ public class FollowService {
         return followRepository.findFollowingsByFollowerId(userId);
     }
 
-    public List<UserFetchDto> findUserByUserName(String userName) {
-        return userRepository.searchByUserName(userName);
+    public List<UserFetchDto> searchUsers(UserSearchCondition condition) {
+        return userRepository.searchByUserName(condition);
     }
 
     @Transactional

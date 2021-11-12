@@ -42,6 +42,8 @@ public class GithubClient {
                 .filter(event -> event.getType().equals("PushEvent"))
                 .collect(Collectors.toList());
 
+        System.out.println(githubPushes);
+
         return githubPushes;
     }
 

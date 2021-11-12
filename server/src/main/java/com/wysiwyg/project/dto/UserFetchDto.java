@@ -7,6 +7,7 @@ import lombok.Data;
 public class UserFetchDto {
 
     private Long userId;
+    private Long githubId;
     private String userName;
     private String profileName;
     private String avatarUrl;
@@ -23,8 +24,9 @@ public class UserFetchDto {
     }
 
     @QueryProjection
-    public UserFetchDto(Long userId, String userName, String profileName, String avatarUrl, Integer followingNum, Integer followerNum) {
+    public UserFetchDto(Long userId, Long githubId, String userName, String profileName, String avatarUrl, Integer followingNum, Integer followerNum) {
         this.userId = userId;
+        this.githubId = githubId;
         this.userName = userName;
         this.profileName = profileName;
         this.avatarUrl = avatarUrl;
