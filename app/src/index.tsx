@@ -25,6 +25,8 @@ const store = configureStore({
 });
 sagaMiddleware.run(rootSaga);
 
+export type AppDispatch = typeof store.dispatch;
+
 ReactDOM.render(
   <React.StrictMode>
     <Router history={customHistory}>

@@ -11,7 +11,7 @@ function App() {
       <Switch>
         <Route path="/user" component={UserView} />
         <Route path="/write" component={WriteView} />
-        <Route path="/update/:postId" component={UpdateView} />
+        <Route path="/update" component={UpdateView} />
         <Route path="/follow" component={FollowView} />
       </Switch>
     </BrowserRouter>

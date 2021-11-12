@@ -1,4 +1,4 @@
-import { ComponentState } from "../../../containers/UserContainer";
+import { UserComponentState } from "../../../containers/UserContainer";
 import {
   AllPostState,
   commitState,
@@ -14,12 +14,13 @@ import {
 } from "./PostItems";
 
 type PostListProps = {
-  component: ComponentState;
+  component: UserComponentState;
   allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
+  readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
 };
@@ -31,6 +32,7 @@ const PostList = ({
   gistPosts,
   imagePosts,
   commits,
+  readOnly,
   onClickModal,
   onClickDelete,
 }: PostListProps) => {
@@ -40,6 +42,7 @@ const PostList = ({
         <AllPostItems
           postItems={allPosts}
           commits={commits}
+          readOnly={readOnly}
           onClickModal={onClickModal}
           onClickDelete={onClickDelete}
         />
@@ -47,17 +50,20 @@ const PostList = ({
         <PushPostItems
           pushPostItems={pushPosts}
           commits={commits}
+          readOnly={readOnly}
           onClickModal={onClickModal}
           onClickDelete={onClickDelete}
         />
       ) : component === "gist" ? (
         <GistPostItems
           gistPostItems={gistPosts}
+          readOnly={readOnly}
           onClickDelete={onClickDelete}
         />
       ) : component === "image" ? (
         <ImagePostItems
           imagePostItems={imagePosts}
+          readOnly={readOnly}
           onClickDelete={onClickDelete}
         />
       ) : (

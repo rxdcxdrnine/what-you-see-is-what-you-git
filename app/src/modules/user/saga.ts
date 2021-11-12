@@ -9,7 +9,11 @@ import {
 import { createAction } from "@reduxjs/toolkit";
 import { History } from "history";
 
-import UserApi, { PostSearchCondition, PostUpdate } from "../../api/user";
+import UserApi, {
+  PostSearchCondition,
+  PostUpdate,
+  UserSearchCondition,
+} from "../../api/user";
 import {
   updateUserError,
   updateProfile,
@@ -29,7 +33,9 @@ import {
   ProfileState,
 } from ".";
 
-export const fetchUserProfile = createAction<number>("user/fetchUserProfile");
+export const fetchUserProfile = createAction<UserSearchCondition>(
+  "user/fetchUserProfile"
+);
 
 function* getUserProfile(action: ReturnType<typeof fetchUserProfile>) {
   try {

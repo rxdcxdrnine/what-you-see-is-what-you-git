@@ -5,14 +5,15 @@ import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
 import { AllPostItems } from "./PostItems";
 
 import "react-day-picker/lib/style.css";
-import { ComponentState } from "../../../containers/UserContainer";
+import { UserComponentState } from "../../../containers/UserContainer";
 
 type HeatmapProps = {
   userId: number;
-  component: ComponentState;
+  component: UserComponentState;
   heatmap: HeatmapState;
   allPosts: AllPostState[];
   commits: commitState[];
+  readOnly: boolean;
   onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
@@ -33,6 +34,7 @@ const Heatmap = ({
   heatmap,
   allPosts,
   commits,
+  readOnly,
   onClickModal,
   onClickDay,
   onClickDelete,
@@ -90,6 +92,7 @@ const Heatmap = ({
         <AllPostItems
           postItems={allPosts}
           commits={commits}
+          readOnly={readOnly}
           onClickModal={onClickModal}
           onClickDelete={onClickDelete}
         />

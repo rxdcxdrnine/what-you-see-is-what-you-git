@@ -9,6 +9,7 @@ import {
 import { createAction } from "@reduxjs/toolkit";
 import { updateFollowers, updateFollowings, updateFollowError } from ".";
 import FollowApi, { FollowSave, FollowDelete } from "../../api/follow";
+import { UserSearchCondition } from "../../api/user";
 
 export const fetchFollowings = createAction<number>("follow/fetchFollowings");
 
@@ -50,7 +51,9 @@ function* getFollowersSaga() {
   yield takeEvery(fetchFollowers.type, getFollowers);
 }
 
-export const searchUsers = createAction<string>("follow/searchFollowings");
+export const searchUsers = createAction<UserSearchCondition>(
+  "follow/searchFollowings"
+);
 
 function* getUsers(action: ReturnType<typeof searchUsers>) {
   try {

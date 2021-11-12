@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
+import { resetFollow } from "../modules/follow";
 import {
   fetchGistPosts,
   fetchImagePosts,
@@ -12,8 +12,9 @@ import {
   fetchUserProfile,
   removePost,
 } from "../modules/user/saga";
+import { useAppDispatch, useAppSelector } from "../utils/react-gist/hook";
 
-export type ComponentState =
+export type UserComponentState =
   | "all"
   | "push"
   | "gist"
@@ -21,27 +22,31 @@ export type ComponentState =
   | "day"
   | "heatmap";
 
-const UserContainer = () => {
-  const profile = useSelector((state: RootState) => state.user.profile);
-  const { allPosts, pushPosts, gistPosts, imagePosts, commits } = useSelector(
-    (state: RootState) => state.user.posts
-  );
-  const heatmap = useSelector((state: RootState) => state.user.heatmap);
-  const dispatch = useDispatch();
+export type UserContainerProps = {
+  userId: number | null;
+};
 
-  const [component, setComponent] = useState<ComponentState>("heatmap");
+const UserContainer = ({ userId }: UserContainerProps) => {
+  const login = useAppSelector((state: RootState) => state.user.login);
+  const profile = useAppSelector((state: RootState) => state.user.profile);
+  const { allPosts, pushPosts, gistPosts, imagePosts, commits } =
+    useAppSelector((state: RootState) => state.user.posts);
+  const heatmap = useAppSelector((state: RootState) => state.user.heatmap);
+  const dispatch = useAppDispatch();
+
+  const [component, setComponent] = useState<UserComponentState>("heatmap");
+  const [readOnly, setReadonly] = useState<boolean>(false);
 
   useEffect(() => {
-    const githubId: number = parseInt(
-      process.env.REACT_APP_SAMPLE_GITHUB_ID as string
-    );
+    const current = userId ? userId : login.userId;
+    dispatch(fetchUserProfile({ userId: current }));
+    dispatch(fetchPostCount(current));
+    setReadonly(login.userId !== userId);
 
-    dispatch(fetchUserProfile(githubId));
-    dispatch(fetchPostCount(profile.userId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userId, login.userId]);
 
-  const onClickComponent = (component: ComponentState) => {
+  const onClickComponent = (component: UserComponentState) => {
     setComponent(component);
 
     if (component === "all") {
@@ -72,6 +77,10 @@ const UserContainer = () => {
     }
   };
 
+  const onClickFollow = () => {
+    dispatch(resetFollow());
+  };
+
   return (
     <User
       profile={profile}
@@ -82,10 +91,12 @@ const UserContainer = () => {
       imagePosts={imagePosts}
       commits={commits}
       heatmap={heatmap}
+      readOnly={readOnly}
       onClickDay={onClickDay}
       onClickModal={onClickModal}
       onClickComponent={onClickComponent}
       onClickDelete={onClickDelete}
+      onClickFollow={onClickFollow}
     />
   );
 };

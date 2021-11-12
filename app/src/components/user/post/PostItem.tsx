@@ -16,6 +16,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 type PostItemProps = {
   allPostItem: AllPostState;
   commits: commitState[];
+  readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
 };
@@ -23,6 +24,7 @@ type PostItemProps = {
 export const AllPostItem = ({
   allPostItem,
   commits,
+  readOnly,
   onClickModal,
   onClickDelete,
 }: PostItemProps) => {
@@ -32,17 +34,20 @@ export const AllPostItem = ({
         <PushPostItem
           pushPostItem={allPostItem}
           commits={commits}
+          readOnly={readOnly}
           onClickModal={onClickModal}
           onClickDelete={onClickDelete}
         />
       ) : allPostItem.type === "GIST" ? (
         <GistPostItem
           gistPostItem={allPostItem}
+          readOnly={readOnly}
           onClickDelete={onClickDelete}
         />
       ) : allPostItem.type === "IMAGE" ? (
         <ImagePostItem
           imagePostItem={allPostItem}
+          readOnly={readOnly}
           onClickDelete={onClickDelete}
         />
       ) : null}
@@ -53,6 +58,7 @@ export const AllPostItem = ({
 type PushPostItemProps = {
   pushPostItem: AllPostState | PushPostState;
   commits: commitState[];
+  readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
 };
@@ -60,6 +66,7 @@ type PushPostItemProps = {
 export const PushPostItem = ({
   pushPostItem,
   commits,
+  readOnly,
   onClickModal,
   onClickDelete,
 }: PushPostItemProps) => {
@@ -98,7 +105,11 @@ export const PushPostItem = ({
         <Commit commits={commits} onCloseModal={onCloseModal} />
       </Modal>
       <div key={pushPostItem.postId} className="post-wrapper">
-        <PostItemTitle postItem={pushPostItem} onClickDelete={onClickDelete} />
+        <PostItemTitle
+          postItem={pushPostItem}
+          readOnly={readOnly}
+          onClickDelete={onClickDelete}
+        />
         <div
           className="modal-click-area"
           onClick={() => onOpenModal(pushPostItem.postId)}
@@ -117,17 +128,23 @@ export const PushPostItem = ({
 
 type GistPostItemProps = {
   gistPostItem: AllPostState | GistPostState;
+  readOnly: boolean;
   onClickDelete: (postId: number) => void;
 };
 
 export const GistPostItem = ({
   gistPostItem,
+  readOnly,
   onClickDelete,
 }: GistPostItemProps) => {
   return (
     <>
       <div key={gistPostItem.postId} className="post-wrapper">
-        <PostItemTitle postItem={gistPostItem} onClickDelete={onClickDelete} />
+        <PostItemTitle
+          postItem={gistPostItem}
+          readOnly={readOnly}
+          onClickDelete={onClickDelete}
+        />
         <Gist id={gistPostItem.gistId} />
         <div className="viewer-wrapper">
           <Viewer initialValue={gistPostItem.markdown} />
@@ -139,6 +156,7 @@ export const GistPostItem = ({
 
 type ImagePostItemProps = {
   imagePostItem: AllPostState | ImagePostState;
+  readOnly: boolean;
   onClickDelete: (postId: number) => void;
 };
 
@@ -146,11 +164,16 @@ const baseUrl: string = process.env.REACT_APP_IMAGE_URL as string;
 
 export const ImagePostItem = ({
   imagePostItem,
+  readOnly,
   onClickDelete,
 }: ImagePostItemProps) => {
   return (
     <div key={imagePostItem.postId} className="post-wrapper">
-      <PostItemTitle postItem={imagePostItem} onClickDelete={onClickDelete} />
+      <PostItemTitle
+        postItem={imagePostItem}
+        readOnly={readOnly}
+        onClickDelete={onClickDelete}
+      />
       <div className="image-wrapper">
         <img
           className="image-post"
@@ -167,28 +190,40 @@ export const ImagePostItem = ({
 
 type PostItemTitleProps = {
   postItem: PushPostState | GistPostState | ImagePostState;
+  readOnly: boolean;
   onClickDelete: (postid: number) => void;
 };
 
-const PostItemTitle = ({ postItem, onClickDelete }: PostItemTitleProps) => {
+const PostItemTitle = ({
+  postItem,
+  readOnly,
+  onClickDelete,
+}: PostItemTitleProps) => {
   return (
     <div className="post-title">
       <h2>{postItem.regDate.split("T")[0]}</h2>
-      <div className="post-modify">
-        <div>
-          <Link
-            to={{ pathname: `/update/${postItem.postId}` }}
-            style={{ color: "#000000" }}
-          >
-            <MdEdit className="post-modify-button" size="20" />
-          </Link>
-          <MdDelete
-            className="post-modify-button"
-            onClick={() => onClickDelete(postItem.postId)}
-            size="20"
-          />
+      {readOnly ? (
+        <div></div>
+      ) : (
+        <div className="post-modify">
+          <div>
+            <Link
+              to={{
+                pathname: `/update`,
+                state: { postId: postItem.postId },
+              }}
+              style={{ color: "#000000" }}
+            >
+              <MdEdit className="post-modify-button" size="20" />
+            </Link>
+            <MdDelete
+              className="post-modify-button"
+              onClick={() => onClickDelete(postItem.postId)}
+              size="20"
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

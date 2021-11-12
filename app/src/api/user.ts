@@ -11,6 +11,12 @@ import {
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
 
+export type UserSearchCondition = {
+  userId?: number;
+  githubId?: number;
+  userName?: string;
+};
+
 export type PostSearchCondition = {
   userId: number;
   regDate?: string;
@@ -23,10 +29,18 @@ export type PostUpdate = {
   };
 };
 
-const fetchUserProfile: (
-  githubId: number
-) => Promise<AxiosResponse<ProfileState>> = (githubId: number) =>
-  axios.get(`${serverUrl}/users?githubId=${githubId}`);
+const fetchUserProfile: ({
+  userId,
+  githubId,
+}: UserSearchCondition) => Promise<AxiosResponse<ProfileState>> = ({
+  userId,
+  githubId,
+}) => {
+  let baseUrl = `${serverUrl}/users`;
+  if (userId) baseUrl += `?userId=${userId}`;
+  if (githubId) baseUrl += `?githubId=${githubId}`;
+  return axios.get(baseUrl);
+};
 
 const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
   (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);

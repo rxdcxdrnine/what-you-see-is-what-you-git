@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Follow from "../components/follow";
 import { RootState } from "../modules";
@@ -10,37 +10,54 @@ import {
   saveFollow,
   searchUsers,
 } from "../modules/follow/saga";
+import { resetUser } from "../modules/user";
 
-const FollowContainer = () => {
+export type FollowComponentState = "" | "search" | "following" | "follower";
+
+type FollowContainerProps = {
+  component: FollowComponentState;
+};
+
+const FollowContainer = ({ component }: FollowContainerProps) => {
+  const login = useSelector((state: RootState) => state.user.login);
+  const profile = useSelector((state: RootState) => state.user.profile);
   const { followings, followers, users } = useSelector(
     (state: RootState) => state.follow
   );
-  const { userId } = useSelector((state: RootState) => state.user.profile);
   const dispatch = useDispatch();
 
-  const [selectedButton, setSelectedButton] = useState<
-    "search" | "following" | "follower"
-  >("search");
+  const [selectedButton, setSelectedButton] =
+    useState<FollowComponentState>("");
   const [searchKey, setSearchKey] = useState<string>("");
+  const [readOnly, setReadonly] = useState<boolean>(false);
 
-  const onClickButton = (e: any) => {
+  useEffect(() => {
+    onClickComponent(component);
+    setReadonly(login.userId !== profile.userId);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile.userId]);
+
+  const onClickComponent = (component: FollowComponentState) => {
     if (selectedButton === "search") {
       dispatch(updateUsers([]));
     }
+    setSelectedButton(component);
 
-    const button: "search" | "following" | "follower" = e.target.name;
-    setSelectedButton(button);
-
-    if (e.target.name === "following") {
-      dispatch(fetchFollowings(userId));
+    if (component === "following") {
+      dispatch(fetchFollowings(profile.userId));
     }
-    if (e.target.name === "follower") {
-      dispatch(fetchFollowers(userId));
+    if (component === "follower") {
+      dispatch(fetchFollowers(profile.userId));
     }
   };
 
-  const onClickSearch = (username: string) => {
-    dispatch(searchUsers(username));
+  const onClickUser = () => {
+    dispatch(resetUser());
+  };
+
+  const onClickSearch = (userName: string) => {
+    dispatch(searchUsers({ userId: profile.userId, userName }));
   };
 
   const onClickAdd = (followingId: number, followerId: number) => {
@@ -57,11 +74,13 @@ const FollowContainer = () => {
       users={users}
       followings={followings}
       followers={followers}
-      userId={userId}
+      userId={profile.userId}
       searchKey={searchKey}
       selectedButton={selectedButton}
-      onClickButton={onClickButton}
+      readOnly={readOnly}
+      onClickComponent={onClickComponent}
       onClickSearch={onClickSearch}
+      onClickUser={onClickUser}
       onClickAdd={onClickAdd}
       onClickRemove={onClickRemove}
       setSearchKey={setSearchKey}

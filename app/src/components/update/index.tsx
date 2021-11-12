@@ -29,7 +29,7 @@ const Update = ({
   return (
     <>
       <div className="update-caution">
-        ** 선택한 PUSH-GIST-IMAGE 는 변경할 수 없습니다.
+        ** 선택한 PUSH / GIST / IMAGE 는 변경할 수 없습니다.
       </div>
       <div className="update-item-container">
         <UpdatePostItem

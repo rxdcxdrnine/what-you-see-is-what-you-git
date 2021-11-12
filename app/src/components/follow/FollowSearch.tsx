@@ -1,5 +1,5 @@
 type FollowSearchProps = {
-  onClickSearch: (username: string) => void;
+  onClickSearch: (userName: string) => void;
   searchKey: string;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
 };

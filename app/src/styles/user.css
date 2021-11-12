@@ -19,6 +19,8 @@
   border-radius: 50%;
   width: 7.5rem;
   height: 7.5rem;
+  line-height: 7.5rem;
+  text-align: center;
 }
 
 .profile-right {
@@ -53,17 +55,6 @@
 
 .count-wrapper {
   text-align: center;
-}
-
-.button {
-  width: 25%;
-  text-align: center;
-  margin: 0.5rem;
-  height: 2.5rem;
-
-  border-radius: 5px;
-  background: #ffffff;
-  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .post-button-container {

@@ -1,16 +1,17 @@
-import { useParams } from "react-router";
-import Layout from "../components/layout";
+import { useLocation } from "react-router";
+import LayoutContainer from "../containers/LayoutContainer";
 import UpdateContainer from "../containers/UpdateContainer";
 
 import "../styles/layout.css";
 
 const UpdateView = () => {
-  const { postId } = useParams<{ postId: string }>();
+  const location = useLocation<{ postId: number }>();
+  const postId = location.state && location.state.postId;
 
   return (
-    <Layout>
-      <UpdateContainer postId={parseInt(postId)} />
-    </Layout>
+    <LayoutContainer>
+      <UpdateContainer postId={postId} />
+    </LayoutContainer>
   );
 };
 

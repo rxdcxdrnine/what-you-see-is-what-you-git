@@ -16,6 +16,7 @@ import {
 type PostItemsProps = {
   postItems: AllPostState[];
   commits: commitState[];
+  readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
 };
@@ -23,6 +24,7 @@ type PostItemsProps = {
 export const AllPostItems = ({
   postItems,
   commits,
+  readOnly,
   onClickModal,
   onClickDelete,
 }: PostItemsProps) => {
@@ -33,6 +35,7 @@ export const AllPostItems = ({
           <AllPostItem
             allPostItem={postItem}
             commits={commits}
+            readOnly={readOnly}
             onClickModal={onClickModal}
             onClickDelete={onClickDelete}
           />
@@ -45,6 +48,7 @@ export const AllPostItems = ({
 type PushPostItemsProps = {
   pushPostItems: PushPostState[];
   commits: commitState[];
+  readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
 };
@@ -52,6 +56,7 @@ type PushPostItemsProps = {
 export const PushPostItems = ({
   pushPostItems,
   commits,
+  readOnly,
   onClickModal,
   onClickDelete,
 }: PushPostItemsProps) => {
@@ -62,6 +67,7 @@ export const PushPostItems = ({
           <PushPostItem
             pushPostItem={pushPostItem}
             commits={commits}
+            readOnly={readOnly}
             onClickModal={onClickModal}
             onClickDelete={onClickDelete}
           />
@@ -73,11 +79,13 @@ export const PushPostItems = ({
 
 type GistPostItemsProps = {
   gistPostItems: GistPostState[];
+  readOnly: boolean;
   onClickDelete: (postId: number) => void;
 };
 
 export const GistPostItems = ({
   gistPostItems,
+  readOnly,
   onClickDelete,
 }: GistPostItemsProps) => {
   return (
@@ -86,6 +94,7 @@ export const GistPostItems = ({
         <div key={gistPostItem.postId}>
           <GistPostItem
             gistPostItem={gistPostItem}
+            readOnly={readOnly}
             onClickDelete={onClickDelete}
           />
         </div>
@@ -96,11 +105,13 @@ export const GistPostItems = ({
 
 type ImagePostItemsProps = {
   imagePostItems: ImagePostState[];
+  readOnly: boolean;
   onClickDelete: (postId: number) => void;
 };
 
 export const ImagePostItems = ({
   imagePostItems,
+  readOnly,
   onClickDelete,
 }: ImagePostItemsProps) => {
   return (
@@ -109,6 +120,7 @@ export const ImagePostItems = ({
         <div key={imagePostItem.postId}>
           <ImagePostItem
             imagePostItem={imagePostItem}
+            readOnly={readOnly}
             onClickDelete={onClickDelete}
           />
         </div>
