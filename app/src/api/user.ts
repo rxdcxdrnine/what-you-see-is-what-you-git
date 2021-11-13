@@ -29,10 +29,14 @@ export type PostUpdate = {
   };
 };
 
+export type UserProfileFetch = ProfileState & {
+  counts: PostCount[];
+};
+
 const fetchUserProfile: ({
   userId,
   githubId,
-}: UserSearchCondition) => Promise<AxiosResponse<ProfileState>> = ({
+}: UserSearchCondition) => Promise<AxiosResponse<UserProfileFetch>> = ({
   userId,
   githubId,
 }) => {
@@ -93,11 +97,11 @@ const deletePost: (postId: number) => Promise<AxiosResponse<void>> = (
 
 const UserApi = {
   fetchUserProfile,
+  fetchPostCount,
   fetchPushPosts,
   fetchGistPosts,
   fetchImagePosts,
   fetchCommits,
-  fetchPostCount,
   fetchAllPosts,
   fetchPost,
   updatePost,

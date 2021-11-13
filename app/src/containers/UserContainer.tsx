@@ -40,7 +40,6 @@ const UserContainer = ({ userId }: UserContainerProps) => {
   useEffect(() => {
     const current = userId ? userId : login.userId;
     dispatch(fetchUserProfile({ userId: current }));
-    dispatch(fetchPostCount(current));
     setReadonly(login.userId !== userId);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

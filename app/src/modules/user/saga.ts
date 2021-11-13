@@ -12,6 +12,7 @@ import { History } from "history";
 import UserApi, {
   PostSearchCondition,
   PostUpdate,
+  UserProfileFetch,
   UserSearchCondition,
 } from "../../api/user";
 import {
@@ -30,7 +31,6 @@ import {
   PostCount,
   AllPostState,
   updateAllPosts,
-  ProfileState,
 } from ".";
 
 export const fetchUserProfile = createAction<UserSearchCondition>(
@@ -43,9 +43,16 @@ function* getUserProfile(action: ReturnType<typeof fetchUserProfile>) {
       UserApi.fetchUserProfile,
       action.payload
     );
-    const userProfile: ProfileState = res.data;
+    const userProfile: UserProfileFetch = res.data;
 
     yield put(updateProfile(userProfile));
+
+    const heatmap: HeatmapState = {};
+    userProfile.counts.forEach(({ date, count }) => {
+      heatmap[date] = count;
+    });
+
+    yield put(updateHeatmap(heatmap));
   } catch (e: any) {
     yield put(updateUserError(e.message));
   }
@@ -146,7 +153,7 @@ export function* getPostCount(action: ReturnType<typeof fetchPostCount>) {
 
     const postCounts: PostCount[] = res.data;
 
-    let heatmap: HeatmapState = {};
+    const heatmap: HeatmapState = {};
     postCounts.forEach(({ date, count }) => {
       heatmap[date] = count;
     });
