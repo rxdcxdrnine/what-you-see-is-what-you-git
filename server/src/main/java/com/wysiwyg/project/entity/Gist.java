@@ -18,8 +18,8 @@ public class Gist extends Post {
     private String gistDescription;
 
     @Builder
-    public Gist(String gistId, String gistDescription, LocalDateTime uploadDate, String markdown, Long userId) {
-        super(uploadDate, markdown, userId);
+    public Gist(String gistId, String gistDescription, LocalDateTime uploadDate, String markdown, User user) {
+        super(uploadDate, markdown, user);
         this.gistId = gistId;
         this.gistDescription = gistDescription;
     }

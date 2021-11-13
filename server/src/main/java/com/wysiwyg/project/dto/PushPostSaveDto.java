@@ -1,6 +1,7 @@
 package com.wysiwyg.project.dto;
 
 import com.wysiwyg.project.entity.Push;
+import com.wysiwyg.project.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,9 @@ public class PushPostSaveDto {
     private LocalDateTime uploadDate;
     private String markdown;
 
-    public Push toEntity() {
+    public Push toEntity(User user) {
         return Push.builder()
-                .userId(userId)
+                .user(user)
                 .pushId(pushId)
                 .repoName(repoName)
                 .branchName(branchName)

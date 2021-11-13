@@ -22,13 +22,22 @@ class FollowServiceTest {
     @Autowired
     private FollowService followService;
 
+    private User createUser(Long githubId, String userName, String profileName, String avatarUrl) {
+        return User.builder()
+                .githubId(githubId)
+                .userName(userName)
+                .profileName(profileName)
+                .avatarUrl(avatarUrl)
+                .build();
+    }
+
     @Test
     @Transactional
     public void findFollowingTest() {
-        User userA = new User("rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
-        User userB = new User("handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
-        User userC = new User("beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
-        User userD = new User("gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
+        User userA = createUser(50660684L, "rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
+        User userB = createUser(45425838L, "handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
+        User userC = createUser(32982728L, "beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
+        User userD = createUser(43772472L, "gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
 
         userRepository.save(userA);
         userRepository.save(userB);
@@ -51,10 +60,10 @@ class FollowServiceTest {
     @Test
     @Transactional
     public void findFollowerTest() {
-        User userA = new User("rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
-        User userB = new User("handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
-        User userC = new User("beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
-        User userD = new User("gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
+        User userA = createUser(50660684L, "rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
+        User userB = createUser(45425838L, "handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
+        User userC = createUser(32982728L, "beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
+        User userD = createUser(43772472L, "gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
 
         userRepository.save(userA);
         userRepository.save(userB);

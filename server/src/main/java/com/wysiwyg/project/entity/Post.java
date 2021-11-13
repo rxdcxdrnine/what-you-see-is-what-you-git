@@ -28,15 +28,16 @@ public abstract class Post extends BaseEntity {
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    public Post(LocalDateTime uploadDate, String markdown, Long userId) {
+    public Post(LocalDateTime uploadDate, String markdown, User user) {
         this.uploadDate = uploadDate;
         this.markdown = markdown;
-        this.userId = userId;
+        this.user = user;
+    }
+
+    public void setMarkdown(String markdown) {
+        this.markdown = markdown;
     }
 }

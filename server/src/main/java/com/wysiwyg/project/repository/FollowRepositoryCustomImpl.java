@@ -5,6 +5,7 @@ import com.wysiwyg.project.dto.FollowFetchDto;
 import com.wysiwyg.project.dto.FollowSaveDto;
 import com.wysiwyg.project.dto.QFollowFetchDto;
 import com.wysiwyg.project.entity.Follow;
+import com.wysiwyg.project.entity.QFollow;
 import com.wysiwyg.project.entity.QUser;
 import com.wysiwyg.project.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,12 @@ public class FollowRepositoryCustomImpl implements FollowRepositoryCustom {
 
         Follow follow = dto.toEntity(following, follower);
         em.persist(follow);
+
+        following.addFollowing(follow);
+        follower.addFollower(follow);
+
+        em.persist(following);
+        em.persist(follower);
     }
 
     @Override
@@ -52,8 +59,31 @@ public class FollowRepositoryCustomImpl implements FollowRepositoryCustom {
     }
 
     @Override
-    public List<FollowFetchDto> findFollowersByFollowingId(Long followingId) {
+    public void delete(Long followId) {
         QUser followingUser = new QUser("following");
+        QUser followerUser = new QUser("follower");
+
+        Follow follow = queryFactory
+                .selectFrom(QFollow.follow)
+                .join(QFollow.follow.following, followingUser).fetchJoin()
+                .join(QFollow.follow.follower, followerUser).fetchJoin()
+                .where(QFollow.follow.followId.eq(followId))
+                .fetchOne();
+
+        User following = follow.getFollowing();
+        User follower = follow.getFollower();
+
+        em.remove(follow);
+
+        following.deleteFollowing(follow);
+        follower.deleteFollower(follow);
+
+        em.persist(following);
+        em.persist(follower);
+    }
+
+    @Override
+    public List<FollowFetchDto> findFollowersByFollowingId(Long followingId) {
         QUser followerUser = new QUser("follower");
 
         return queryFactory
@@ -65,16 +95,14 @@ public class FollowRepositoryCustomImpl implements FollowRepositoryCustom {
                         followerUser.avatarUrl
                 ))
                 .from(follow)
-                .join(follow.following, followingUser)
                 .join(follow.follower, followerUser)
-                .where(followingUser.userId.eq(followingId))
+                .where(follow.following.userId.eq(followingId))
                 .fetch();
     }
 
     @Override
     public List<FollowFetchDto> findFollowingsByFollowerId(Long followerId) {
         QUser followingUser = new QUser("following");
-        QUser followerUser = new QUser("follower");
 
         return queryFactory
                 .select(new QFollowFetchDto(
@@ -86,8 +114,7 @@ public class FollowRepositoryCustomImpl implements FollowRepositoryCustom {
                 ))
                 .from(follow)
                 .join(follow.following, followingUser)
-                .join(follow.follower, followerUser)
-                .where(followerUser.userId.eq(followerId))
+                .where(follow.follower.userId.eq(followerId))
                 .fetch();
     }
 }

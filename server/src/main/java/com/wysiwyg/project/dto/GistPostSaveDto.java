@@ -1,6 +1,7 @@
 package com.wysiwyg.project.dto;
 
 import com.wysiwyg.project.entity.Gist;
+import com.wysiwyg.project.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,9 +16,9 @@ public class GistPostSaveDto {
     private LocalDateTime uploadDate;
     private String markdown;
 
-    public Gist toEntity() {
+    public Gist toEntity(User user) {
         return Gist.builder()
-                .userId(userId)
+                .user(user)
                 .gistId(gistId)
                 .gistDescription(gistDescription)
                 .uploadDate(uploadDate)

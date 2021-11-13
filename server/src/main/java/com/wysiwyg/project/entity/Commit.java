@@ -30,11 +30,11 @@ public class Commit extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime uploadDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Push push;
 
-    @OneToMany(mappedBy = "commit")
+    @OneToMany(mappedBy = "commit", cascade = CascadeType.ALL)
     private List<CommitFile> commitFiles = new ArrayList<>();
 
     @Builder()

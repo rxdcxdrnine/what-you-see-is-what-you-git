@@ -3,6 +3,7 @@ package com.wysiwyg.project.service;
 import com.wysiwyg.project.dto.FollowFetchDto;
 import com.wysiwyg.project.dto.FollowSaveDto;
 import com.wysiwyg.project.dto.UserFetchDto;
+import com.wysiwyg.project.dto.UserSearchCondition;
 import com.wysiwyg.project.entity.Follow;
 import com.wysiwyg.project.entity.User;
 import com.wysiwyg.project.repository.FollowRepository;
@@ -18,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FollowService {
 
-    private final EntityManager em;
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
@@ -37,12 +37,12 @@ public class FollowService {
         return followRepository.findFollowingsByFollowerId(userId);
     }
 
-    public List<UserFetchDto> findUserByUserName(String userName) {
-        return userRepository.searchByUserName(userName);
+    public List<UserFetchDto> searchUsers(UserSearchCondition condition) {
+        return userRepository.searchByUserName(condition);
     }
 
     @Transactional
     public void delete(Long followId) {
-        followRepository.deleteById(followId);
+        followRepository.delete(followId);
     }
 }

@@ -1,6 +1,7 @@
 package com.wysiwyg.project.dto;
 
 import com.wysiwyg.project.entity.Image;
+import com.wysiwyg.project.entity.User;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,9 +11,9 @@ public class ImagePostSaveDto {
     private MultipartFile image;
     private String markdown;
 
-    public Image toEntity(String filename) {
+    public Image toEntity(String filename, User user) {
         return Image.builder()
-                .userId(userId)
+                .user(user)
                 .imageFilename(filename)
                 .markdown(markdown)
                 .build();

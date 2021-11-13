@@ -2,10 +2,7 @@ package com.wysiwyg.project.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +20,12 @@ public class Push extends Post {
 
     private String branchName;
 
-    @OneToMany(mappedBy = "push")
+    @OneToMany(mappedBy = "push", cascade = CascadeType.ALL)
     private List<Commit> commits = new ArrayList<>();
 
     @Builder
-    public Push(Long pushId, String repoName, String branchName, LocalDateTime uploadDate, String markdown, Long userId) {
-        super(uploadDate, markdown, userId);
+    public Push(Long pushId, String repoName, String branchName, LocalDateTime uploadDate, String markdown, User user) {
+        super(uploadDate, markdown, user);
         this.pushId = pushId;
         this.repoName = repoName;
         this.branchName = branchName;

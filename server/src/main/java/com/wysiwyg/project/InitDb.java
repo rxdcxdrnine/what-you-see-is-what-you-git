@@ -32,65 +32,91 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit() {
-            User userA = createUser("rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
-            User userB = createUser("handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
-            User userC = createUser("beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
-            User userD = createUser("gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
+            // user
+            User userA = createUser(50660684L, "rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
+            User userB = createUser(45425838L, "handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
+            User userC = createUser(32982728L, "beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
+            User userD = createUser(43772472L, "gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
 
             em.persist(userA);
             em.persist(userB);
             em.persist(userC);
             em.persist(userD);
 
-            Push push = createPush(userA.getUserId(), userA.getUserName());
-            Gist gist = createGist(userA.getUserId(), userA.getUserName());
-            Image image = createImage(userA.getUserId());
+            // post (userA)
+            Push push_userA = createPush(userA);
+            Gist gist_userA = createGist(userA);
+            Image image_userA = createImage(userA, "sample_image.jpg");
 
-            em.persist(push);
-            em.persist(gist);
-            em.persist(image);
+            if(push_userA != null) em.persist(push_userA);
+            if(gist_userA != null) em.persist(gist_userA);
+            if(image_userA != null) em.persist(image_userA);
+
+            // post (userB)
+            Push push_userB = createPush(userB);
+            Gist gist_userB = createGist(userB);
+            Image image_userB = createImage(userB, "sample_image2.jpg");
+
+            if(push_userB != null) em.persist(push_userB);
+            if(gist_userB != null) em.persist(gist_userB);
+            if(image_userB != null) em.persist(image_userB);
         }
 
-        private User createUser(String userName, String profileName, String avatarUrl) {
+        private User createUser(Long githubId, String userName, String profileName, String avatarUrl) {
             return User.builder()
+                    .githubId(githubId)
                     .userName(userName)
                     .profileName(profileName)
                     .avatarUrl(avatarUrl)
                     .build();
         }
 
-        private Push createPush(Long userId, String username) {
-            List<GithubPushEvent> githubPushEvents = githubClient.getGithubPushes(username);
-            GithubPushEvent pushEvent = githubPushEvents.get(0);
+        private Push createPush(User user) {
+            List<GithubPushEvent> githubPushEvents = githubClient.getGithubPushes(user.getUserName());
+            if (githubPushEvents.size() > 0) {
+                GithubPushEvent pushEvent = githubPushEvents.get(0);
 
-            return Push.builder()
-                    .pushId(pushEvent.getPayload().getPushId())
-                    .repoName(pushEvent.getRepo().getName())
-                    .branchName(pushEvent.getPayload().getRef())
-                    .uploadDate(pushEvent.getCreatedAt())
-                    .markdown("# sample")
-                    .userId(userId)
-                    .build();
+                return Push.builder()
+                        .pushId(pushEvent.getPayload().getPushId())
+                        .repoName(pushEvent.getRepo().getName())
+                        .branchName(pushEvent.getPayload().getRef())
+                        .uploadDate(pushEvent.getCreatedAt())
+                        .markdown("# sample")
+                        .user(user)
+                        .build();
+            }
+
+            return null;
         }
 
-        private Gist createGist(Long userId, String username) {
-            List<GithubGist> githubGists = githubClient.getGithubGists(username);
-            GithubGist githubGist = githubGists.get(0);
+        private Gist createGist(User user) {
+            List<GithubGist> githubGists = githubClient.getGithubGists(user.getUserName());
+            if (githubGists.size() > 0) {
+                GithubGist githubGist = githubGists.get(0);
 
-            return Gist.builder()
-                    .gistId(githubGist.getId())
-                    .gistDescription(githubGist.getDescription())
-                    .uploadDate(githubGist.getCreatedAt())
-                    .markdown("# sample")
-                    .userId(userId)
-                    .build();
+                return Gist.builder()
+                        .gistId(githubGist.getId())
+                        .gistDescription(githubGist.getDescription())
+                        .uploadDate(githubGist.getCreatedAt())
+                        .markdown("# sample")
+                        .user(user)
+                        .build();
+            }
+            return null;
         }
 
-        private Image createImage(Long userId) {
+        private Image createImage(User user, String imageFilename) {
             return Image.builder()
-                    .imageFilename("sample_image.jpg")
+                    .imageFilename(imageFilename)
                     .markdown("# sample")
-                    .userId(userId)
+                    .user(user)
+                    .build();
+        }
+
+        private Follow createFollow(User following, User follower) {
+            return Follow.builder()
+                    .following(following)
+                    .follower(follower)
                     .build();
         }
     }
