@@ -13,6 +13,7 @@ build/
 
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -65,6 +66,7 @@ out/
 
 ### static image ###
 images/
+origins/
 
 # models
 
@@ -75,4 +77,7 @@ images/
 
 # python
 venv/
+wsl/
 __pycache__/
+
+dump.rdb
