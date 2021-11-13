@@ -37,7 +37,7 @@ def draw_boxes(boxes, classes, labels, image):
 
 
 def infer(
-    file, model_name="fasterrcnn_torchscript", model_version="1", url="localhost:8001"
+    image, model_name="fasterrcnn_torchscript", model_version="1", url="localhost:8001"
 ):
     try:
         triton_client = grpcclient.InferenceServerClient(url=url)
@@ -52,7 +52,6 @@ def infer(
         ]
     )
 
-    image = Image.open(file)
     image_rgb = image.convert("RGB")
     image_arr = transform(image_rgb).cpu().detach().numpy()
 

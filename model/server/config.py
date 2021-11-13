@@ -15,5 +15,10 @@ database = {
 }
 
 image_url = os.getenv("IMAGE_URL")
+origin_url = os.getenv("ORIGIN_URL")
 
-database = create_engine(url.URL(**database))
+engine = create_engine(url.URL(**database))
+
+broker_url = os.getenv("BROKER_URL")
+celery_result_backend = os.getenv("CELERY_RESULT_BACKEND")
+

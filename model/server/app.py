@@ -1,11 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
-from sqlalchemy import create_engine, text
 
 import config
-from views.image_view import create_endpoints
+from views import create_endpoints
 from services import ImageService
-from repositories.image_dao import ImageDao
+from repositories import ImageDao
 
 
 class Services:

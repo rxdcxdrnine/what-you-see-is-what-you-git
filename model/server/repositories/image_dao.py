@@ -4,13 +4,13 @@ from sqlalchemy.sql.expression import text
 
 class ImageDao:
     def __init__(self, config):
-        self.database = config.database
+        self.engine = config.engine
 
     def save_image_post(self, image_post):
         image_post["regDate"] = datetime.now()
         image_post["modDate"] = datetime.now()
 
-        self.database.execute(
+        self.engine.execute(
             text(
                 """
             INSERT INTO post (
@@ -23,7 +23,7 @@ class ImageDao:
         ) VALUES (
             'IMAGE',
         	:userId,
-            :imageFilename,
+            :filename,
             :markdown,
             :regDate,
             :modDate
