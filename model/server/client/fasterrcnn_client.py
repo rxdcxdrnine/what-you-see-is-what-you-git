@@ -7,7 +7,7 @@ from PIL import Image
 import tritonclient.grpc as grpcclient
 import torchvision.transforms as transforms
 
-from coco_names import COCO_NAMES
+from .coco_names import COCO_NAMES
 
 
 DETECTION_THRESHOLD = 0.8
@@ -34,6 +34,50 @@ def draw_boxes(boxes, classes, labels, image):
             lineType=cv2.LINE_AA,
         )
     return image
+
+
+def infer(
+    file, model_name="fasterrcnn_torchscript", model_version="1", url="localhost:8001"
+):
+    try:
+        triton_client = grpcclient.InferenceServerClient(url=url)
+    except Exception as e:
+        print("channel creation failed: " + str(e))
+        sys.exit()
+
+    # transform image to numpy array
+    transform = transforms.Compose(
+        [
+            transforms.ToTensor(),
+        ]
+    )
+
+    image = Image.open(file)
+    image_rgb = image.convert("RGB")
+    image_arr = transform(image_rgb).cpu().detach().numpy()
+
+    # add image type to input
+    inputs = []
+    inputs.append(grpcclient.InferInput("IMAGE__0", image_arr.shape, "FP32"))
+
+    # set image data to input
+    inputs[0].set_data_from_numpy(image_arr)
+
+    # Test with no outputs
+    results = triton_client.infer(
+        model_name=model_name, model_version=model_version, inputs=inputs
+    )
+
+    # Get the output arrays from the results
+    pred_bboxes = results.as_numpy("BOXES__0")
+    pred_labels = results.as_numpy("LABELS__1")
+    pred_scores = results.as_numpy("SCORES__2")
+
+    boxes = pred_bboxes[pred_scores >= DETECTION_THRESHOLD].astype(np.int32)
+    classes = [COCO_NAMES[i] for i in pred_labels]
+
+    result = draw_boxes(boxes, classes, pred_labels, image_rgb)
+    return result
 
 
 if __name__ == "__main__":
