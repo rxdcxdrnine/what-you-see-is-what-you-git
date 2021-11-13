@@ -22,6 +22,6 @@ public class UserController {
         condition.setUserId(userId);
         condition.setGithubId(githubId);
 
-        return userService.searchById(condition);
+        return userService.searchByIdWithPostCounts(condition);
     }
 }

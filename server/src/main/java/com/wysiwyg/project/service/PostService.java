@@ -1,9 +1,6 @@
 package com.wysiwyg.project.service;
 
-import com.wysiwyg.project.dto.PostCountDto;
-import com.wysiwyg.project.dto.PostFetchDto;
-import com.wysiwyg.project.dto.PostSearchCondition;
-import com.wysiwyg.project.dto.PostUpdateDto;
+import com.wysiwyg.project.dto.*;
 import com.wysiwyg.project.entity.Post;
 import com.wysiwyg.project.repository.PostRepository;
 import com.wysiwyg.project.repository.PostRepositoryCustomImpl;
@@ -25,8 +22,8 @@ public class PostService {
         return postRepository.searchByPostId(postId);
     }
 
-    public List<PostCountDto> countByDate(Long userId) {
-        return postRepository.countByDate(userId);
+    public List<PostCountDto> countByDate(UserSearchCondition condition) {
+        return postRepository.countByDate(condition);
     }
 
     public List<PostFetchDto> searchByUserId(PostSearchCondition condition) {

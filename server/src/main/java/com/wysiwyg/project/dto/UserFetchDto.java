@@ -3,6 +3,8 @@ package com.wysiwyg.project.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserFetchDto {
 
@@ -14,6 +16,8 @@ public class UserFetchDto {
     private Integer dayNum;
     private Integer followingNum;
     private Integer followerNum;
+
+    private List<PostCountDto> counts;
 
     @QueryProjection
     public UserFetchDto(Long userId, String userName, String profileName, String avatarUrl) {

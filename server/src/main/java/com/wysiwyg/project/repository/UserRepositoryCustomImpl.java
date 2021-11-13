@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.wysiwyg.project.dto.QPostCountDto;
 import com.wysiwyg.project.dto.QUserFetchDto;
 import com.wysiwyg.project.dto.UserFetchDto;
 import com.wysiwyg.project.dto.UserSearchCondition;
@@ -61,16 +62,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         githubIdEq(condition.getGithubId()))
                 .fetchOne();
 
-        List<Tuple> tuples = queryFactory
-                .select(formattedDate, post.postId)
-                .from(post)
-                .join(post.user, user)
-                .where(userIdEq(condition.getUserId()),
-                        githubIdEq(condition.getGithubId()))
-                .groupBy(formattedDate)
-                .fetch();
-
-        dto.setDayNum(tuples.size());
         return dto;
     }
 

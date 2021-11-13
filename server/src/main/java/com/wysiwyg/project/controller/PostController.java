@@ -82,6 +82,9 @@ public class PostController {
 
     @GetMapping("/count")
     public List<PostCountDto> fetchPostCount(@RequestParam(required = true) Long userId) {
-        return postService.countByDate(userId);
+        UserSearchCondition condition = new UserSearchCondition();
+        condition.setUserId(userId);
+
+        return postService.countByDate(condition);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.wysiwyg.project.entity.QPost.*;
+import static com.wysiwyg.project.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,11 +33,12 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .fetchOne();
     }
 
-    public List<PostCountDto> countByDate(Long userId) {
+    public List<PostCountDto> countByDate(UserSearchCondition condition) {
         return queryFactory
                 .select(new QPostCountDto(formattedDate, post.count()))
                 .from(post)
-                .where(post.user.userId.eq(userId))
+                .where(userIdEq(condition.getUserId()),
+                        githubIdEq(condition.getGithubId()))
                 .groupBy(formattedDate)
                 .fetch();
     }
@@ -54,4 +56,13 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private BooleanExpression regDateEq(String regDate) {
         return regDate == null ? null : formattedDate.eq(regDate);
     }
+
+    private BooleanExpression userIdEq(Long userId) {
+        return userId == null ? null : user.userId.eq(userId);
+    }
+
+    private BooleanExpression githubIdEq(Long githubId) {
+        return githubId == null ? null : user.githubId.eq(githubId);
+    }
+
 }
