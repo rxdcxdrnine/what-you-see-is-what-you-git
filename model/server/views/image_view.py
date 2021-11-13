@@ -12,10 +12,10 @@ def create_endpoints(app, services, config):
     def send_file(filename):
         return send_from_directory(image_url, filename)
 
-    @app.route("/images", methods=["POST"])
+    @app.route("/posts/image", methods=["POST"])
     def image():
         image_post = request.form.to_dict()
         image_post["image"] = request.files.get("image")
         image_service.save_image_post(image_post)
 
-        return jsonify()
+        return jsonify(success=True)

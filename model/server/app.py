@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from sqlalchemy import create_engine, text
 
 import config
@@ -13,6 +14,7 @@ class Services:
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
 
     # repository
     image_dao = ImageDao(config)
