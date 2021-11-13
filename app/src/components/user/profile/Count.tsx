@@ -1,25 +1,45 @@
+import { Link } from "react-router-dom";
+import { UserComponentState } from "../../../containers/UserContainer";
 import { ProfileState } from "../../../modules/user";
 
 type CountProps = {
   profile: ProfileState;
+  onClickComponent: (component: UserComponentState) => void;
+  onClickFollow: () => void;
 };
 
-const Count = ({ profile }: CountProps) => {
+const Count = ({ profile, onClickComponent, onClickFollow }: CountProps) => {
   return (
     <>
       <div className="count-container">
-        <div className="count-wrapper">
+        <div
+          className="count-wrapper"
+          onClick={() => onClickComponent("heatmap")}
+          style={{ cursor: "pointer" }}
+        >
           <h4>DAYS</h4>
           <p>{profile.dayNum}</p>
         </div>
-        <div className="count-wrapper">
-          <h4>FOLLOWINGS</h4>
-          <p>{profile.followingNum}</p>
-        </div>
-        <div className="count-wrapper">
-          <h4>FOLLOWERS</h4>
-          <p>{profile.followerNum}</p>
-        </div>
+        <Link
+          to={{ pathname: "/follow", state: { component: "following" } }}
+          onClick={() => onClickFollow()}
+          className="text-link"
+        >
+          <div className="count-wrapper">
+            <h4>FOLLOWINGS</h4>
+            <p>{profile.followingNum}</p>
+          </div>
+        </Link>
+        <Link
+          to={{ pathname: "/follow", state: { component: "follower" } }}
+          onClick={() => onClickFollow()}
+          className="text-link"
+        >
+          <div className="count-wrapper">
+            <h4>FOLLOWERS</h4>
+            <p>{profile.followerNum}</p>
+          </div>
+        </Link>
       </div>
     </>
   );

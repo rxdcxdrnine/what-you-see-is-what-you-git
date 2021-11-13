@@ -1,4 +1,4 @@
-import { ComponentState } from "../../../containers/UserContainer";
+import { UserComponentState } from "../../../containers/UserContainer";
 import {
   AllPostState,
   commitState,
@@ -12,21 +12,21 @@ import PostList from "./PostList";
 
 type PostProps = {
   userId: number;
-  view: "heatmap" | "list";
-  component: ComponentState;
+  component: UserComponentState;
   allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
-  onClickDay: (userId: number, regDate: string) => void;
+  readOnly: boolean;
+  onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 const Post = ({
   userId,
-  view,
   component,
   allPosts,
   pushPosts,
@@ -34,20 +34,24 @@ const Post = ({
   imagePosts,
   commits,
   heatmap,
+  readOnly,
   onClickModal,
   onClickDay,
+  onClickDelete,
 }: PostProps) => {
   return (
     <>
-      {view === "heatmap" ? (
+      {component === "day" || component === "heatmap" ? (
         <Heatmap
           userId={userId}
           component={component}
           heatmap={heatmap}
           allPosts={allPosts}
           commits={commits}
+          readOnly={readOnly}
           onClickDay={onClickDay}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       ) : (
         <PostList
@@ -57,7 +61,9 @@ const Post = ({
           gistPosts={gistPosts}
           imagePosts={imagePosts}
           commits={commits}
+          readOnly={readOnly}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       )}
     </>

@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GistState, ImageState, PushState } from "../write";
 
+export type LoginState = {
+  userId: number;
+  userName: string;
+};
+
 export type ProfileState = {
   userId: number;
   githubId: number;
@@ -63,6 +68,7 @@ export type HeatmapState = {
 };
 
 type UserState = {
+  login: LoginState;
   profile: ProfileState;
   posts: PostsState;
   heatmap: HeatmapState;
@@ -70,8 +76,12 @@ type UserState = {
 };
 
 const initialState: UserState = {
+  login: {
+    userId: parseInt(process.env.REACT_APP_SAMPLE_USER_ID as string),
+    userName: process.env.REACT_APP_SAMPLE_GITHUB_USERNAME as string,
+  },
   profile: {
-    userId: 1,
+    userId: 0,
     githubId: 0,
     userName: "",
     profileName: "",
@@ -95,6 +105,11 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    resetUser: (state: UserState) => {
+      state.profile = initialState.profile;
+      state.posts = initialState.posts;
+      state.heatmap = initialState.heatmap;
+    },
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
     },
@@ -126,6 +141,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  resetUser,
   updateProfile,
   updateAllPosts,
   updatePushPosts,

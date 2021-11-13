@@ -1,13 +1,20 @@
 import {
   all,
   call,
+  getContext,
   put,
   SagaReturnType,
   takeEvery,
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
+import { History } from "history";
 
-import UserApi, { PostSearchCondition } from "../../api/user";
+import UserApi, {
+  PostSearchCondition,
+  PostUpdate,
+  UserProfileFetch,
+  UserSearchCondition,
+} from "../../api/user";
 import {
   updateUserError,
   updateProfile,
@@ -26,44 +33,33 @@ import {
   updateAllPosts,
 } from ".";
 
-export const fetchGithubProfile = createAction<string>(
-  "user/fetchGithubProfile"
+export const fetchUserProfile = createAction<UserSearchCondition>(
+  "user/fetchUserProfile"
 );
 
-function* getGithubProfile(action: ReturnType<typeof fetchGithubProfile>) {
+function* getUserProfile(action: ReturnType<typeof fetchUserProfile>) {
   try {
-    const res: SagaReturnType<typeof UserApi.fetchGithubProfile> = yield call(
-      UserApi.fetchGithubProfile,
+    const res: SagaReturnType<typeof UserApi.fetchUserProfile> = yield call(
+      UserApi.fetchUserProfile,
       action.payload
     );
-    const {
-      id: githubId,
-      login: userName,
-      name: profileName,
-      avatar_url: avatarUrl,
-      followers: followerNum,
-      following: followingNum,
-    } = res.data;
+    const userProfile: UserProfileFetch = res.data;
 
-    yield put(
-      updateProfile({
-        userId: 1,
-        githubId,
-        userName,
-        profileName,
-        avatarUrl,
-        dayNum: 365,
-        followingNum,
-        followerNum,
-      })
-    );
+    yield put(updateProfile(userProfile));
+
+    const heatmap: HeatmapState = {};
+    userProfile.counts.forEach(({ date, count }) => {
+      heatmap[date] = count;
+    });
+
+    yield put(updateHeatmap(heatmap));
   } catch (e: any) {
     yield put(updateUserError(e.message));
   }
 }
 
-function* githubProfileSaga() {
-  yield takeEvery(fetchGithubProfile.type, getGithubProfile);
+function* getUserPofileSaga() {
+  yield takeEvery(fetchUserProfile.type, getUserProfile);
 }
 
 export const fetchPushPosts = createAction<number>("user/fetchPushPosts");
@@ -157,7 +153,7 @@ export function* getPostCount(action: ReturnType<typeof fetchPostCount>) {
 
     const postCounts: PostCount[] = res.data;
 
-    let heatmap: HeatmapState = {};
+    const heatmap: HeatmapState = {};
     postCounts.forEach(({ date, count }) => {
       heatmap[date] = count;
     });
@@ -193,15 +189,57 @@ export function* getAllPostsSaga() {
   yield takeEvery(fetchAllPosts.type, getAllPosts);
 }
 
+export const updatePost = createAction<PostUpdate>("user/updatePost");
+
+export function* putPost(action: ReturnType<typeof updatePost>) {
+  try {
+    const res: SagaReturnType<typeof UserApi.updatePost> = yield call(
+      UserApi.updatePost,
+      action.payload
+    );
+
+    if (res.status === 200) {
+      alert("성공적으로 저장되었습니다.");
+      const history: History = yield getContext("history");
+      history.push("/user");
+    }
+  } catch (e: any) {
+    yield put(updateUserError(e.message));
+  }
+}
+
+export function* putPostSaga() {
+  yield takeEvery(updatePost.type, putPost);
+}
+
+export const removePost = createAction<number>("user/deletePost");
+
+export function* deletePost(action: ReturnType<typeof removePost>) {
+  try {
+    yield call(UserApi.deletePost, action.payload);
+
+    alert("포스트가 삭제되었습니다.");
+    window.location.reload();
+  } catch (e: any) {
+    updateUserError(e.message);
+  }
+}
+
+export function* deletePostSaga() {
+  yield takeEvery(removePost.type, deletePost);
+}
+
 function* userSaga() {
   yield all([
-    githubProfileSaga(),
+    getUserPofileSaga(),
     getPushPostsSaga(),
     getGistPostsSaga(),
     getImagePostsSaga(),
     getCommitsSaga(),
     getPostCountSaga(),
     getAllPostsSaga(),
+    putPostSaga(),
+    deletePostSaga(),
   ]);
 }
 

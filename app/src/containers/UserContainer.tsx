@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
+import { resetFollow } from "../modules/follow";
 import {
   fetchGistPosts,
-  fetchGithubProfile,
   fetchImagePosts,
   fetchPushPosts,
   fetchCommits,
   fetchPostCount,
   fetchAllPosts,
+  fetchUserProfile,
+  removePost,
 } from "../modules/user/saga";
+import { useAppDispatch, useAppSelector } from "../utils/react-gist/hook";
 
-export type ComponentState =
+export type UserComponentState =
   | "all"
   | "push"
   | "gist"
@@ -20,26 +22,30 @@ export type ComponentState =
   | "day"
   | "heatmap";
 
-const UserContainer = () => {
-  const profile = useSelector((state: RootState) => state.user.profile);
-  const { allPosts, pushPosts, gistPosts, imagePosts, commits } = useSelector(
-    (state: RootState) => state.user.posts
-  );
-  const heatmap = useSelector((state: RootState) => state.user.heatmap);
-  const dispatch = useDispatch();
+export type UserContainerProps = {
+  userId: number | null;
+};
 
-  const [component, setComponent] = useState<ComponentState>("heatmap");
+const UserContainer = ({ userId }: UserContainerProps) => {
+  const login = useAppSelector((state: RootState) => state.user.login);
+  const profile = useAppSelector((state: RootState) => state.user.profile);
+  const { allPosts, pushPosts, gistPosts, imagePosts, commits } =
+    useAppSelector((state: RootState) => state.user.posts);
+  const heatmap = useAppSelector((state: RootState) => state.user.heatmap);
+  const dispatch = useAppDispatch();
+
+  const [component, setComponent] = useState<UserComponentState>("heatmap");
+  const [readOnly, setReadonly] = useState<boolean>(false);
 
   useEffect(() => {
-    const username: string = process.env
-      .REACT_APP_SAMPLE_GITHUB_USERNAME as string;
+    const current = userId ? userId : login.userId;
+    dispatch(fetchUserProfile({ userId: current }));
+    setReadonly(login.userId !== userId);
 
-    dispatch(fetchGithubProfile(username));
-    dispatch(fetchPostCount(profile.userId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userId, login.userId]);
 
-  const onClickComponent = (component: ComponentState) => {
+  const onClickComponent = (component: UserComponentState) => {
     setComponent(component);
 
     if (component === "all") {
@@ -55,13 +61,23 @@ const UserContainer = () => {
     }
   };
 
-  const onClickDay = (userId: number, regDate: string) => {
+  const onClickDay = (regDate: string) => {
     setComponent("day");
-    dispatch(fetchAllPosts({ userId, regDate }));
+    dispatch(fetchAllPosts({ userId: profile.userId, regDate }));
   };
 
   const onClickModal = (postId: number) => {
     dispatch(fetchCommits(postId));
+  };
+
+  const onClickDelete = (postId: number) => {
+    if (window.confirm("포스트를 삭제하시겠습니까?")) {
+      dispatch(removePost(postId));
+    }
+  };
+
+  const onClickFollow = () => {
+    dispatch(resetFollow());
   };
 
   return (
@@ -74,9 +90,12 @@ const UserContainer = () => {
       imagePosts={imagePosts}
       commits={commits}
       heatmap={heatmap}
+      readOnly={readOnly}
       onClickDay={onClickDay}
       onClickModal={onClickModal}
       onClickComponent={onClickComponent}
+      onClickDelete={onClickDelete}
+      onClickFollow={onClickFollow}
     />
   );
 };

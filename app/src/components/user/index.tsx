@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AllPostState,
   commitState,
@@ -13,20 +12,23 @@ import Profile from "./profile";
 import Post from "./post";
 
 import "../../styles/user.css";
-import { ComponentState } from "../../containers/UserContainer";
+import { UserComponentState } from "../../containers/UserContainer";
 
 type UserProps = {
   profile: ProfileState;
-  component: ComponentState;
+  component: UserComponentState;
   allPosts: AllPostState[];
   pushPosts: PushPostState[];
   gistPosts: GistPostState[];
   imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
-  onClickDay: (userId: number, regDate: string) => void;
+  readOnly: boolean;
+  onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
-  onClickComponent: (component: ComponentState) => void;
+  onClickComponent: (component: UserComponentState) => void;
+  onClickDelete: (postId: number) => void;
+  onClickFollow: () => void;
 };
 
 const User = ({
@@ -38,15 +40,20 @@ const User = ({
   imagePosts,
   commits,
   heatmap,
+  readOnly,
   onClickDay,
   onClickModal,
   onClickComponent,
+  onClickDelete,
+  onClickFollow,
 }: UserProps) => {
-  const [view, setView] = useState<"heatmap" | "list">("heatmap");
-
   return (
     <>
-      <Profile profile={profile} />
+      <Profile
+        profile={profile}
+        onClickComponent={onClickComponent}
+        onClickFollow={onClickFollow}
+      />
       <div className="post-button-container">
         {component === "all" ||
         component === "push" ||
@@ -86,11 +93,13 @@ const User = ({
             className="view-button"
             name="heatmap"
             onClick={() => {
-              setView("heatmap");
               onClickComponent("heatmap");
             }}
             style={{
-              backgroundColor: view === "heatmap" ? "#e9ecef" : "#ffffff",
+              backgroundColor:
+                component === "day" || component === "heatmap"
+                  ? "#e9ecef"
+                  : "#ffffff",
             }}
           >
             HEATMAP
@@ -99,11 +108,16 @@ const User = ({
             className="view-button"
             name="list"
             onClick={() => {
-              setView("list");
               onClickComponent("all");
             }}
             style={{
-              backgroundColor: view === "list" ? "#e9ecef" : "#ffffff",
+              backgroundColor:
+                component === "all" ||
+                component === "push" ||
+                component === "gist" ||
+                component === "image"
+                  ? "#e9ecef"
+                  : "#ffffff",
             }}
           >
             LIST
@@ -113,7 +127,6 @@ const User = ({
 
       <Post
         userId={profile.userId}
-        view={view}
         component={component}
         allPosts={allPosts}
         pushPosts={pushPosts}
@@ -121,8 +134,10 @@ const User = ({
         imagePosts={imagePosts}
         commits={commits}
         heatmap={heatmap}
+        readOnly={readOnly}
         onClickModal={onClickModal}
         onClickDay={onClickDay}
+        onClickDelete={onClickDelete}
       />
     </>
   );

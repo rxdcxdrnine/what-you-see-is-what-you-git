@@ -6,19 +6,34 @@ import { rootReducer, rootSaga } from "./modules";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import { createBrowserHistory } from "history";
+import ReduxThunk from "redux-thunk";
+import { Router } from "react-router-dom";
 
-const sagaMiddleware = createSagaMiddleware();
+const customHistory = createBrowserHistory({ forceRefresh: true });
+const sagaMiddleware = createSagaMiddleware({
+  context: {
+    history: customHistory,
+  },
+});
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [sagaMiddleware],
+  middleware: [
+    ReduxThunk.withExtraArgument({ history: customHistory }),
+    sagaMiddleware,
+  ],
 });
 sagaMiddleware.run(rootSaga);
 
+export type AppDispatch = typeof store.dispatch;
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Router history={customHistory}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -5,16 +5,18 @@ import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
 import { AllPostItems } from "./PostItems";
 
 import "react-day-picker/lib/style.css";
-import { ComponentState } from "../../../containers/UserContainer";
+import { UserComponentState } from "../../../containers/UserContainer";
 
 type HeatmapProps = {
   userId: number;
-  component: ComponentState;
+  component: UserComponentState;
   heatmap: HeatmapState;
   allPosts: AllPostState[];
   commits: commitState[];
-  onClickDay: (userId: number, regDate: string) => void;
+  readOnly: boolean;
+  onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
+  onClickDelete: (postId: number) => void;
 };
 
 const dateToString = (date: Date) =>
@@ -32,8 +34,10 @@ const Heatmap = ({
   heatmap,
   allPosts,
   commits,
+  readOnly,
   onClickModal,
   onClickDay,
+  onClickDelete,
 }: HeatmapProps) => {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
 
@@ -53,7 +57,7 @@ const Heatmap = ({
   ) => {
     const date = dateToString(day);
     if (heatmap[date]) {
-      onClickDay(userId, date);
+      onClickDay(date);
       setSelectedDay(day);
     } else {
       alert("해당 날짜의 기록이 없습니다.");
@@ -88,7 +92,9 @@ const Heatmap = ({
         <AllPostItems
           postItems={allPosts}
           commits={commits}
+          readOnly={readOnly}
           onClickModal={onClickModal}
+          onClickDelete={onClickDelete}
         />
       )}
     </>

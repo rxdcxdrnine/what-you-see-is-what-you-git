@@ -13,7 +13,7 @@
   display: flex;
   justify-content: space-around;
   height: 10%;
-  margin: 0.5rem;
+  margin: 1rem 0.5rem 0.5rem 0.5rem;
 }
 
 .choose-button {

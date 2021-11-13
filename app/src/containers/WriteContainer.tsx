@@ -18,7 +18,9 @@ import {
 } from "../modules/write/saga";
 
 const WriteContainer = () => {
-  const { userId } = useSelector((state: RootState) => state.user.profile);
+  const { userId, userName } = useSelector(
+    (state: RootState) => state.user.login
+  );
   const { markdown, pushes, gists, selectedItem } = useSelector(
     (state: RootState) => state.write
   );
@@ -41,14 +43,11 @@ const WriteContainer = () => {
       dispatch(updateSelectedItem({ type: "", item: null }));
     }
 
-    const username: string = process.env
-      .REACT_APP_SAMPLE_GITHUB_USERNAME as string;
-
     if (button === "push" && pushes.length === 0) {
-      dispatch(fetchGithubPushes(username));
+      dispatch(fetchGithubPushes(userName));
     }
     if (button === "gist" && gists.length === 0) {
-      dispatch(fetchGithubGists(username));
+      dispatch(fetchGithubGists(userName));
     }
   };
 

@@ -48,9 +48,9 @@ type Commit = {
 
 // fetchGithubPushs
 const fetchGithubPushes: (
-  username: string
-) => Promise<AxiosResponse<GithubPush[]>> = (username: string) =>
-  axios.get(`http://api.github.com/users/${username}/events`);
+  userName: string
+) => Promise<AxiosResponse<GithubPush[]>> = (userName: string) =>
+  axios.get(`http://api.github.com/users/${userName}/events`);
 
 type GithubGist = {
   url: string;
@@ -106,8 +106,8 @@ type Owner = {
 
 const fetchGithubGists: (
   usename: string
-) => Promise<AxiosResponse<GithubGist[]>> = (username: string) =>
-  axios.get(`http://api.github.com/users/${username}/gists`);
+) => Promise<AxiosResponse<GithubGist[]>> = (userName: string) =>
+  axios.get(`http://api.github.com/users/${userName}/gists`);
 
 export type PushPostSave = PushState & {
   userId: number;

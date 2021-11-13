@@ -4,16 +4,19 @@ import FollowItems from "./FollowItems";
 import FollowSearch from "./FollowSearch";
 
 import "../../styles/follow.css";
+import { FollowComponentState } from "../../containers/FollowContainer";
 
 type FollowProps = {
   users: FollowItem[];
   followings: FollowItem[];
   followers: FollowItem[];
   userId: number;
-  selectedButton: "search" | "following" | "follower";
+  selectedButton: FollowComponentState;
   searchKey: string;
-  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
-  onClickSearch: (username: string) => void;
+  readOnly: boolean;
+  onClickComponent: (component: FollowComponentState) => void;
+  onClickSearch: (userName: string) => void;
+  onClickUser: () => void;
   onClickAdd: (followingId: number, followerId: number) => void;
   onClickRemove: (userId: number, followId: number) => void;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
@@ -26,36 +29,43 @@ const Follow = ({
   userId,
   selectedButton,
   searchKey,
-  onClickButton,
+  readOnly,
+  onClickComponent,
   onClickSearch,
+  onClickUser,
   onClickAdd,
   onClickRemove,
   setSearchKey,
 }: FollowProps) => {
   return (
-    <>
-      <FollowHeader
-        selectedButton={selectedButton}
-        onClickButton={onClickButton}
-      />
-
-      {selectedButton === "search" ? (
-        <FollowSearch
-          onClickSearch={onClickSearch}
-          searchKey={searchKey}
-          setSearchKey={setSearchKey}
+    <div className="follow-page">
+      <div className="follow-page-container">
+        <FollowHeader
+          selectedButton={selectedButton}
+          onClickComponent={onClickComponent}
+          readOnly={readOnly}
         />
-      ) : null}
-      <FollowItems
-        followings={followings}
-        followers={followers}
-        users={users}
-        userId={userId}
-        selectedButton={selectedButton}
-        onClickAdd={onClickAdd}
-        onClickRemove={onClickRemove}
-      />
-    </>
+
+        {selectedButton === "search" ? (
+          <FollowSearch
+            onClickSearch={onClickSearch}
+            searchKey={searchKey}
+            setSearchKey={setSearchKey}
+          />
+        ) : null}
+        <FollowItems
+          followings={followings}
+          followers={followers}
+          users={users}
+          userId={userId}
+          selectedButton={selectedButton}
+          readOnly={readOnly}
+          onClickUser={onClickUser}
+          onClickAdd={onClickAdd}
+          onClickRemove={onClickRemove}
+        />
+      </div>
+    </div>
   );
 };
 

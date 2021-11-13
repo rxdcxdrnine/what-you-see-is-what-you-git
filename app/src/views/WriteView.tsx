@@ -1,13 +1,13 @@
-import Layout from "../components/layout";
+import LayoutContainer from "../containers/LayoutContainer";
 import WriteContainer from "../containers/WriteContainer";
 
 import "../styles/layout.css";
 
 const WriteView = () => {
   return (
-    <Layout>
+    <LayoutContainer>
       <WriteContainer />
-    </Layout>
+    </LayoutContainer>
   );
 };
 
