@@ -29,7 +29,12 @@ public class PostController {
             @RequestParam(required = false) String type,
             @PageableDefault(size = 3, sort = "postId", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return postService.searchByUserId(new PostSearchCondition(userId, regDate, type), pageable);
+        PostSearchCondition condition = new PostSearchCondition();
+        condition.setUserId(userId);
+        condition.setRegDate(regDate);
+        condition.setType(type);
+
+        return postService.searchByUserId(condition, pageable);
     }
 
     @GetMapping("/{id}")

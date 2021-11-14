@@ -9,6 +9,8 @@ import com.wysiwyg.project.entity.User;
 import com.wysiwyg.project.repository.FollowRepository;
 import com.wysiwyg.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -37,8 +39,8 @@ public class FollowService {
         return followRepository.findFollowingsByFollowerId(userId);
     }
 
-    public List<UserFetchDto> searchUsers(UserSearchCondition condition) {
-        return userRepository.searchByUserName(condition);
+    public Page<UserFetchDto> searchUsers(UserSearchCondition condition, Pageable pageable) {
+        return userRepository.searchByUserName(condition, pageable);
     }
 
     @Transactional
