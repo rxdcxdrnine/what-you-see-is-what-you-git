@@ -177,7 +177,7 @@ export const ImagePostItem = ({
       <div className="image-wrapper">
         <img
           className="image-post"
-          src={baseUrl + imagePostItem.imageFilename}
+          src={baseUrl + "/images/" + imagePostItem.imageFilename}
           alt="imagePost"
         />
       </div>
