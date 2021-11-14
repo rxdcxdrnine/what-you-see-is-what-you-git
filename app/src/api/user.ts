@@ -13,6 +13,7 @@ export type UserSearchCondition = {
   userId?: number;
   githubId?: number;
   userName?: string;
+  page?: number;
 };
 
 export type PostSearchCondition = {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Follow from "../components/follow";
 import { RootState } from "../modules";
-import { resetFollow, updateUsers } from "../modules/follow";
+import { resetFollow, resetPage, updateUsers } from "../modules/follow";
 import {
   fetchFollowers,
   fetchFollowings,
@@ -20,7 +20,7 @@ type FollowContainerProps = {
 const FollowContainer = ({ component }: FollowContainerProps) => {
   const login = useSelector((state: RootState) => state.user.login);
   const profile = useSelector((state: RootState) => state.user.profile);
-  const { followings, followers, users } = useSelector(
+  const { followings, followers, users, page } = useSelector(
     (state: RootState) => state.follow
   );
   const dispatch = useDispatch();
@@ -43,8 +43,12 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
   const onClickComponent = (component: FollowComponentState) => {
     if (selectedButton === "search") {
       dispatch(updateUsers([]));
+      dispatch(resetPage());
     }
+
+    if (selectedButton === component) return;
     setSelectedButton(component);
+    dispatch(resetPage());
 
     if (component === "following") {
       dispatch(fetchFollowings(profile.userId));
@@ -54,7 +58,22 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
   };
 
   const onClickSearch = (userName: string) => {
+    // if (userName.length < 2) {
+    //   alert("2글자 이상을 입력하세요.");
+    //   return;
+    // }
+    setSearchKey(userName);
     dispatch(searchUsers({ userId: profile.userId, userName }));
+  };
+
+  const onClickMore = (e: any) => {
+    dispatch(
+      searchUsers({
+        userId: profile.userId,
+        userName: searchKey,
+        page: page.number + 1,
+      })
+    );
   };
 
   const onClickAdd = (followingId: number, followerId: number) => {
@@ -74,9 +93,11 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
       userId={profile.userId}
       searchKey={searchKey}
       selectedButton={selectedButton}
+      page={page}
       readOnly={readOnly}
       onClickComponent={onClickComponent}
       onClickSearch={onClickSearch}
+      onClickMore={onClickMore}
       onClickAdd={onClickAdd}
       onClickRemove={onClickRemove}
       setSearchKey={setSearchKey}

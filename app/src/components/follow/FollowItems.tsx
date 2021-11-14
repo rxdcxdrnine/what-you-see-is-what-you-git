@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FollowComponentState } from "../../containers/FollowContainer";
 import { FollowItem } from "../../modules/follow";
+import { PageState } from "../../modules/user";
 
 type FollowItemsProps = {
   users: FollowItem[];
@@ -8,7 +9,9 @@ type FollowItemsProps = {
   followers: FollowItem[];
   userId: number;
   selectedButton: FollowComponentState;
+  page: PageState;
   readOnly: boolean;
+  onClickMore: (e: any) => void;
   onClickAdd: (followingId: number, followerId: number) => void;
   onClickRemove: (userId: number, followId: number) => void;
 };
@@ -19,14 +22,17 @@ const FollowItems = ({
   users,
   userId,
   selectedButton,
+  page,
   readOnly,
+  onClickMore,
   onClickAdd,
   onClickRemove,
 }: FollowItemsProps) => {
   return (
     <div className="follow-items-container">
-      {selectedButton === "search"
-        ? users.map((user) => (
+      {selectedButton === "search" ? (
+        <>
+          {users.map((user) => (
             <div className="follow-item-container" key={user.userId}>
               <FollowItemBox follow={user} />
               <button
@@ -36,26 +42,34 @@ const FollowItems = ({
                 FOLLOW
               </button>
             </div>
-          ))
-        : selectedButton === "following"
-        ? followings.map((following) => (
-            <div className="follow-item-container" key={following.followId}>
-              <FollowItemBox follow={following} />
-              {readOnly ? null : (
-                <button
-                  className="follow-item-button"
-                  onClick={() => onClickRemove(userId, following.followId)}
-                >
-                  UNFOLLOW
-                </button>
-              )}
-            </div>
-          ))
-        : followers.map((follower) => (
-            <div className="follow-item-container" key={follower.followId}>
-              <FollowItemBox follow={follower} />
-            </div>
           ))}
+          {!page.last ? (
+            <div className="follow-next-button" onClick={onClickMore}>
+              {"▼ MORE"}
+            </div>
+          ) : null}
+        </>
+      ) : selectedButton === "following" ? (
+        followings.map((following) => (
+          <div className="follow-item-container" key={following.followId}>
+            <FollowItemBox follow={following} />
+            {readOnly ? null : (
+              <button
+                className="follow-item-button"
+                onClick={() => onClickRemove(userId, following.followId)}
+              >
+                UNFOLLOW
+              </button>
+            )}
+          </div>
+        ))
+      ) : (
+        followers.map((follower) => (
+          <div className="follow-item-container" key={follower.followId}>
+            <FollowItemBox follow={follower} />
+          </div>
+        ))
+      )}
     </div>
   );
 };
