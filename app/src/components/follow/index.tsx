@@ -16,7 +16,6 @@ type FollowProps = {
   readOnly: boolean;
   onClickComponent: (component: FollowComponentState) => void;
   onClickSearch: (userName: string) => void;
-  onClickUser: () => void;
   onClickAdd: (followingId: number, followerId: number) => void;
   onClickRemove: (userId: number, followId: number) => void;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
@@ -32,7 +31,6 @@ const Follow = ({
   readOnly,
   onClickComponent,
   onClickSearch,
-  onClickUser,
   onClickAdd,
   onClickRemove,
   setSearchKey,
@@ -60,7 +58,6 @@ const Follow = ({
           userId={userId}
           selectedButton={selectedButton}
           readOnly={readOnly}
-          onClickUser={onClickUser}
           onClickAdd={onClickAdd}
           onClickRemove={onClickRemove}
         />

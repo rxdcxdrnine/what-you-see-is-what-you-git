@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Follow from "../components/follow";
 import { RootState } from "../modules";
-import { updateUsers } from "../modules/follow";
+import { resetFollow, updateUsers } from "../modules/follow";
 import {
   fetchFollowers,
   fetchFollowings,
@@ -10,7 +10,6 @@ import {
   saveFollow,
   searchUsers,
 } from "../modules/follow/saga";
-import { resetUser } from "../modules/user";
 
 export type FollowComponentState = "" | "search" | "following" | "follower";
 
@@ -35,6 +34,9 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
     onClickComponent(component);
     setReadonly(login.userId !== profile.userId);
 
+    return () => {
+      dispatch(resetFollow());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.userId]);
 
@@ -46,14 +48,9 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
 
     if (component === "following") {
       dispatch(fetchFollowings(profile.userId));
-    }
-    if (component === "follower") {
+    } else if (component === "follower") {
       dispatch(fetchFollowers(profile.userId));
     }
-  };
-
-  const onClickUser = () => {
-    dispatch(resetUser());
   };
 
   const onClickSearch = (userName: string) => {
@@ -80,7 +77,6 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
       readOnly={readOnly}
       onClickComponent={onClickComponent}
       onClickSearch={onClickSearch}
-      onClickUser={onClickUser}
       onClickAdd={onClickAdd}
       onClickRemove={onClickRemove}
       setSearchKey={setSearchKey}

@@ -9,7 +9,6 @@ type FollowItemsProps = {
   userId: number;
   selectedButton: FollowComponentState;
   readOnly: boolean;
-  onClickUser: () => void;
   onClickAdd: (followingId: number, followerId: number) => void;
   onClickRemove: (userId: number, followId: number) => void;
 };
@@ -21,7 +20,6 @@ const FollowItems = ({
   userId,
   selectedButton,
   readOnly,
-  onClickUser,
   onClickAdd,
   onClickRemove,
 }: FollowItemsProps) => {
@@ -30,7 +28,7 @@ const FollowItems = ({
       {selectedButton === "search"
         ? users.map((user) => (
             <div className="follow-item-container" key={user.userId}>
-              <FollowItemBox follow={user} onClickUser={onClickUser} />
+              <FollowItemBox follow={user} />
               <button
                 className="follow-item-button"
                 onClick={() => onClickAdd(userId, user.userId)}
@@ -42,7 +40,7 @@ const FollowItems = ({
         : selectedButton === "following"
         ? followings.map((following) => (
             <div className="follow-item-container" key={following.followId}>
-              <FollowItemBox follow={following} onClickUser={onClickUser} />
+              <FollowItemBox follow={following} />
               {readOnly ? null : (
                 <button
                   className="follow-item-button"
@@ -55,7 +53,7 @@ const FollowItems = ({
           ))
         : followers.map((follower) => (
             <div className="follow-item-container" key={follower.followId}>
-              <FollowItemBox follow={follower} onClickUser={onClickUser} />
+              <FollowItemBox follow={follower} />
             </div>
           ))}
     </div>
@@ -64,15 +62,13 @@ const FollowItems = ({
 
 type FollowItemBoxProps = {
   follow: FollowItem;
-  onClickUser: (userId: number) => void;
 };
 
-const FollowItemBox = ({ follow, onClickUser }: FollowItemBoxProps) => {
+const FollowItemBox = ({ follow }: FollowItemBoxProps) => {
   return (
     <Link
       to={{ pathname: "/user", state: { userId: follow.userId } }}
       className="text-link"
-      onClick={() => onClickUser(follow.userId)}
     >
       <div className="follow-item-wrapper">
         <img

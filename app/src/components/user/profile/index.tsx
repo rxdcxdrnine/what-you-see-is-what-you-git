@@ -5,14 +5,9 @@ import Count from "./Count";
 type ProfileProps = {
   profile: ProfileState;
   onClickComponent: (component: UserComponentState) => void;
-  onClickFollow: () => void;
 };
 
-const Profile = ({
-  profile,
-  onClickComponent,
-  onClickFollow,
-}: ProfileProps) => {
+const Profile = ({ profile, onClickComponent }: ProfileProps) => {
   return (
     <div className="profile-container">
       <div className="profile-left">
@@ -22,11 +17,7 @@ const Profile = ({
         <div className="profile-name">
           {profile.userName} / {profile.profileName}
         </div>
-        <Count
-          profile={profile}
-          onClickComponent={onClickComponent}
-          onClickFollow={onClickFollow}
-        />
+        <Count profile={profile} onClickComponent={onClickComponent} />
       </div>
     </div>
   );

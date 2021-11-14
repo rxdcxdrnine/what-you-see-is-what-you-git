@@ -2,10 +2,10 @@ import { useState } from "react";
 import DayPicker from "react-day-picker";
 
 import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
-import { AllPostItems } from "./PostItems";
 
 import "react-day-picker/lib/style.css";
 import { UserComponentState } from "../../../containers/UserContainer";
+import { AllPostItem } from "./PostItem";
 
 type HeatmapProps = {
   userId: number;
@@ -29,7 +29,6 @@ const dateToString = (date: Date) =>
 const colors = ["#dbdbdb", "green", "orange", "red"];
 
 const Heatmap = ({
-  userId,
   component,
   heatmap,
   allPosts,
@@ -89,13 +88,19 @@ const Heatmap = ({
           />
         </div>
       ) : (
-        <AllPostItems
-          postItems={allPosts}
-          commits={commits}
-          readOnly={readOnly}
-          onClickModal={onClickModal}
-          onClickDelete={onClickDelete}
-        />
+        <div className="post-list-container">
+          {allPosts.map((postItem) => (
+            <div key={postItem.postId}>
+              <AllPostItem
+                allPostItem={postItem}
+                commits={commits}
+                readOnly={readOnly}
+                onClickModal={onClickModal}
+                onClickDelete={onClickDelete}
+              />
+            </div>
+          ))}
+        </div>
       )}
     </>
   );

@@ -18,12 +18,6 @@ import UserApi, {
 import {
   updateUserError,
   updateProfile,
-  PushPostState,
-  updatePushPosts,
-  GistPostState,
-  updateGistPosts,
-  ImagePostState,
-  updateImagePosts,
   commitState,
   updateCommits,
   updateHeatmap,
@@ -31,7 +25,9 @@ import {
   PostCount,
   AllPostState,
   updateAllPosts,
+  updatePage,
 } from ".";
+import { Page } from "../../api/page";
 
 export const fetchUserProfile = createAction<UserSearchCondition>(
   "user/fetchUserProfile"
@@ -60,66 +56,6 @@ function* getUserProfile(action: ReturnType<typeof fetchUserProfile>) {
 
 function* getUserPofileSaga() {
   yield takeEvery(fetchUserProfile.type, getUserProfile);
-}
-
-export const fetchPushPosts = createAction<number>("user/fetchPushPosts");
-
-function* getPushPost(action: ReturnType<typeof fetchPushPosts>) {
-  try {
-    const res: SagaReturnType<typeof UserApi.fetchPushPosts> = yield call(
-      UserApi.fetchPushPosts,
-      action.payload
-    );
-    const pushPosts: PushPostState[] = res.data;
-
-    yield put(updatePushPosts(pushPosts));
-  } catch (e: any) {
-    yield put(updateUserError(e.message));
-  }
-}
-
-function* getPushPostsSaga() {
-  yield takeEvery(fetchPushPosts.type, getPushPost);
-}
-
-export const fetchGistPosts = createAction<number>("user/fetchGistPosts");
-
-function* getGistPosts(action: ReturnType<typeof fetchGistPosts>) {
-  try {
-    const res: SagaReturnType<typeof UserApi.fetchGistPosts> = yield call(
-      UserApi.fetchGistPosts,
-      action.payload
-    );
-
-    const gistPosts: GistPostState[] = res.data;
-    yield put(updateGistPosts(gistPosts));
-  } catch (e: any) {
-    yield put(updateUserError(e.message));
-  }
-}
-
-function* getGistPostsSaga() {
-  yield takeEvery(fetchGistPosts.type, getGistPosts);
-}
-
-export const fetchImagePosts = createAction<number>("user/fetchImagePosts");
-
-export function* getImagePosts(action: ReturnType<typeof fetchImagePosts>) {
-  try {
-    const res: SagaReturnType<typeof UserApi.fetchImagePosts> = yield call(
-      UserApi.fetchImagePosts,
-      action.payload
-    );
-
-    const imagePosts: ImagePostState[] = res.data;
-    yield put(updateImagePosts(imagePosts));
-  } catch (e: any) {
-    yield put(updateUserError(e.message));
-  }
-}
-
-function* getImagePostsSaga() {
-  yield takeEvery(fetchImagePosts.type, getImagePosts);
 }
 
 export const fetchCommits = createAction<number>("user/fetchCommits");
@@ -178,8 +114,11 @@ export function* getAllPosts(action: ReturnType<typeof fetchAllPosts>) {
       action.payload
     );
 
-    const allPosts: AllPostState[] = res.data;
-    yield put(updateAllPosts(allPosts));
+    const page: Page<AllPostState> = res.data;
+    const { first, last, number } = page;
+
+    yield put(updateAllPosts(page.content));
+    yield put(updatePage({ first, last, number }));
   } catch (e: any) {
     updateUserError(e.message);
   }
@@ -232,9 +171,9 @@ export function* deletePostSaga() {
 function* userSaga() {
   yield all([
     getUserPofileSaga(),
-    getPushPostsSaga(),
-    getGistPostsSaga(),
-    getImagePostsSaga(),
+    // getPushPostsSaga(),
+    // getGistPostsSaga(),
+    // getImagePostsSaga(),
     getCommitsSaga(),
     getPostCountSaga(),
     getAllPostsSaga(),
