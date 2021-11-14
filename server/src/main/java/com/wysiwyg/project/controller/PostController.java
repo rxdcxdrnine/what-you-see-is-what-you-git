@@ -3,6 +3,10 @@ package com.wysiwyg.project.controller;
 import com.wysiwyg.project.dto.*;
 import com.wysiwyg.project.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +22,16 @@ public class PostController {
     private final CommitService commitService;
     private final PostService postService;
 
+    @GetMapping()
+    public Page<PostFetchDto> fetchAllPosts(
+            @RequestParam Long userId,
+            @RequestParam(required = false) String regDate,
+            @RequestParam(required = false) String type,
+            @PageableDefault(size = 3, sort = "postId", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return postService.searchByUserId(new PostSearchCondition(userId, regDate, type), pageable);
+    }
+
     @GetMapping("/{id}")
     public PostFetchDto fetchPost(@PathVariable(value = "id") Long postId) {
         return postService.searchByPostId(postId);
@@ -31,38 +45,14 @@ public class PostController {
         postService.update(postId, dto);
     }
 
-
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable(value = "id") Long postId) {
         postService.delete(postId);
     }
 
-    @GetMapping("/all")
-    public List<PostFetchDto> fetchAllPosts(
-            @RequestParam(required = true) Long userId,
-            @RequestParam(required = false) String regDate
-    ) {
-        return postService.searchByUserId(new PostSearchCondition(userId, regDate));
-    }
-
-    @GetMapping("/push")
-    public List<PushPostFetchDto> fetchPushPosts(@RequestParam(required = true) Long userId) {
-        return pushPostService.findByUserId(userId);
-    }
-
     @GetMapping("/commit")
     public List<CommitFetchDto> fetchCommits(@RequestParam(required = true) Long postId) {
         return commitService.findByPostId(postId);
-    }
-
-    @GetMapping("/gist")
-    public List<GistPostFetchDto> fetchGistPosts(@RequestParam(required = true) Long userId) {
-        return gistPostService.findByUserId(userId);
-    }
-
-    @GetMapping("/image")
-    public List<ImagePostFetchDto> fetchImagePosts(@RequestParam(required = true) Long userId) {
-        return imagePostService.findByUserId(userId);
     }
 
     @PostMapping("/push")

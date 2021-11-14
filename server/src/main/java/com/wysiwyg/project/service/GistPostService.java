@@ -30,9 +30,4 @@ public class GistPostService {
         Gist gist = dto.toEntity(user.get());
         gistPostRepository.save(gist);
     }
-
-    public List<GistPostFetchDto> findByUserId(Long userId) {
-        List<Gist> gists = gistPostRepository.findByUserUserId(userId);
-        return gists.stream().map(GistPostFetchDto::new).collect(Collectors.toList());
-    }
 }

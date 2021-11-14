@@ -1,5 +1,6 @@
 package com.wysiwyg.project.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -7,6 +8,9 @@ import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wysiwyg.project.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,18 +47,22 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .fetch();
     }
 
-    public List<PostFetchDto> searchByUserId(PostSearchCondition condition) {
+    public Page<PostFetchDto> searchByUserId(PostSearchCondition condition, Pageable pageable) {
 
-        return queryFactory
+        QueryResults<PostFetchDto> results = queryFactory
                 .select(new QPostFetchDto(post))
                 .from(post)
-                .where(regDateEq(condition.getRegDate()),
-                        post.user.userId.eq(condition.getUserId()))
-                .fetch();
-    }
+                .where(post.user.userId.eq(condition.getUserId()),
+                        regDateEq(condition.getRegDate()),
+                        typeEq(condition.getType()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
 
-    private BooleanExpression regDateEq(String regDate) {
-        return regDate == null ? null : formattedDate.eq(regDate);
+        List<PostFetchDto> content = results.getResults();
+        Long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
     }
 
     private BooleanExpression userIdEq(Long userId) {
@@ -65,4 +73,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return githubId == null ? null : user.githubId.eq(githubId);
     }
 
+    private BooleanExpression regDateEq(String regDate) {
+        return regDate == null ? null : formattedDate.eq(regDate);
+    }
+
+    private BooleanExpression typeEq(String type) {
+        return type == null ? null : post.type.eq(type);
+    }
 }

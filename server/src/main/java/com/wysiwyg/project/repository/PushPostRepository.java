@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface PushPostRepository extends JpaRepository<Push, Long> {
 
-    List<Push> findByUserUserId(Long userId);
-
 }

@@ -11,4 +11,5 @@ public class PostSearchCondition {
 
     private Long userId;
     private String regDate;
+    private String type;
 }
