@@ -12,7 +12,7 @@ import {
   fetchUserProfile,
   removePost,
 } from "../modules/user/saga";
-import { useAppDispatch, useAppSelector } from "../utils/react-gist/hook";
+import { useAppDispatch, useAppSelector } from "../utils/hook";
 
 export type UserComponentState =
   | "all"

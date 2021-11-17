@@ -5,10 +5,11 @@ import { resetUser } from "../modules/user";
 import { fetchUserProfile } from "../modules/user/saga";
 
 type LayoutContainerProps = {
+  main?: boolean;
   children: React.ReactNode;
 };
 
-const LayoutContainer = ({ children }: LayoutContainerProps) => {
+const LayoutContainer = ({ main = false, children }: LayoutContainerProps) => {
   const login = useSelector((state: RootState) => state.user.login);
   const profile = useSelector((state: RootState) => state.user.profile);
 
@@ -24,6 +25,7 @@ const LayoutContainer = ({ children }: LayoutContainerProps) => {
 
   return (
     <Layout
+      main={main}
       children={children}
       onClickUser={onClickUser}
       onClickFollow={onClickFollow}
