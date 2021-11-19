@@ -35,8 +35,8 @@ type WriteState = {
 };
 
 const initialState: WriteState = {
-  markdown: "# ",
-  html: "",
+  markdown: "#",
+  html: "#",
   pushes: [],
   gists: [],
   selectedItem: { type: "", item: null },
@@ -53,6 +53,7 @@ const writeSlice = createSlice({
       state.pushes = initialState.pushes;
       state.gists = initialState.gists;
       state.selectedItem = initialState.selectedItem;
+      state.errorMessage = initialState.errorMessage;
     },
     updateMarkdown(state: WriteState, action: PayloadAction<string>) {
       state.markdown = action.payload;

@@ -3,6 +3,7 @@ import { ACCESS_TOKEN } from "../constants";
 import { GistState, PushState } from "../modules/write";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
+const imageUrl: string = process.env.REACT_APP_IMAGE_URL as string;
 
 const accessToken = localStorage.getItem(ACCESS_TOKEN);
 const headers = {
@@ -46,7 +47,7 @@ const saveImagePost: (
       formData.append(key, value);
     }
   }
-  return axios.post(`${serverUrl}/posts/image`, formData, {
+  return axios.post(`${imageUrl}/posts/image`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + accessToken,

@@ -1,22 +1,12 @@
 import { UserComponentState } from "../../../containers/UserContainer";
-import {
-  AllPostState,
-  commitState,
-  GistPostState,
-  HeatmapState,
-  ImagePostState,
-  PushPostState,
-} from "../../../modules/user";
+import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
 import Heatmap from "./Heatmap";
-import PostList from "./PostList";
+import { AllPostItem } from "./PostItem";
 
 type PostProps = {
   userId: number;
   component: UserComponentState;
   allPosts: AllPostState[];
-  pushPosts: PushPostState[];
-  gistPosts: GistPostState[];
-  imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
   readOnly: boolean;
@@ -29,9 +19,6 @@ const Post = ({
   userId,
   component,
   allPosts,
-  pushPosts,
-  gistPosts,
-  imagePosts,
   commits,
   heatmap,
   readOnly,
@@ -54,17 +41,19 @@ const Post = ({
           onClickDelete={onClickDelete}
         />
       ) : (
-        <PostList
-          component={component}
-          allPosts={allPosts}
-          pushPosts={pushPosts}
-          gistPosts={gistPosts}
-          imagePosts={imagePosts}
-          commits={commits}
-          readOnly={readOnly}
-          onClickModal={onClickModal}
-          onClickDelete={onClickDelete}
-        />
+        <div className="post-list-container">
+          {allPosts.map((postItem) => (
+            <div key={postItem.postId}>
+              <AllPostItem
+                allPostItem={postItem}
+                commits={commits}
+                readOnly={readOnly}
+                onClickModal={onClickModal}
+                onClickDelete={onClickDelete}
+              />
+            </div>
+          ))}
+        </div>
       )}
     </>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Follow from "../components/follow";
 import { RootState } from "../modules";
-import { resetFollow, resetUsers } from "../modules/follow";
+import { resetFollow, resetPage, resetUsers } from "../modules/follow";
 import {
   fetchFollowers,
   fetchFollowings,
@@ -10,7 +10,6 @@ import {
   saveFollow,
   searchUsers,
 } from "../modules/follow/saga";
-import { resetUser } from "../modules/user";
 
 export type FollowComponentState = "" | "search" | "following" | "follower";
 
@@ -21,7 +20,7 @@ type FollowContainerProps = {
 const FollowContainer = ({ component }: FollowContainerProps) => {
   const login = useSelector((state: RootState) => state.user.login);
   const profile = useSelector((state: RootState) => state.user.profile);
-  const { followings, followers, users } = useSelector(
+  const { followings, followers, users, page } = useSelector(
     (state: RootState) => state.follow
   );
   const dispatch = useDispatch();
@@ -38,30 +37,43 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
     return () => {
       dispatch(resetFollow());
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.userId]);
 
   const onClickComponent = (component: FollowComponentState) => {
     if (selectedButton === "search") {
       dispatch(resetUsers());
+      dispatch(resetPage());
     }
+
+    if (selectedButton === component) return;
     setSelectedButton(component);
+    dispatch(resetPage());
 
     if (component === "following") {
       dispatch(fetchFollowings(profile.userId));
-    }
-    if (component === "follower") {
+    } else if (component === "follower") {
       dispatch(fetchFollowers(profile.userId));
     }
   };
 
-  const onClickUser = () => {
-    dispatch(resetUser());
+  const onClickSearch = (userName: string) => {
+    // if (userName.length < 2) {
+    //   alert("2글자 이상을 입력하세요.");
+    //   return;
+    // }
+    setSearchKey(userName);
+    dispatch(searchUsers({ userId: profile.userId, userName }));
   };
 
-  const onClickSearch = (userName: string) => {
-    dispatch(searchUsers({ userId: profile.userId, userName }));
+  const onClickMore = (e: any) => {
+    dispatch(
+      searchUsers({
+        userId: profile.userId,
+        userName: searchKey,
+        page: page.number + 1,
+      })
+    );
   };
 
   const onClickAdd = (followingId: number, followerId: number) => {
@@ -81,10 +93,11 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
       userId={profile.userId}
       searchKey={searchKey}
       selectedButton={selectedButton}
+      page={page}
       readOnly={readOnly}
       onClickComponent={onClickComponent}
       onClickSearch={onClickSearch}
-      onClickUser={onClickUser}
+      onClickMore={onClickMore}
       onClickAdd={onClickAdd}
       onClickRemove={onClickRemove}
       setSearchKey={setSearchKey}

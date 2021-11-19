@@ -2,14 +2,11 @@ import { GistState, resetWrite, updateGists } from "./index";
 import {
   all,
   call,
-  getContext,
   SagaReturnType,
   put,
   takeEvery,
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
-import { History } from "history";
-import { push } from "react-router-redux";
 
 import WriteApi, {
   GistPostSave,

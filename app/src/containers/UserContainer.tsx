@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
-import { resetFollow } from "../modules/follow";
+import { resetPage, resetUser } from "../modules/user";
 import {
-  fetchGistPosts,
-  fetchImagePosts,
-  fetchPushPosts,
   fetchCommits,
   fetchPostCount,
   fetchAllPosts,
   fetchUserProfile,
   removePost,
 } from "../modules/user/saga";
-import { useAppDispatch, useAppSelector } from "../utils/hook";
 
 export type UserComponentState =
   | "all"
@@ -27,42 +24,89 @@ export type UserContainerProps = {
 };
 
 const UserContainer = ({ userId }: UserContainerProps) => {
-  const login = useAppSelector((state: RootState) => state.user.login);
-  const profile = useAppSelector((state: RootState) => state.user.profile);
-  const { allPosts, pushPosts, gistPosts, imagePosts, commits } =
-    useAppSelector((state: RootState) => state.user.posts);
-  const heatmap = useAppSelector((state: RootState) => state.user.heatmap);
-  const dispatch = useAppDispatch();
+  const login = useSelector((state: RootState) => state.user.login);
+  const profile = useSelector((state: RootState) => state.user.profile);
+  const { allPosts, commits, heatmap } = useSelector(
+    (state: RootState) => state.user.posts
+  );
+  const page = useSelector((state: RootState) => state.user.page);
+  const dispatch = useDispatch();
 
   const [component, setComponent] = useState<UserComponentState>("heatmap");
   const [readOnly, setReadonly] = useState<boolean>(false);
+  const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
     const current = userId ? userId : login.userId;
+
     dispatch(fetchUserProfile({ userId: current }));
-    setReadonly(login.userId !== userId);
+    setReadonly(login.userId !== current);
+
+    return () => {
+      dispatch(resetUser());
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, login.userId]);
 
-  const onClickComponent = (component: UserComponentState) => {
-    setComponent(component);
+  const onClickComponent = (newComponent: UserComponentState) => {
+    if (component === newComponent) return;
 
-    if (component === "all") {
-      dispatch(fetchAllPosts({ userId: profile.userId }));
-    } else if (component === "push") {
-      dispatch(fetchPushPosts(profile.userId));
-    } else if (component === "gist") {
-      dispatch(fetchGistPosts(profile.userId));
-    } else if (component === "image") {
-      dispatch(fetchImagePosts(profile.userId));
-    } else if (component === "heatmap") {
+    setComponent(newComponent);
+    dispatch(resetPage());
+
+    if (
+      newComponent === "all" ||
+      newComponent === "push" ||
+      newComponent === "gist" ||
+      newComponent === "image"
+    ) {
+      setRegDate("");
+      dispatch(
+        fetchAllPosts({
+          userId: profile.userId,
+          type:
+            newComponent === "push"
+              ? "PUSH"
+              : newComponent === "gist"
+              ? "GIST"
+              : newComponent === "image"
+              ? "IMAGE"
+              : undefined,
+        })
+      );
+    } else if (newComponent === "heatmap") {
+      setRegDate("");
       dispatch(fetchPostCount(profile.userId));
     }
   };
 
+  const onClickPageButton = (e: any) => {
+    dispatch(
+      fetchAllPosts({
+        userId: profile.userId,
+        regDate: regDate ? regDate : undefined,
+        type:
+          component === "push"
+            ? "PUSH"
+            : component === "gist"
+            ? "GIST"
+            : component === "image"
+            ? "IMAGE"
+            : undefined,
+        page:
+          e.target.name === "prev"
+            ? page.number - 1
+            : e.target.name === "next"
+            ? page.number + 1
+            : undefined,
+      })
+    );
+  };
+
   const onClickDay = (regDate: string) => {
     setComponent("day");
+    setRegDate(regDate);
     dispatch(fetchAllPosts({ userId: profile.userId, regDate }));
   };
 
@@ -76,26 +120,20 @@ const UserContainer = ({ userId }: UserContainerProps) => {
     }
   };
 
-  const onClickFollow = () => {
-    dispatch(resetFollow());
-  };
-
   return (
     <User
       profile={profile}
       component={component}
       allPosts={allPosts}
-      pushPosts={pushPosts}
-      gistPosts={gistPosts}
-      imagePosts={imagePosts}
       commits={commits}
       heatmap={heatmap}
+      page={page}
       readOnly={readOnly}
+      onClickPageButton={onClickPageButton}
       onClickDay={onClickDay}
       onClickModal={onClickModal}
       onClickComponent={onClickComponent}
       onClickDelete={onClickDelete}
-      onClickFollow={onClickFollow}
     />
   );
 };

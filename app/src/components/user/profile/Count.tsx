@@ -5,10 +5,9 @@ import { ProfileState } from "../../../modules/user";
 type CountProps = {
   profile: ProfileState;
   onClickComponent: (component: UserComponentState) => void;
-  onClickFollow: () => void;
 };
 
-const Count = ({ profile, onClickComponent, onClickFollow }: CountProps) => {
+const Count = ({ profile, onClickComponent }: CountProps) => {
   return (
     <>
       <div className="count-container">
@@ -22,7 +21,6 @@ const Count = ({ profile, onClickComponent, onClickFollow }: CountProps) => {
         </div>
         <Link
           to={{ pathname: "/follow", state: { component: "following" } }}
-          onClick={() => onClickFollow()}
           className="text-link"
         >
           <div className="count-wrapper">
@@ -32,7 +30,6 @@ const Count = ({ profile, onClickComponent, onClickFollow }: CountProps) => {
         </Link>
         <Link
           to={{ pathname: "/follow", state: { component: "follower" } }}
-          onClick={() => onClickFollow()}
           className="text-link"
         >
           <div className="count-wrapper">

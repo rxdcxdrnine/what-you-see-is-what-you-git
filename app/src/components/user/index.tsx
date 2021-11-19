@@ -1,11 +1,9 @@
 import {
   AllPostState,
   commitState,
-  GistPostState,
   HeatmapState,
-  ImagePostState,
+  PageState,
   ProfileState,
-  PushPostState,
 } from "../../modules/user";
 
 import Profile from "./profile";
@@ -18,42 +16,34 @@ type UserProps = {
   profile: ProfileState;
   component: UserComponentState;
   allPosts: AllPostState[];
-  pushPosts: PushPostState[];
-  gistPosts: GistPostState[];
-  imagePosts: ImagePostState[];
   commits: commitState[];
   heatmap: HeatmapState;
+  page: PageState;
   readOnly: boolean;
+  onClickPageButton: (e: any) => void;
   onClickDay: (regDate: string) => void;
   onClickModal: (postId: number) => void;
   onClickComponent: (component: UserComponentState) => void;
   onClickDelete: (postId: number) => void;
-  onClickFollow: () => void;
 };
 
 const User = ({
   profile,
   component,
   allPosts,
-  pushPosts,
-  gistPosts,
-  imagePosts,
   commits,
   heatmap,
+  page,
   readOnly,
+  onClickPageButton,
   onClickDay,
   onClickModal,
   onClickComponent,
   onClickDelete,
-  onClickFollow,
 }: UserProps) => {
   return (
     <>
-      <Profile
-        profile={profile}
-        onClickComponent={onClickComponent}
-        onClickFollow={onClickFollow}
-      />
+      <Profile profile={profile} onClickComponent={onClickComponent} />
       <div className="post-button-container">
         {component === "all" ||
         component === "push" ||
@@ -77,14 +67,48 @@ const User = ({
                 IMAGE
               </option>
             </select>
+            <button
+              className="post-page-button"
+              name="prev"
+              disabled={page.first}
+              onClick={onClickPageButton}
+            >
+              PREV
+            </button>
+            <button
+              className="post-page-button"
+              name="next"
+              disabled={page.last}
+              onClick={onClickPageButton}
+            >
+              NEXT
+            </button>
           </div>
         ) : component === "day" ? (
-          <button
-            className="heatmap-back-button"
-            onClick={() => onClickComponent("heatmap")}
-          >
-            BACK
-          </button>
+          <div>
+            <button
+              className="heatmap-back-button"
+              onClick={() => onClickComponent("heatmap")}
+            >
+              {"<- BACK"}
+            </button>
+            <button
+              className="post-page-button"
+              name="prev"
+              disabled={page.first}
+              onClick={onClickPageButton}
+            >
+              PREV
+            </button>
+            <button
+              className="post-page-button"
+              name="next"
+              disabled={page.last}
+              onClick={onClickPageButton}
+            >
+              NEXT
+            </button>
+          </div>
         ) : (
           <div></div>
         )}
@@ -129,9 +153,6 @@ const User = ({
         userId={profile.userId}
         component={component}
         allPosts={allPosts}
-        pushPosts={pushPosts}
-        gistPosts={gistPosts}
-        imagePosts={imagePosts}
         commits={commits}
         heatmap={heatmap}
         readOnly={readOnly}

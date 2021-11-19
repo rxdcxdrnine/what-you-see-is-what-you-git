@@ -1,10 +1,11 @@
 import { Editor } from "@toast-ui/react-editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Write from "../components/write";
 import { RootState } from "../modules";
 import {
+  resetWrite,
   SelectedItemState,
   updateMarkdown,
   updateSelectedItem,
@@ -25,6 +26,13 @@ const WriteContainer = () => {
     (state: RootState) => state.write
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetWrite());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [selectedButton, setSelectedButton] = useState<
     "" | "push" | "gist" | "file"

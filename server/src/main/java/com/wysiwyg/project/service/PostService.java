@@ -3,14 +3,13 @@ package com.wysiwyg.project.service;
 import com.wysiwyg.project.dto.*;
 import com.wysiwyg.project.entity.Post;
 import com.wysiwyg.project.repository.PostRepository;
-import com.wysiwyg.project.repository.PostRepositoryCustomImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +25,8 @@ public class PostService {
         return postRepository.countByDate(condition);
     }
 
-    public List<PostFetchDto> searchByUserId(PostSearchCondition condition) {
-        return postRepository.searchByUserId(condition);
+    public Page<PostFetchDto> searchByUserId(PostSearchCondition condition, Pageable pageable) {
+        return postRepository.searchByUserId(condition, pageable);
     }
 
     @Transactional
