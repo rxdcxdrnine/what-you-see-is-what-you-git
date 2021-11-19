@@ -58,9 +58,4 @@ public class ImagePostService {
         }
         return filename;
     }
-
-    public List<ImagePostFetchDto> findByUserId(Long userId) {
-        List<Image> images = imagePostRepository.findByUserUserId(userId);
-        return images.stream().map(ImagePostFetchDto::new).collect(Collectors.toList());
-    }
 }

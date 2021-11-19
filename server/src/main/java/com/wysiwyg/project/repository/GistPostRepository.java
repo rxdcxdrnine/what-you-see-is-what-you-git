@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface GistPostRepository extends JpaRepository<Gist, Long> {
 
-    List<Gist> findByUserUserId(Long userId);
 }
