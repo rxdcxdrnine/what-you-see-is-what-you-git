@@ -24,12 +24,6 @@ export type BasePostState = {
   regDate: string;
 };
 
-export type PushPostState = PushState & BasePostState;
-
-export type GistPostState = GistState & BasePostState;
-
-export type ImagePostState = ImageState & BasePostState;
-
 export type AllPostState = PushState & GistState & ImageState & BasePostState;
 
 export type commitState = {
@@ -49,13 +43,13 @@ export type commitFileState = {
   additions: number;
   deletions: number;
 };
-
+export type HeatmapState = {
+  [date: string]: number;
+};
 export type PostsState = {
   allPosts: AllPostState[];
-  pushPosts: PushPostState[];
-  gistPosts: GistPostState[];
-  imagePosts: ImagePostState[];
   commits: commitState[];
+  heatmap: HeatmapState;
 };
 
 export type PostCount = {
@@ -63,15 +57,17 @@ export type PostCount = {
   count: number;
 };
 
-export type HeatmapState = {
-  [date: string]: number;
+export type PageState = {
+  first: boolean;
+  last: boolean;
+  number: number;
 };
 
 type UserState = {
   login: LoginState;
   profile: ProfileState;
   posts: PostsState;
-  heatmap: HeatmapState;
+  page: PageState;
   errorMessage: string;
 };
 
@@ -92,12 +88,14 @@ const initialState: UserState = {
   },
   posts: {
     allPosts: [],
-    pushPosts: [],
-    gistPosts: [],
-    imagePosts: [],
     commits: [],
+    heatmap: {},
   },
-  heatmap: {},
+  page: {
+    first: true,
+    last: true,
+    number: 0,
+  },
   errorMessage: "",
 };
 
@@ -106,9 +104,20 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     resetUser: (state: UserState) => {
-      state.profile = initialState.profile;
+      // profile
+      state.profile.githubId = initialState.profile.githubId;
+      state.profile.userName = initialState.profile.userName;
+      state.profile.profileName = initialState.profile.profileName;
+      state.profile.avatarUrl = initialState.profile.avatarUrl;
+      state.profile.dayNum = initialState.profile.dayNum;
+      state.profile.followingNum = initialState.profile.followingNum;
+      state.profile.followerNum = initialState.profile.followerNum;
+
       state.posts = initialState.posts;
-      state.heatmap = initialState.heatmap;
+      state.page = initialState.page;
+    },
+    resetPage: (state: UserState) => {
+      state.page = initialState.page;
     },
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
@@ -116,23 +125,14 @@ const userSlice = createSlice({
     updateAllPosts(state: UserState, action: PayloadAction<AllPostState[]>) {
       state.posts.allPosts = action.payload;
     },
-    updatePushPosts(state: UserState, action: PayloadAction<PushPostState[]>) {
-      state.posts.pushPosts = action.payload;
-    },
-    updateGistPosts(state: UserState, action: PayloadAction<GistPostState[]>) {
-      state.posts.gistPosts = action.payload;
-    },
-    updateImagePosts(
-      state: UserState,
-      action: PayloadAction<ImagePostState[]>
-    ) {
-      state.posts.imagePosts = action.payload;
-    },
     updateHeatmap(state: UserState, action: PayloadAction<HeatmapState>) {
-      state.heatmap = action.payload;
+      state.posts.heatmap = action.payload;
     },
     updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
       state.posts.commits = action.payload;
+    },
+    updatePage(state: UserState, action: PayloadAction<PageState>) {
+      state.page = action.payload;
     },
     updateUserError(state: UserState, action: PayloadAction<string>) {
       state.errorMessage = action.payload;
@@ -142,13 +142,12 @@ const userSlice = createSlice({
 
 export const {
   resetUser,
+  resetPage,
   updateProfile,
   updateAllPosts,
-  updatePushPosts,
-  updateGistPosts,
-  updateImagePosts,
   updateCommits,
   updateHeatmap,
+  updatePage,
   updateUserError,
 } = userSlice.actions;
 

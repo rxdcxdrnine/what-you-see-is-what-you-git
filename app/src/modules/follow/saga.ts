@@ -1,4 +1,3 @@
-import { FollowItem, updateUsers } from "./index";
 import {
   all,
   call,
@@ -7,9 +6,19 @@ import {
   takeEvery,
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
-import { updateFollowers, updateFollowings, updateFollowError } from ".";
+import {
+  FollowItem,
+  updateFollowers,
+  updateFollowings,
+  updatePage,
+  updateUsers,
+  updateFollowError,
+  appendUsers,
+  resetPage,
+} from ".";
 import FollowApi, { FollowSave, FollowDelete } from "../../api/follow";
 import { UserSearchCondition } from "../../api/user";
+import { Page } from "../../api/page";
 
 export const fetchFollowings = createAction<number>("follow/fetchFollowings");
 
@@ -61,9 +70,13 @@ function* getUsers(action: ReturnType<typeof searchUsers>) {
       FollowApi.searchUsers,
       action.payload
     );
-    const users = res.data;
+    const page: Page<FollowItem> = res.data;
+    const { first, last, number } = page;
 
-    yield put(updateUsers(users));
+    if (first) yield put(updateUsers(page.content));
+    else yield put(appendUsers(page.content));
+
+    yield put(updatePage({ first, last, number }));
   } catch (e: any) {
     yield put(updateFollowError(e.message));
   }
@@ -86,6 +99,7 @@ export function* postFollow(action: ReturnType<typeof saveFollow>) {
       alert("성공적으로 추가되었습니다.");
 
       yield put(updateUsers([]));
+      yield put(resetPage());
     }
   } catch (e: any) {
     yield put(updateFollowError(e.message));

@@ -1,17 +1,12 @@
-import { Viewer } from "@toast-ui/react-editor";
-import { Link } from "react-router-dom";
-import {
-  AllPostState,
-  commitState,
-  GistPostState,
-  ImagePostState,
-  PushPostState,
-} from "../../../modules/user";
-import Modal from "react-modal";
-import Commit from "./Commit";
-import Gist from "../../../utils/react-gist/Gist";
 import { useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { Viewer } from "@toast-ui/react-editor";
+import { Link } from "react-router-dom";
+import Modal from "react-modal";
+
+import { AllPostState, commitState } from "../../../modules/user";
+import Gist from "../../../utils/react-gist/Gist";
+import Commit from "./Commit";
 
 type PostItemProps = {
   allPostItem: AllPostState;
@@ -56,7 +51,7 @@ export const AllPostItem = ({
 };
 
 type PushPostItemProps = {
-  pushPostItem: AllPostState | PushPostState;
+  pushPostItem: AllPostState;
   commits: commitState[];
   readOnly: boolean;
   onClickModal: (postId: number) => void;
@@ -127,7 +122,7 @@ export const PushPostItem = ({
 };
 
 type GistPostItemProps = {
-  gistPostItem: AllPostState | GistPostState;
+  gistPostItem: AllPostState;
   readOnly: boolean;
   onClickDelete: (postId: number) => void;
 };
@@ -155,7 +150,7 @@ export const GistPostItem = ({
 };
 
 type ImagePostItemProps = {
-  imagePostItem: AllPostState | ImagePostState;
+  imagePostItem: AllPostState;
   readOnly: boolean;
   onClickDelete: (postId: number) => void;
 };
@@ -177,7 +172,7 @@ export const ImagePostItem = ({
       <div className="image-wrapper">
         <img
           className="image-post"
-          src={baseUrl + imagePostItem.imageFilename}
+          src={baseUrl + "/images/" + imagePostItem.imageFilename}
           alt="imagePost"
         />
       </div>
@@ -189,7 +184,7 @@ export const ImagePostItem = ({
 };
 
 type PostItemTitleProps = {
-  postItem: PushPostState | GistPostState | ImagePostState;
+  postItem: AllPostState;
   readOnly: boolean;
   onClickDelete: (postid: number) => void;
 };
