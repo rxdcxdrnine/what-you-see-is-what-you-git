@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface ImagePostRepository extends JpaRepository<Image, Long> {
 
-    List<Image> findByUserUserId(Long userId);
 }

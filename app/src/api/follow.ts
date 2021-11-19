@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { FollowItem } from "../modules/follow";
+import { Page } from "./page";
 import { UserSearchCondition } from "./user";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
@@ -25,11 +26,16 @@ const fetchFollowers: (userId: number) => Promise<AxiosResponse<FollowItem[]>> =
 const searchUsers: ({
   userId,
   userName,
-}: UserSearchCondition) => Promise<AxiosResponse<FollowItem[]>> = ({
+  page,
+}: UserSearchCondition) => Promise<AxiosResponse<Page<FollowItem>>> = ({
   userId,
   userName,
-}) =>
-  axios.get(`${serverUrl}/follow/search?userId=${userId}&userName=${userName}`);
+  page,
+}) => {
+  let baseUrl = `${serverUrl}/follow/search?userId=${userId}&userName=${userName}`;
+  if (page) baseUrl += `&page=${page}`;
+  return axios.get(baseUrl);
+};
 
 const saveFollow: (follow: FollowSave) => Promise<AxiosResponse<FollowSave>> = (
   follow: FollowSave

@@ -5,6 +5,7 @@ import FollowSearch from "./FollowSearch";
 
 import "../../styles/follow.css";
 import { FollowComponentState } from "../../containers/FollowContainer";
+import { PageState } from "../../modules/user";
 
 type FollowProps = {
   users: FollowItem[];
@@ -13,10 +14,11 @@ type FollowProps = {
   userId: number;
   selectedButton: FollowComponentState;
   searchKey: string;
+  page: PageState;
   readOnly: boolean;
   onClickComponent: (component: FollowComponentState) => void;
   onClickSearch: (userName: string) => void;
-  onClickUser: () => void;
+  onClickMore: (e: any) => void;
   onClickAdd: (followingId: number, followerId: number) => void;
   onClickRemove: (userId: number, followId: number) => void;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
@@ -29,10 +31,11 @@ const Follow = ({
   userId,
   selectedButton,
   searchKey,
+  page,
   readOnly,
   onClickComponent,
   onClickSearch,
-  onClickUser,
+  onClickMore,
   onClickAdd,
   onClickRemove,
   setSearchKey,
@@ -59,8 +62,9 @@ const Follow = ({
           users={users}
           userId={userId}
           selectedButton={selectedButton}
+          page={page}
           readOnly={readOnly}
-          onClickUser={onClickUser}
+          onClickMore={onClickMore}
           onClickAdd={onClickAdd}
           onClickRemove={onClickRemove}
         />

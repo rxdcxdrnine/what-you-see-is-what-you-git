@@ -1,5 +1,6 @@
 package com.wysiwyg.project.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -11,6 +12,9 @@ import com.wysiwyg.project.dto.QUserFetchDto;
 import com.wysiwyg.project.dto.UserFetchDto;
 import com.wysiwyg.project.dto.UserSearchCondition;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,8 +29,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<UserFetchDto> searchByUserName(UserSearchCondition condition) {
-        return queryFactory
+    public Page<UserFetchDto> searchByUserName(UserSearchCondition condition, Pageable pageable) {
+        QueryResults<UserFetchDto> results = queryFactory
                 .select(new QUserFetchDto(
                         user.userId,
                         user.userName,
@@ -36,7 +40,14 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .from(user)
                 .where(userIdNotEq(condition.getUserId()),
                         userNameContains(condition.getUserName()))
-                .fetch();
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<UserFetchDto> content = results.getResults();
+        Long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
     }
 
     @Override

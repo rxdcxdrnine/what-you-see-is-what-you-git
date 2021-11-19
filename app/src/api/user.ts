@@ -2,12 +2,10 @@ import axios, { AxiosResponse } from "axios";
 import {
   AllPostState,
   commitState,
-  GistPostState,
-  ImagePostState,
   PostCount,
   ProfileState,
-  PushPostState,
 } from "../modules/user";
+import { Page } from "./page";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
 
@@ -15,11 +13,14 @@ export type UserSearchCondition = {
   userId?: number;
   githubId?: number;
   userName?: string;
+  page?: number;
 };
 
 export type PostSearchCondition = {
   userId: number;
+  type?: "PUSH" | "GIST" | "IMAGE";
   regDate?: string;
+  page?: number;
 };
 
 export type PostUpdate = {
@@ -49,30 +50,21 @@ const fetchUserProfile: ({
 const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
   (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);
 
-const fetchPushPosts: (
-  userId: number
-) => Promise<AxiosResponse<PushPostState[]>> = (userId: number) =>
-  axios.get(`${serverUrl}/posts/push?userId=${userId}`);
-
-const fetchGistPosts: (
-  userId: number
-) => Promise<AxiosResponse<GistPostState[]>> = (userId: number) =>
-  axios.get(`${serverUrl}/posts/gist?userId=${userId}`);
-
-const fetchImagePosts: (
-  userId: number
-) => Promise<AxiosResponse<ImagePostState[]>> = (userId: number) =>
-  axios.get(`${serverUrl}/posts/image?userId=${userId}`);
-
 const fetchAllPosts: ({
   userId,
+  type,
   regDate,
-}: PostSearchCondition) => Promise<AxiosResponse<AllPostState[]>> = ({
+  page,
+}: PostSearchCondition) => Promise<AxiosResponse<Page<AllPostState>>> = ({
   userId,
+  type,
   regDate,
+  page,
 }: PostSearchCondition) => {
-  let baseUrl = `${serverUrl}/posts/all?userId=${userId}`;
+  let baseUrl = `${serverUrl}/posts?userId=${userId}`;
+  if (type) baseUrl += `&type=${type}`;
   if (regDate) baseUrl += `&regDate=${regDate}`;
+  if (page) baseUrl += `&page=${page}`;
   return axios.get(baseUrl);
 };
 
@@ -98,9 +90,6 @@ const deletePost: (postId: number) => Promise<AxiosResponse<void>> = (
 const UserApi = {
   fetchUserProfile,
   fetchPostCount,
-  fetchPushPosts,
-  fetchGistPosts,
-  fetchImagePosts,
   fetchCommits,
   fetchAllPosts,
   fetchPost,

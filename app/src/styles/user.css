@@ -65,12 +65,13 @@
 
 .post-select-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
 }
 
 .post-select {
   height: 2rem;
+  width: 4rem;
+  margin-right: 1rem;
   border-radius: 5px;
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
@@ -78,11 +79,22 @@
 }
 
 .heatmap-back-button {
+  height: 2rem;
+  width: 4rem;
+  margin-right: 1rem;
   border-radius: 5px;
   padding: 5px;
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
   margin-left: 0.5rem;
+}
+
+.post-page-button {
+  height: 2rem;
+  margin-left: 0.5rem;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .view-button-container {
@@ -91,6 +103,7 @@
 }
 
 .view-button {
+  height: 2rem;
   border-radius: 5px;
   padding: 5px;
   background: #ffffff;

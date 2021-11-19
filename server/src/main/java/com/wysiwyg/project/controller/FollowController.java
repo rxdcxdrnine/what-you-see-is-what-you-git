@@ -6,6 +6,10 @@ import com.wysiwyg.project.dto.UserFetchDto;
 import com.wysiwyg.project.dto.UserSearchCondition;
 import com.wysiwyg.project.service.FollowService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,15 +37,16 @@ public class FollowController {
     }
 
     @GetMapping("/search")
-    public List<UserFetchDto> findUser(
+    public Page<UserFetchDto> findUser(
             @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "userName") String userName
+            @RequestParam(value = "userName") String userName,
+            @PageableDefault(size = 15) Pageable pageable
     ) {
         UserSearchCondition condition = new UserSearchCondition();
         condition.setUserId(userId);
         condition.setUserName(userName);
 
-        return followService.searchUsers(condition);
+        return followService.searchUsers(condition, pageable);
     }
 
     @DeleteMapping("/{followId}")
