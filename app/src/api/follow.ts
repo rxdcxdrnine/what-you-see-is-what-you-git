@@ -1,8 +1,14 @@
 import axios, { AxiosResponse } from "axios";
+import { ACCESS_TOKEN } from "../constants";
 import { FollowItem } from "../modules/follow";
 import { UserSearchCondition } from "./user";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
+
+const accessToken = localStorage.getItem(ACCESS_TOKEN);
+const headers = {
+  Authorization: "Bearer " + accessToken,
+};
 
 export type FollowSave = {
   followingId: number;
@@ -17,10 +23,11 @@ export type FollowDelete = {
 const fetchFollowings: (
   userId: number
 ) => Promise<AxiosResponse<FollowItem[]>> = (userId: number) =>
-  axios.get(`${serverUrl}/follow/following/${userId}`);
+  axios.get(`${serverUrl}/follow/following/${userId}`, { headers });
 
 const fetchFollowers: (userId: number) => Promise<AxiosResponse<FollowItem[]>> =
-  (userId: number) => axios.get(`${serverUrl}/follow/follower/${userId}`);
+  (userId: number) =>
+    axios.get(`${serverUrl}/follow/follower/${userId}`, { headers });
 
 const searchUsers: ({
   userId,
@@ -29,15 +36,18 @@ const searchUsers: ({
   userId,
   userName,
 }) =>
-  axios.get(`${serverUrl}/follow/search?userId=${userId}&userName=${userName}`);
+  axios.get(
+    `${serverUrl}/follow/search?userId=${userId}&userName=${userName}`,
+    { headers }
+  );
 
 const saveFollow: (follow: FollowSave) => Promise<AxiosResponse<FollowSave>> = (
   follow: FollowSave
-) => axios.post(`${serverUrl}/follow`, follow);
+) => axios.post(`${serverUrl}/follow`, follow, { headers });
 
 const removeFollow: (followId: number) => Promise<AxiosResponse<number>> = (
   followId: number
-) => axios.delete(`${serverUrl}/follow/${followId}`);
+) => axios.delete(`${serverUrl}/follow/${followId}`, { headers });
 
 const FollowApi = {
   fetchFollowings,

@@ -31,6 +31,9 @@ const followSlice = createSlice({
       state.followers = initialState.followers;
       state.users = initialState.users;
     },
+    resetUsers(state: FollowState) {
+      state.users = initialState.users;
+    },
     updateFollowings(state: FollowState, action: PayloadAction<FollowItem[]>) {
       state.followings = action.payload;
     },
@@ -48,6 +51,7 @@ const followSlice = createSlice({
 
 export const {
   resetFollow,
+  resetUsers,
   updateFollowings,
   updateFollowers,
   updateUsers,

@@ -1,22 +1,40 @@
 import qs from "qs";
-import { useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import jwt from "jsonwebtoken";
+import { Redirect, useLocation } from "react-router-dom";
+import { ACCESS_TOKEN } from "../constants";
+import { useDispatch } from "react-redux";
+import { updateLogin } from "../modules/user";
 
 const CallbackView = () => {
-  const history = useHistory();
   const location = useLocation();
-  const { code } = qs.parse(location.search, {
+  const dispatch = useDispatch();
+
+  const { token } = qs.parse(location.search, {
     ignoreQueryPrefix: true,
   });
 
-  useEffect(() => {
-    // TO DO
-    // REST API POST with code
+  if (token) {
+    localStorage.setItem(ACCESS_TOKEN, token as string);
+    const decoded = jwt.decode(token as string) as jwt.JwtPayload;
 
-    history.push("/user");
+    dispatch(
+      updateLogin({
+        userId: parseInt(decoded.sub as string),
+        userName: decoded.username,
+      })
+    );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, history]);
+    return (
+      <Redirect
+        to={{
+          pathname: "/user",
+          state: { userId: decoded.sub },
+        }}
+      />
+    );
+  } else {
+    // redirect with error state
+  }
 
   return null;
 };

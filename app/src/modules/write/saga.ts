@@ -1,4 +1,4 @@
-import { GistState, updateGists } from "./index";
+import { GistState, resetWrite, updateGists } from "./index";
 import {
   all,
   call,
@@ -9,12 +9,15 @@ import {
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
 import { History } from "history";
+import { push } from "react-router-redux";
 
 import WriteApi, {
   GistPostSave,
   ImagePostSave,
   PushPostSave,
 } from "../../api/write";
+
+import GithubApi from "../../api/github";
 import { PushState, updatePushes, updateWriteError } from ".";
 
 // fetchGithubPushes
@@ -24,8 +27,8 @@ export const fetchGithubPushes = createAction<string>(
 
 function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
   try {
-    const res: SagaReturnType<typeof WriteApi.fetchGithubPushes> = yield call(
-      WriteApi.fetchGithubPushes,
+    const res: SagaReturnType<typeof GithubApi.fetchGithubPushes> = yield call(
+      GithubApi.fetchGithubPushes,
       action.payload
     );
 
@@ -57,8 +60,8 @@ export const fetchGithubGists = createAction<string>("wriet/fetchGithubGists");
 
 function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
   try {
-    const res: SagaReturnType<typeof WriteApi.fetchGithubGists> = yield call(
-      WriteApi.fetchGithubGists,
+    const res: SagaReturnType<typeof GithubApi.fetchGithubGists> = yield call(
+      GithubApi.fetchGithubGists,
       action.payload
     );
 
@@ -94,8 +97,7 @@ function* postPushPost(action: ReturnType<typeof savePushPost>) {
 
     if (res.status === 200) {
       alert("성공적으로 저장되었습니다.");
-      const history: History = yield getContext("history");
-      history.push("/user");
+      yield put(resetWrite());
     }
   } catch (e: any) {
     yield put(updateWriteError(e.message));
@@ -118,8 +120,7 @@ function* postGistPost(action: ReturnType<typeof saveGistPost>) {
 
     if (res.status === 200) {
       alert("성공적으로 저장되었습니다.");
-      const history: History = yield getContext("history");
-      history.push("/user");
+      yield put(resetWrite());
     }
   } catch (e: any) {
     yield put(updateWriteError(e.message));
@@ -142,8 +143,7 @@ function* postImagePost(action: ReturnType<typeof saveImagePost>) {
 
     if (res.status === 200) {
       alert("성공적으로 저장되었습니다.");
-      const history: History = yield getContext("history");
-      history.push("/user");
+      yield put(resetWrite());
     }
   } catch (e: any) {
     yield put(updateWriteError(e.message));

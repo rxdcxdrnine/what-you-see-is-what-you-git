@@ -35,7 +35,7 @@ type WriteState = {
 };
 
 const initialState: WriteState = {
-  markdown: "# sample",
+  markdown: "# ",
   html: "",
   pushes: [],
   gists: [],
@@ -47,6 +47,13 @@ const writeSlice = createSlice({
   name: "write",
   initialState,
   reducers: {
+    resetWrite(state: WriteState) {
+      state.markdown = initialState.markdown;
+      state.html = initialState.html;
+      state.pushes = initialState.pushes;
+      state.gists = initialState.gists;
+      state.selectedItem = initialState.selectedItem;
+    },
     updateMarkdown(state: WriteState, action: PayloadAction<string>) {
       state.markdown = action.payload;
     },
@@ -72,6 +79,7 @@ const writeSlice = createSlice({
 });
 
 export const {
+  resetWrite,
   updateMarkdown,
   updateHtml,
   updatePushes,

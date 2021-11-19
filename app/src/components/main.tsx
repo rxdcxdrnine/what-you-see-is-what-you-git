@@ -1,12 +1,8 @@
 import githubLogo from "../assets/images/GitHub_Logo_White.png";
 import githubMark from "../assets/images/GitHub-Mark-Light-120px-plus.png";
 
-const clientId: string = process.env.REACT_APP_GITHUB_AUTH_CLIENT_ID as string;
-const callbackUrl: string = process.env
-  .REACT_APP_GITHUB_AUTH_CALLBACK_URL as string;
-
-console.log(clientId);
-console.log(callbackUrl);
+const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
+const redirectUri: string = process.env.REACT_APP_REDIRECT_URI as string;
 
 const Main = () => {
   return (
@@ -20,7 +16,7 @@ const Main = () => {
       <div className="login-container">
         <div>Login with Github</div>
         <a
-          href={`https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${callbackUrl}`}
+          href={`${serverUrl}/oauth2/authorize/github?redirect_uri=${redirectUri}`}
         >
           <button className="login-button">
             <div>

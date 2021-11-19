@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Follow from "../components/follow";
 import { RootState } from "../modules";
-import { updateUsers } from "../modules/follow";
+import { resetFollow, resetUsers } from "../modules/follow";
 import {
   fetchFollowers,
   fetchFollowings,
@@ -35,12 +35,16 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
     onClickComponent(component);
     setReadonly(login.userId !== profile.userId);
 
+    return () => {
+      dispatch(resetFollow());
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.userId]);
 
   const onClickComponent = (component: FollowComponentState) => {
     if (selectedButton === "search") {
-      dispatch(updateUsers([]));
+      dispatch(resetUsers());
     }
     setSelectedButton(component);
 

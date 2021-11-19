@@ -77,8 +77,8 @@ type UserState = {
 
 const initialState: UserState = {
   login: {
-    userId: parseInt(process.env.REACT_APP_SAMPLE_USER_ID as string),
-    userName: process.env.REACT_APP_SAMPLE_GITHUB_USERNAME as string,
+    userId: 0,
+    userName: "",
   },
   profile: {
     userId: 0,
@@ -109,6 +109,9 @@ const userSlice = createSlice({
       state.profile = initialState.profile;
       state.posts = initialState.posts;
       state.heatmap = initialState.heatmap;
+    },
+    updateLogin(state: UserState, action: PayloadAction<LoginState>) {
+      state.login = action.payload;
     },
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
@@ -142,6 +145,7 @@ const userSlice = createSlice({
 
 export const {
   resetUser,
+  updateLogin,
   updateProfile,
   updateAllPosts,
   updatePushPosts,

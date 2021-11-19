@@ -1,4 +1,4 @@
-import { FollowItem, updateUsers } from "./index";
+import { FollowItem, updateUsers, resetUsers } from "./index";
 import {
   all,
   call,
@@ -85,7 +85,7 @@ export function* postFollow(action: ReturnType<typeof saveFollow>) {
     if (res.status === 200) {
       alert("성공적으로 추가되었습니다.");
 
-      yield put(updateUsers([]));
+      yield put(resetUsers());
     }
   } catch (e: any) {
     yield put(updateFollowError(e.message));

@@ -16,7 +16,7 @@ function App() {
         <Route path="/write" component={WriteView} />
         <Route path="/update" component={UpdateView} />
         <Route path="/follow" component={FollowView} />
-        <Route path="/callback" component={CallbackView} />
+        <Route path="/oauth2/redirect" component={CallbackView} />
       </Switch>
     </BrowserRouter>
   );
