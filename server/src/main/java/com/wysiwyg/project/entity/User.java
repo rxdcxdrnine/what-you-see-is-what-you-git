@@ -16,7 +16,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long githubId;
 
     @Column(length = 39, nullable = false)
@@ -43,15 +43,23 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     List<Post> posts = new ArrayList<>();
 
-    public User(Long userId) {
-        this.userId = userId;
-    }
-
     @Builder
     public User(Long githubId, String userName, String profileName, String avatarUrl) {
         this.githubId = githubId;
         this.userName = userName;
         this.profileName = profileName;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
