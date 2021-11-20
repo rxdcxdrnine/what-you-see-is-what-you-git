@@ -69,8 +69,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.followerNum
                 ))
                 .from(user)
-                .where(userIdEq(condition.getUserId()),
-                        githubIdEq(condition.getGithubId()))
+                .where(userIdEq(condition.getUserId()))
                 .fetchOne();
 
         return dto;
@@ -78,10 +77,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     private BooleanExpression userIdEq(Long userId) {
         return userId == null ? null : user.userId.eq(userId);
-    }
-
-    private BooleanExpression githubIdEq(Long githubId) {
-        return githubId == null ? null : user.githubId.eq(githubId);
     }
 
     private BooleanExpression userIdNotEq(Long userId) {

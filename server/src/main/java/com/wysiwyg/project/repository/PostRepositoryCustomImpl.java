@@ -41,8 +41,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return queryFactory
                 .select(new QPostCountDto(formattedDate, post.count()))
                 .from(post)
-                .where(userIdEq(condition.getUserId()),
-                        githubIdEq(condition.getGithubId()))
+                .where(userIdEq(condition.getUserId()))
                 .groupBy(formattedDate)
                 .fetch();
     }

@@ -22,12 +22,10 @@ public class UserController {
 
     @GetMapping
     public UserFetchDto fetchUserByGithubId(
-            @RequestParam(value = "userId", required = false) Long userId,
-            @RequestParam(value = "githubId", required = false) Long githubId) {
+            @RequestParam(value = "userId", required = false) Long userId) {
 
         UserSearchCondition condition = new UserSearchCondition();
         condition.setUserId(userId);
-        condition.setGithubId(githubId);
 
         return userService.searchByIdWithPostCounts(condition);
     }
