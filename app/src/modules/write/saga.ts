@@ -1,12 +1,13 @@
-import { GistState, resetWrite, updateGists } from "./index";
 import {
   all,
   call,
+  getContext,
   SagaReturnType,
   put,
   takeEvery,
 } from "@redux-saga/core/effects";
 import { createAction } from "@reduxjs/toolkit";
+import { History } from "history";
 
 import WriteApi, {
   GistPostSave,
@@ -15,6 +16,7 @@ import WriteApi, {
 } from "../../api/write";
 
 import GithubApi from "../../api/github";
+import { GistState, updateGists } from "./index";
 import { PushState, updatePushes, updateWriteError } from ".";
 
 // fetchGithubPushes
@@ -94,7 +96,8 @@ function* postPushPost(action: ReturnType<typeof savePushPost>) {
 
     if (res.status === 200) {
       alert("성공적으로 저장되었습니다.");
-      yield put(resetWrite());
+      const history: History = yield getContext("history");
+      history.push("/user");
     }
   } catch (e: any) {
     yield put(updateWriteError(e.message));
@@ -117,7 +120,8 @@ function* postGistPost(action: ReturnType<typeof saveGistPost>) {
 
     if (res.status === 200) {
       alert("성공적으로 저장되었습니다.");
-      yield put(resetWrite());
+      const history: History = yield getContext("history");
+      history.push("/user");
     }
   } catch (e: any) {
     yield put(updateWriteError(e.message));
@@ -140,7 +144,8 @@ function* postImagePost(action: ReturnType<typeof saveImagePost>) {
 
     if (res.status === 200) {
       alert("성공적으로 저장되었습니다.");
-      yield put(resetWrite());
+      const history: History = yield getContext("history");
+      history.push("/user");
     }
   } catch (e: any) {
     yield put(updateWriteError(e.message));

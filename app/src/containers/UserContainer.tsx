@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
-import { resetPage, resetUser } from "../modules/user";
+import { resetPage, resetUser, updateLogin } from "../modules/user";
 import {
   fetchCommits,
   fetchPostCount,
@@ -10,6 +10,7 @@ import {
   fetchUserProfile,
   removePost,
 } from "../modules/user/saga";
+import { getPayload } from "../utils";
 
 export type UserComponentState =
   | "all"
@@ -37,6 +38,11 @@ const UserContainer = ({ userId }: UserContainerProps) => {
   const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
+    if (!login.userId || !login.userName) {
+      const { userId, userName } = getPayload();
+      dispatch(updateLogin({ userId, userName }));
+    }
+
     const current = userId ? userId : login.userId;
 
     dispatch(fetchUserProfile({ userId: current }));

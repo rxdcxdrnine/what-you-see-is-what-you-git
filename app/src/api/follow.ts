@@ -1,15 +1,10 @@
+import { getHeaders } from "./../utils/index";
 import axios, { AxiosResponse } from "axios";
-import { ACCESS_TOKEN } from "../constants";
 import { FollowItem } from "../modules/follow";
 import { Page } from "./page";
 import { UserSearchCondition } from "./user";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
-
-const accessToken = localStorage.getItem(ACCESS_TOKEN);
-const headers = {
-  Authorization: "Bearer " + accessToken,
-};
 
 export type FollowSave = {
   followingId: number;
@@ -23,12 +18,16 @@ export type FollowDelete = {
 
 const fetchFollowings: (
   userId: number
-) => Promise<AxiosResponse<FollowItem[]>> = (userId: number) =>
-  axios.get(`${serverUrl}/follow/following/${userId}`, { headers });
+) => Promise<AxiosResponse<FollowItem[]>> = (userId: number) => {
+  const headers = getHeaders();
+  return axios.get(`${serverUrl}/follow/following/${userId}`, { headers });
+};
 
 const fetchFollowers: (userId: number) => Promise<AxiosResponse<FollowItem[]>> =
-  (userId: number) =>
-    axios.get(`${serverUrl}/follow/follower/${userId}`, { headers });
+  (userId: number) => {
+    const headers = getHeaders();
+    return axios.get(`${serverUrl}/follow/follower/${userId}`, { headers });
+  };
 
 const searchUsers: ({
   userId,
@@ -41,16 +40,24 @@ const searchUsers: ({
 }) => {
   let baseUrl = `${serverUrl}/follow/search?userId=${userId}&userName=${userName}`;
   if (page) baseUrl += `&page=${page}`;
+
+  const headers = getHeaders();
   return axios.get(baseUrl, { headers });
 };
 
 const saveFollow: (follow: FollowSave) => Promise<AxiosResponse<FollowSave>> = (
   follow: FollowSave
-) => axios.post(`${serverUrl}/follow`, follow, { headers });
+) => {
+  const headers = getHeaders();
+  return axios.post(`${serverUrl}/follow`, follow, { headers });
+};
 
 const removeFollow: (followId: number) => Promise<AxiosResponse<number>> = (
   followId: number
-) => axios.delete(`${serverUrl}/follow/${followId}`, { headers });
+) => {
+  const headers = getHeaders();
+  return axios.delete(`${serverUrl}/follow/${followId}`, { headers });
+};
 
 const FollowApi = {
   fetchFollowings,

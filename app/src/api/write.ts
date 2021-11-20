@@ -1,14 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { ACCESS_TOKEN } from "../constants";
 import { GistState, PushState } from "../modules/write";
+import { getHeaders } from "../utils";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
 const imageUrl: string = process.env.REACT_APP_IMAGE_URL as string;
-
-const accessToken = localStorage.getItem(ACCESS_TOKEN);
-const headers = {
-  Authorization: "Bearer " + accessToken,
-};
 
 export type PushPostSave = PushState & {
   userId: number;
@@ -17,8 +13,10 @@ export type PushPostSave = PushState & {
 
 const savePushPost: (
   pushPost: PushPostSave
-) => Promise<AxiosResponse<PushPostSave>> = (pushPost: PushPostSave) =>
-  axios.post(`${serverUrl}/posts/push`, pushPost, { headers });
+) => Promise<AxiosResponse<PushPostSave>> = (pushPost: PushPostSave) => {
+  const headers = getHeaders();
+  return axios.post(`${serverUrl}/posts/push`, pushPost, { headers });
+};
 
 export type GistPostSave = GistState & {
   userId: number;
@@ -27,8 +25,10 @@ export type GistPostSave = GistState & {
 
 const saveGistPost: (
   gistPost: GistPostSave
-) => Promise<AxiosResponse<GistPostSave>> = (gistPost: GistPostSave) =>
-  axios.post(`${serverUrl}/posts/gist`, gistPost, { headers });
+) => Promise<AxiosResponse<GistPostSave>> = (gistPost: GistPostSave) => {
+  const headers = getHeaders();
+  return axios.post(`${serverUrl}/posts/gist`, gistPost, { headers });
+};
 
 export type ImagePostSave = {
   userId: number;
@@ -47,10 +47,12 @@ const saveImagePost: (
       formData.append(key, value);
     }
   }
+
+  const token = localStorage.getItem(ACCESS_TOKEN);
   return axios.post(`${imageUrl}/posts/image`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: "Bearer " + accessToken,
+      Authorization: "Bearer " + token,
     },
   });
 };

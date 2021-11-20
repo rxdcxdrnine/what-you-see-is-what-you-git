@@ -1,19 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-import { ACCESS_TOKEN } from "../constants";
 import {
   AllPostState,
   commitState,
   PostCount,
   ProfileState,
 } from "../modules/user";
+import { getHeaders } from "../utils";
 import { Page } from "./page";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
-
-const accessToken = localStorage.getItem(ACCESS_TOKEN);
-const headers = {
-  Authorization: "Bearer " + accessToken,
-};
 
 export type UserSearchCondition = {
   userId?: number;
@@ -42,20 +37,18 @@ export type UserProfileFetch = ProfileState & {
 
 const fetchUserProfile: ({
   userId,
-  githubId,
 }: UserSearchCondition) => Promise<AxiosResponse<UserProfileFetch>> = ({
   userId,
-  githubId,
 }) => {
-  let baseUrl = `${serverUrl}/users`;
-  if (userId) baseUrl += `?userId=${userId}`;
-  if (githubId) baseUrl += `?githubId=${githubId}`;
-  return axios.get(baseUrl, { headers });
+  const headers = getHeaders();
+  return axios.get(`${serverUrl}/users?userId=${userId}`, { headers });
 };
 
 const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
-  (userId: number) =>
-    axios.get(`${serverUrl}/posts/count?userId=${userId}`, { headers });
+  (userId: number) => {
+    const headers = getHeaders();
+    return axios.get(`${serverUrl}/posts/count?userId=${userId}`, { headers });
+  };
 
 const fetchAllPosts: ({
   userId,
@@ -72,16 +65,23 @@ const fetchAllPosts: ({
   if (type) baseUrl += `&type=${type}`;
   if (regDate) baseUrl += `&regDate=${regDate}`;
   if (page) baseUrl += `&page=${page}`;
+
+  const headers = getHeaders();
   return axios.get(baseUrl, { headers });
 };
 
 const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
-  (postId: number) =>
-    axios.get(`${serverUrl}/posts/commit?postId=${postId}`, { headers });
+  (postId: number) => {
+    const headers = getHeaders();
+    return axios.get(`${serverUrl}/posts/commit?postId=${postId}`, { headers });
+  };
 
 const fetchPost: (postId: number) => Promise<AxiosResponse<AllPostState>> = (
   postId: number
-) => axios.get(`${serverUrl}/posts/${postId}`, { headers });
+) => {
+  const headers = getHeaders();
+  return axios.get(`${serverUrl}/posts/${postId}`, { headers });
+};
 
 const updatePost: ({
   postId,
@@ -89,12 +89,17 @@ const updatePost: ({
 }: PostUpdate) => Promise<AxiosResponse<void>> = ({
   postId,
   payload,
-}: PostUpdate) =>
-  axios.put(`${serverUrl}/posts/${postId}`, payload, { headers });
+}: PostUpdate) => {
+  const headers = getHeaders();
+  return axios.put(`${serverUrl}/posts/${postId}`, payload, { headers });
+};
 
 const deletePost: (postId: number) => Promise<AxiosResponse<void>> = (
   postId: number
-) => axios.delete(`${serverUrl}/posts/${postId}`, { headers });
+) => {
+  const headers = getHeaders();
+  return axios.delete(`${serverUrl}/posts/${postId}`, { headers });
+};
 
 const UserApi = {
   fetchUserProfile,

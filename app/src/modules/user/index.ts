@@ -122,6 +122,9 @@ const userSlice = createSlice({
     updateLogin(state: UserState, action: PayloadAction<LoginState>) {
       state.login = action.payload;
     },
+    updateProfileId(state: UserState, action: PayloadAction<number>) {
+      state.profile.userId = action.payload;
+    },
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
     },
@@ -147,6 +150,7 @@ export const {
   resetUser,
   updateLogin,
   resetPage,
+  updateProfileId,
   updateProfile,
   updateAllPosts,
   updateCommits,

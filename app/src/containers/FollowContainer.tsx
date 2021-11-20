@@ -10,6 +10,8 @@ import {
   saveFollow,
   searchUsers,
 } from "../modules/follow/saga";
+import { updateLogin, updateProfileId } from "../modules/user";
+import { getPayload } from "../utils";
 
 export type FollowComponentState = "" | "search" | "following" | "follower";
 
@@ -31,6 +33,12 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
   const [readOnly, setReadonly] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!login.userId || !login.userName) {
+      const { userId, userName } = getPayload();
+      dispatch(updateLogin({ userId, userName }));
+      dispatch(updateProfileId(userId));
+    }
+
     onClickComponent(component);
     setReadonly(login.userId !== profile.userId);
 

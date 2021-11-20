@@ -17,6 +17,8 @@ import {
   saveImagePost,
   savePushPost,
 } from "../modules/write/saga";
+import { updateLogin } from "../modules/user";
+import { getPayload } from "../utils";
 
 const WriteContainer = () => {
   const { userId, userName } = useSelector(
@@ -28,6 +30,11 @@ const WriteContainer = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!userId || !userName) {
+      const { userId, userName } = getPayload();
+      dispatch(updateLogin({ userId, userName }));
+    }
+
     return () => {
       dispatch(resetWrite());
     };
