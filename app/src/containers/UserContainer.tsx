@@ -53,7 +53,7 @@ const UserContainer = ({ userId }: UserContainerProps) => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, login.userId]);
+  }, []);
 
   const onClickComponent = (newComponent: UserComponentState) => {
     if (component === newComponent) return;

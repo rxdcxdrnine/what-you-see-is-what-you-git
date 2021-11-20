@@ -5,6 +5,7 @@ type LayoutProps = {
   main?: boolean;
   onClickUser: () => void;
   onClickFollow: () => void;
+  onClickLogOut: () => void;
   children: React.ReactNode;
 };
 
@@ -12,6 +13,7 @@ const Layout = ({
   main = false,
   onClickUser,
   onClickFollow,
+  onClickLogOut,
   children,
 }: LayoutProps) => {
   return (
@@ -21,6 +23,7 @@ const Layout = ({
           main={main}
           onClickUser={onClickUser}
           onClickFollow={onClickFollow}
+          onClickLogOut={onClickLogOut}
         />
         {children}
         <Footer />
@@ -35,9 +38,15 @@ type HeaderProps = {
   main?: boolean;
   onClickUser: () => void;
   onClickFollow: () => void;
+  onClickLogOut: () => void;
 };
 
-const Header = ({ main = false, onClickUser, onClickFollow }: HeaderProps) => {
+const Header = ({
+  main = false,
+  onClickUser,
+  onClickFollow,
+  onClickLogOut,
+}: HeaderProps) => {
   return (
     <header className="header">
       <div className="header-container">
@@ -73,7 +82,10 @@ const Header = ({ main = false, onClickUser, onClickFollow }: HeaderProps) => {
               onClick={() => onClickFollow()}
               className="text-link"
             >
-              <div>FOLLOW</div>
+              <div>FOLLOW &nbsp;</div>
+            </Link>
+            <Link to="/" onClick={() => onClickLogOut()} className="text-link">
+              <div>LOGOUT</div>
             </Link>
           </div>
         )}
