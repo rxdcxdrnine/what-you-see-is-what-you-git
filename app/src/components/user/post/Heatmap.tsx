@@ -2,10 +2,10 @@ import { useState } from "react";
 import DayPicker from "react-day-picker";
 
 import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
-
-import "react-day-picker/lib/style.css";
 import { UserComponentState } from "../../../containers/UserContainer";
 import { AllPostItem } from "./PostItem";
+
+import "react-day-picker/lib/style.css";
 
 type HeatmapProps = {
   userId: number;
@@ -42,7 +42,8 @@ const Heatmap = ({
 
   function renderDay(day: Date) {
     const date = dateToString(day);
-    const color = colors[heatmap[date] ? heatmap[date] : 0];
+    const color =
+      colors[heatmap[date] ? (heatmap[date] > 3 ? 3 : heatmap[date]) : 0];
 
     return (
       <div className="day-picker-block" style={{ backgroundColor: color }} />

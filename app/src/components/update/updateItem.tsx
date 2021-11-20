@@ -76,7 +76,7 @@ const UpdatePostItem = ({ post, commits, onClickModal }: UpdatePostProps) => {
           <div className="image-wrapper">
             <img
               className="image-post"
-              src={baseUrl + post.imageFilename}
+              src={baseUrl + "/images/" + post.imageFilename}
               alt="imagePost"
             />
           </div>

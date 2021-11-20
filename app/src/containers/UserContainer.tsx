@@ -41,12 +41,12 @@ const UserContainer = ({ userId }: UserContainerProps) => {
     if (!login.userId || !login.userName) {
       const { userId, userName } = getPayload();
       dispatch(updateLogin({ userId, userName }));
+      dispatch(fetchUserProfile({ userId }));
+      setReadonly(false);
+    } else {
+      dispatch(fetchUserProfile({ userId: userId || login.userId }));
+      setReadonly(login.userId !== (userId || login.userId));
     }
-
-    const current = userId ? userId : login.userId;
-
-    dispatch(fetchUserProfile({ userId: current }));
-    setReadonly(login.userId !== current);
 
     return () => {
       dispatch(resetUser());

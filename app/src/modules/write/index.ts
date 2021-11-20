@@ -27,7 +27,6 @@ export type SelectedItemState =
 
 type WriteState = {
   markdown: string;
-  html: string;
   pushes: PushState[];
   gists: GistState[];
   selectedItem: SelectedItemState;
@@ -35,8 +34,7 @@ type WriteState = {
 };
 
 const initialState: WriteState = {
-  markdown: "#",
-  html: "#",
+  markdown: "# 텍스트를 입력해주세요",
   pushes: [],
   gists: [],
   selectedItem: { type: "", item: null },
@@ -49,7 +47,6 @@ const writeSlice = createSlice({
   reducers: {
     resetWrite(state: WriteState) {
       state.markdown = initialState.markdown;
-      state.html = initialState.html;
       state.pushes = initialState.pushes;
       state.gists = initialState.gists;
       state.selectedItem = initialState.selectedItem;
@@ -57,9 +54,6 @@ const writeSlice = createSlice({
     },
     updateMarkdown(state: WriteState, action: PayloadAction<string>) {
       state.markdown = action.payload;
-    },
-    updateHtml(state: WriteState, action: PayloadAction<string>) {
-      state.html = action.payload;
     },
     updatePushes(state: WriteState, action: PayloadAction<PushState[]>) {
       state.pushes = action.payload;
@@ -82,7 +76,6 @@ const writeSlice = createSlice({
 export const {
   resetWrite,
   updateMarkdown,
-  updateHtml,
   updatePushes,
   updateGists,
   updateSelectedItem,
