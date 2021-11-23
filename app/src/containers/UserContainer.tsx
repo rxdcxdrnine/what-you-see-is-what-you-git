@@ -31,10 +31,10 @@ const UserContainer = ({ userId }: UserContainerProps) => {
     (state: RootState) => state.user.posts
   );
   const page = useSelector((state: RootState) => state.user.page);
+  const readOnly = useSelector((state: RootState) => state.user.readOnly);
   const dispatch = useDispatch();
 
   const [component, setComponent] = useState<UserComponentState>("heatmap");
-  const [readOnly, setReadonly] = useState<boolean>(false);
   const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
@@ -42,10 +42,8 @@ const UserContainer = ({ userId }: UserContainerProps) => {
       const { userId, userName } = getPayload();
       dispatch(updateLogin({ userId, userName }));
       dispatch(fetchUserProfile({ userId }));
-      setReadonly(false);
     } else {
       dispatch(fetchUserProfile({ userId: userId || login.userId }));
-      setReadonly(login.userId !== (userId || login.userId));
     }
 
     return () => {

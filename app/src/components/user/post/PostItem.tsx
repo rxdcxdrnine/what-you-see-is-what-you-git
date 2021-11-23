@@ -169,11 +169,17 @@ export const ImagePostItem = ({
         onClickDelete={onClickDelete}
       />
       <div className="image-wrapper">
-        <img
-          className="image-post"
-          src={baseUrl + "/images/" + imagePostItem.imageFilename}
-          alt="imagePost"
-        />
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={baseUrl + "/images/" + imagePostItem.imageFilename}
+        >
+          <img
+            className="image-post"
+            src={baseUrl + "/images/" + imagePostItem.imageFilename}
+            alt="imagePost"
+          />
+        </a>
       </div>
       <div className="viewer-wrapper">
         <Viewer initialValue={imagePostItem.markdown} />

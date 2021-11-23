@@ -71,6 +71,7 @@ type UserState = {
   profile: ProfileState;
   posts: PostsState;
   page: PageState;
+  readOnly: boolean;
   errorMessage: string;
 };
 
@@ -99,7 +100,18 @@ const initialState: UserState = {
     last: true,
     number: 0,
   },
+  readOnly: true,
   errorMessage: "",
+};
+
+const updateReadOnly = (state: UserState) => {
+  if (state.login.userId && state.profile.userId) {
+    if (state.login.userId === state.profile.userId) {
+      state.readOnly = false;
+    } else {
+      state.readOnly = true;
+    }
+  }
 };
 
 const userSlice = createSlice({
@@ -124,12 +136,15 @@ const userSlice = createSlice({
     },
     updateLogin(state: UserState, action: PayloadAction<LoginState>) {
       state.login = action.payload;
+      updateReadOnly(state);
     },
     updateProfileId(state: UserState, action: PayloadAction<number>) {
       state.profile.userId = action.payload;
+      updateReadOnly(state);
     },
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
+      updateReadOnly(state);
     },
     updateAllPosts(state: UserState, action: PayloadAction<AllPostState[]>) {
       state.posts.allPosts = action.payload;

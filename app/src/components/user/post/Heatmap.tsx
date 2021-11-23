@@ -92,6 +92,7 @@ const Heatmap = ({
       <HeatmapModal
         isOpen={isOpen}
         isToday={isToday}
+        readOnly={readOnly}
         setIsOpen={setIsOpen}
         setIsToday={setIsToday}
       />
@@ -132,6 +133,7 @@ const Heatmap = ({
 type HeatmapModalProps = {
   isOpen: boolean;
   isToday: boolean;
+  readOnly: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsToday: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -139,6 +141,7 @@ type HeatmapModalProps = {
 const HeatmapModal = ({
   isOpen,
   isToday,
+  readOnly,
   setIsOpen,
   setIsToday,
 }: HeatmapModalProps) => {
@@ -179,7 +182,7 @@ const HeatmapModal = ({
         </div>
         <div className="modal-body">
           <div>해당 날짜의 기록이 없습니다.</div>
-          {isToday ? (
+          {!readOnly && isToday ? (
             <div className="modal-confirm">
               <Link to="/write">
                 <button className="modal-confirm-button">MOVE TO WRITE</button>

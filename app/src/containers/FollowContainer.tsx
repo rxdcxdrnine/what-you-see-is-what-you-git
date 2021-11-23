@@ -20,8 +20,9 @@ type FollowContainerProps = {
 };
 
 const FollowContainer = ({ component }: FollowContainerProps) => {
-  const login = useSelector((state: RootState) => state.user.login);
-  const profile = useSelector((state: RootState) => state.user.profile);
+  const { login, profile, readOnly } = useSelector(
+    (state: RootState) => state.user
+  );
   const { followings, followers, users, page } = useSelector(
     (state: RootState) => state.follow
   );
@@ -30,7 +31,6 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
   const [selectedButton, setSelectedButton] =
     useState<FollowComponentState>("");
   const [searchKey, setSearchKey] = useState<string>("");
-  const [readOnly, setReadonly] = useState<boolean>(false);
 
   useEffect(() => {
     if (!login.userId || !login.userName) {
@@ -40,13 +40,12 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
     }
 
     onClickComponent(component);
-    setReadonly(login.userId !== profile.userId);
 
     return () => {
       dispatch(resetFollow());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile.userId]);
+  }, []);
 
   const onClickComponent = (component: FollowComponentState) => {
     if (selectedButton === "search") {

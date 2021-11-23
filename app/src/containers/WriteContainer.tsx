@@ -17,7 +17,7 @@ import {
   saveImagePost,
   savePushPost,
 } from "../modules/write/saga";
-import { updateLogin } from "../modules/user";
+import { updateLogin, updateProfileId } from "../modules/user";
 import { getPayload } from "../utils";
 
 const WriteContainer = () => {
@@ -33,6 +33,7 @@ const WriteContainer = () => {
     if (!userId || !userName) {
       const { userId, userName } = getPayload();
       dispatch(updateLogin({ userId, userName }));
+      dispatch(updateProfileId(userId));
     }
 
     return () => {

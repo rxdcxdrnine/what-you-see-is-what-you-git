@@ -43,7 +43,7 @@ const Post = ({
       ) : (
         <div className="post-list-container">
           {allPosts.map((postItem, index) => (
-            <>
+            <div key={postItem.postId}>
               {index === 0 ||
               allPosts[index - 1].regDate.split("T")[0] !==
                 allPosts[index].regDate.split("T")[0] ? (
@@ -54,7 +54,7 @@ const Post = ({
                   {allPosts[index].regDate.split("T")[0]}
                 </div>
               ) : null}
-              <div key={postItem.postId}>
+              <div>
                 <AllPostItem
                   allPostItem={postItem}
                   commits={commits}
@@ -63,7 +63,7 @@ const Post = ({
                   onClickDelete={onClickDelete}
                 />
               </div>
-            </>
+            </div>
           ))}
         </div>
       )}
