@@ -15,12 +15,12 @@ import WriteApi, {
   PushPostSave,
 } from "../../api/write";
 
-import GithubApi from "../../api/github";
-import { GistState, updateGists } from "./index";
-import { PushState, updatePushes, updateWriteError } from ".";
+import GithubApi, { GithubSearchCondition } from "../../api/github";
+import { appendGists, appendPushes, GistState, updateNext } from "./index";
+import { PushState, updateWriteError } from ".";
 
 // fetchGithubPushes
-export const fetchGithubPushes = createAction<string>(
+export const fetchGithubPushes = createAction<GithubSearchCondition>(
   "write/fetchGithubPushes"
 );
 
@@ -30,6 +30,8 @@ function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
       GithubApi.fetchGithubPushes,
       action.payload
     );
+
+    if (res.data.length === 0) yield put(updateNext(false));
 
     const pushes: PushState[] = [];
 
@@ -50,7 +52,8 @@ function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
         });
       }
     }
-    yield put(updatePushes(pushes));
+
+    if (pushes.length !== 0) yield put(appendPushes(pushes));
   } catch (e: any) {
     yield put(updateWriteError(e.message));
   }
@@ -61,7 +64,9 @@ function* getGithubPushesSaga() {
 }
 
 // fetchGithubGists
-export const fetchGithubGists = createAction<string>("wriet/fetchGithubGists");
+export const fetchGithubGists = createAction<GithubSearchCondition>(
+  "wriet/fetchGithubGists"
+);
 
 function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
   try {
@@ -69,6 +74,8 @@ function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
       GithubApi.fetchGithubGists,
       action.payload
     );
+
+    if (res.data.length === 0) yield put(updateNext(false));
 
     const gists: GistState[] = [];
 
@@ -80,7 +87,8 @@ function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
         uploadDate: gist.created_at,
       });
     }
-    yield put(updateGists(gists));
+
+    if (gists.length !== 0) yield put(appendGists(gists));
   } catch (e: any) {
     yield put(updateWriteError(e.message));
   }

@@ -5,9 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Write from "../components/write";
 import { RootState } from "../modules";
 import {
+  resetGists,
+  resetPushes,
   resetWrite,
   SelectedItemState,
   updateMarkdown,
+  updateNext,
+  updatePage,
   updateSelectedItem,
 } from "../modules/write";
 import {
@@ -20,11 +24,13 @@ import {
 import { updateLogin, updateProfileId } from "../modules/user";
 import { getPayload } from "../utils";
 
+export type WriteComponentState = "" | "push" | "gist" | "file";
+
 const WriteContainer = () => {
   const { userId, userName } = useSelector(
     (state: RootState) => state.user.login
   );
-  const { markdown, pushes, gists, selectedItem } = useSelector(
+  const { markdown, pushes, gists, selectedItem, page, next } = useSelector(
     (state: RootState) => state.write
   );
   const dispatch = useDispatch();
@@ -42,29 +48,38 @@ const WriteContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [selectedButton, setSelectedButton] = useState<
-    "" | "push" | "gist" | "file"
-  >("");
+  const [component, setComponent] = useState<WriteComponentState>("");
 
   const onChangeCreator = (editorRef: React.RefObject<Editor>) => () => {
     const markdown = editorRef.current?.getInstance().getMarkdown() || "";
     dispatch(updateMarkdown(markdown));
   };
 
-  const onClickButton = (e: any) => {
-    const button: "push" | "gist" | "file" = e.target.name;
-
-    setSelectedButton(button);
-    if (selectedButton !== button) {
+  const onClickComponent = (newComponent: WriteComponentState) => {
+    setComponent(newComponent);
+    if (newComponent !== component) {
       dispatch(updateSelectedItem({ type: "", item: null }));
-    }
+      dispatch(updatePage(1));
+      dispatch(updateNext(true));
 
-    if (button === "push" && pushes.length === 0) {
-      dispatch(fetchGithubPushes(userName));
+      if (newComponent === "push" && pushes.length === 0) {
+        dispatch(resetGists());
+        dispatch(fetchGithubPushes({ userName, page: 1 }));
+      }
+      if (newComponent === "gist" && gists.length === 0) {
+        dispatch(resetPushes());
+        dispatch(fetchGithubGists({ userName, page: 1 }));
+      }
     }
-    if (button === "gist" && gists.length === 0) {
-      dispatch(fetchGithubGists(userName));
-    }
+  };
+
+  const onClickMore = (page: number) => {
+    dispatch(updatePage(page + 1));
+
+    if (component === "push")
+      dispatch(fetchGithubPushes({ userName, page: page + 1 }));
+    if (component === "gist")
+      dispatch(fetchGithubGists({ userName, page: page + 1 }));
   };
 
   const onClickItem = (item: SelectedItemState) => {
@@ -88,10 +103,13 @@ const WriteContainer = () => {
       markdown={markdown}
       pushes={pushes}
       gists={gists}
-      selectedButton={selectedButton}
+      component={component}
+      page={page}
+      next={next}
       onSave={onSave}
-      onClickButton={onClickButton}
+      onClickComponent={onClickComponent}
       onClickItem={onClickItem}
+      onClickMore={onClickMore}
       onChangeCreator={onChangeCreator}
     />
   );

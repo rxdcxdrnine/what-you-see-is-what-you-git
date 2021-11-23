@@ -117,3 +117,16 @@
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
+
+.more-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  min-height: 3rem;
+  cursor: pointer;
+
+  border-radius: 5px;
+  background: #d1d1d1;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}

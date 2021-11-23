@@ -30,6 +30,8 @@ type WriteState = {
   markdown: string;
   pushes: PushState[];
   gists: GistState[];
+  page: number;
+  next: boolean;
   selectedItem: SelectedItemState;
   errorMessage: string;
 };
@@ -38,6 +40,8 @@ const initialState: WriteState = {
   markdown: "# 텍스트를 입력해주세요",
   pushes: [],
   gists: [],
+  page: 1,
+  next: true,
   selectedItem: { type: "", item: null },
   errorMessage: "",
 };
@@ -53,14 +57,26 @@ const writeSlice = createSlice({
       state.selectedItem = initialState.selectedItem;
       state.errorMessage = initialState.errorMessage;
     },
+    resetPushes(state: WriteState) {
+      state.pushes = initialState.pushes;
+    },
+    resetGists(state: WriteState) {
+      state.gists = initialState.gists;
+    },
     updateMarkdown(state: WriteState, action: PayloadAction<string>) {
       state.markdown = action.payload;
     },
-    updatePushes(state: WriteState, action: PayloadAction<PushState[]>) {
-      state.pushes = action.payload;
+    appendPushes(state: WriteState, action: PayloadAction<PushState[]>) {
+      state.pushes = [...state.pushes, ...action.payload];
     },
-    updateGists(state: WriteState, action: PayloadAction<GistState[]>) {
-      state.gists = action.payload;
+    appendGists(state: WriteState, action: PayloadAction<GistState[]>) {
+      state.gists = [...state.gists, ...action.payload];
+    },
+    updatePage(state: WriteState, action: PayloadAction<number>) {
+      state.page = action.payload;
+    },
+    updateNext(state: WriteState, action: PayloadAction<boolean>) {
+      state.next = action.payload;
     },
     updateSelectedItem(
       state: WriteState,
@@ -76,9 +92,13 @@ const writeSlice = createSlice({
 
 export const {
   resetWrite,
+  resetPushes,
+  resetGists,
   updateMarkdown,
-  updatePushes,
-  updateGists,
+  appendPushes,
+  appendGists,
+  updatePage,
+  updateNext,
   updateSelectedItem,
   updateWriteError,
 } = writeSlice.actions;

@@ -3,10 +3,19 @@ import { GistState, SelectedItemState } from "../../modules/write";
 
 type ItemGistProps = {
   gists: GistState[];
+  page: number;
+  next: boolean;
   onClickItem: (item: SelectedItemState) => void;
+  onClickMore: (page: number) => void;
 };
 
-const ItemGist = ({ gists, onClickItem }: ItemGistProps) => {
+const ItemGist = ({
+  gists,
+  page,
+  next,
+  onClickItem,
+  onClickMore,
+}: ItemGistProps) => {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
@@ -60,6 +69,11 @@ const ItemGist = ({ gists, onClickItem }: ItemGistProps) => {
           </div>
         </div>
       ))}
+      {gists && next ? (
+        <div className="more-button" onClick={() => onClickMore(page)}>
+          {"▼ MORE"}
+        </div>
+      ) : null}
     </>
   );
 };

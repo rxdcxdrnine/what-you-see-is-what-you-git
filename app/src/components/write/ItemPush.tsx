@@ -3,7 +3,10 @@ import { PushState, SelectedItemState } from "../../modules/write";
 
 type ItemPushProps = {
   pushes: PushState[];
+  page: number;
+  next: boolean;
   onClickItem: (item: SelectedItemState) => void;
+  onClickMore: (page: number) => void;
 };
 
 const toHtmlUrl = (commitUrl: string) => {
@@ -19,7 +22,13 @@ const toHtmlUrl = (commitUrl: string) => {
     .join("/");
 };
 
-const ItemPush = ({ pushes, onClickItem }: ItemPushProps) => {
+const ItemPush = ({
+  pushes,
+  page,
+  next,
+  onClickItem,
+  onClickMore,
+}: ItemPushProps) => {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
@@ -73,6 +82,11 @@ const ItemPush = ({ pushes, onClickItem }: ItemPushProps) => {
           </div>
         </div>
       ))}
+      {pushes && next ? (
+        <div className="more-button" onClick={() => onClickMore(page)}>
+          {"▼ MORE"}
+        </div>
+      ) : null}
     </>
   );
 };

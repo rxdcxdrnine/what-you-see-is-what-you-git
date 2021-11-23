@@ -1,5 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 
+export type GithubSearchCondition = {
+  userName: string;
+  page: number;
+};
+
 type GithubPush = {
   id: string;
   type: string;
@@ -44,10 +49,14 @@ type Commit = {
 };
 
 // fetchGithubPushs
-const fetchGithubPushes: (
-  userName: string
-) => Promise<AxiosResponse<GithubPush[]>> = (userName: string) =>
-  axios.get(`http://api.github.com/users/${userName}/events`);
+const fetchGithubPushes: ({
+  userName,
+  page,
+}: GithubSearchCondition) => Promise<AxiosResponse<GithubPush[]>> = ({
+  userName,
+  page,
+}: GithubSearchCondition) =>
+  axios.get(`http://api.github.com/users/${userName}/events?page=${page}`);
 
 type GithubGist = {
   url: string;
@@ -101,10 +110,14 @@ type Owner = {
   site_admin: boolean;
 };
 
-const fetchGithubGists: (
-  usename: string
-) => Promise<AxiosResponse<GithubGist[]>> = (userName: string) =>
-  axios.get(`http://api.github.com/users/${userName}/gists`);
+const fetchGithubGists: ({
+  userName,
+  page,
+}: GithubSearchCondition) => Promise<AxiosResponse<GithubGist[]>> = ({
+  userName,
+  page,
+}: GithubSearchCondition) =>
+  axios.get(`http://api.github.com/users/${userName}/gists?page=${page}`);
 
 const GithubApi = {
   fetchGithubPushes,
