@@ -1,5 +1,5 @@
-import githubLogo from "../assets/images/GitHub_Logo_White.png";
-import githubMark from "../assets/images/GitHub-Mark-Light-120px-plus.png";
+import githubLogo from "../assets/logo/GitHub_Logo_White.png";
+import githubMark from "../assets/logo/GitHub-Mark-Light-120px-plus.png";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
 const redirectUri: string = process.env.REACT_APP_REDIRECT_URI as string;

@@ -33,7 +33,7 @@ const CallbackView = () => {
       />
     );
   } else {
-    // redirect with error state
+    <Redirect to="/" />;
   }
 
   return null;
