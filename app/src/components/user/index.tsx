@@ -1,6 +1,6 @@
 import {
   AllPostState,
-  commitState,
+  CommitState,
   HeatmapState,
   PageState,
   ProfileState,
@@ -16,7 +16,7 @@ type UserProps = {
   profile: ProfileState;
   component: UserComponentState;
   allPosts: AllPostState[];
-  commits: commitState[];
+  commits: CommitState[];
   heatmap: HeatmapState;
   page: PageState;
   readOnly: boolean;

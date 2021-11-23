@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { commitFileState, commitState } from "../../../modules/user";
+import { CommitFileState, CommitState } from "../../../modules/user";
 
 type CommitProps = {
-  commits: commitState[];
+  commits: CommitState[];
   onCloseModal: () => void;
 };
 
@@ -17,6 +17,7 @@ const Commit = ({ commits, onCloseModal }: CommitProps) => {
           <div
             className="post-wrapper"
             onClick={() => setDropInd(index !== dropInd ? index : null)}
+            style={{ cursor: "pointer" }}
           >
             <div>{commit.commitSha}</div>
             <div style={{ color: "red" }}>+{commit.additions}</div>
@@ -39,7 +40,7 @@ export default Commit;
 
 type CommitFilesProps = {
   commitSha: string;
-  commitFiles: commitFileState[];
+  commitFiles: CommitFileState[];
 };
 
 const CommitFiles = ({ commitSha, commitFiles }: CommitFilesProps) => {
@@ -47,17 +48,19 @@ const CommitFiles = ({ commitSha, commitFiles }: CommitFilesProps) => {
     <div>
       <h2 style={{ marginLeft: "0.5rem" }}>Files: Commit {commitSha}</h2>
       {commitFiles.map((commitFile) => (
-        <div
-          key={commitFile.commitFileId}
-          className="post-wrapper"
-          style={{ backgroundColor: "#f0f0f0" }}
-        >
-          <div>{commitFile.fileSha}</div>
-          <div>{commitFile.fileName}</div>
-          <div>{commitFile.fileStatus}</div>
-          <div style={{ color: "red" }}>+{commitFile.additions}</div>
-          <div style={{ color: "green" }}>-{commitFile.deletions}</div>
-        </div>
+        <a className="text-link" href={commitFile.blobUrl}>
+          <div
+            key={commitFile.commitFileId}
+            className="post-wrapper"
+            style={{ backgroundColor: "#f0f0f0" }}
+          >
+            <div>{commitFile.fileSha}</div>
+            <div>{commitFile.fileName}</div>
+            <div>{commitFile.fileStatus}</div>
+            <div style={{ color: "red" }}>+{commitFile.additions}</div>
+            <div style={{ color: "green" }}>-{commitFile.deletions}</div>
+          </div>
+        </a>
       ))}
     </div>
   );

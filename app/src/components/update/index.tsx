@@ -1,11 +1,11 @@
 import { Editor } from "@toast-ui/react-editor";
 import { useEffect, useRef, useState } from "react";
-import { AllPostState, commitState } from "../../modules/user";
+import { AllPostState, CommitState } from "../../modules/user";
 import UpdatePostItem from "./updateItem";
 
 type UpdateProps = {
   post: AllPostState;
-  commits: commitState[];
+  commits: CommitState[];
   onSave: () => void;
   onClickModal: (postId: number) => void;
   onChangeCreator: (editorRef: React.RefObject<Editor>) => () => void;

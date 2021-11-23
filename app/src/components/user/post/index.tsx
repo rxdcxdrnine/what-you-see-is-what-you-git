@@ -1,5 +1,5 @@
 import { UserComponentState } from "../../../containers/UserContainer";
-import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
+import { AllPostState, CommitState, HeatmapState } from "../../../modules/user";
 import Heatmap from "./Heatmap";
 import { AllPostItem } from "./PostItem";
 
@@ -7,7 +7,7 @@ type PostProps = {
   userId: number;
   component: UserComponentState;
   allPosts: AllPostState[];
-  commits: commitState[];
+  commits: CommitState[];
   heatmap: HeatmapState;
   readOnly: boolean;
   onClickDay: (regDate: string) => void;

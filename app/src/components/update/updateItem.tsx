@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Modal from "react-modal";
 
-import { AllPostState, commitState } from "../../modules/user";
+import { AllPostState, CommitState } from "../../modules/user";
 import Gist from "../../utils/react-gist/Gist";
 import Commit from "../user/post/Commit";
 
 type UpdatePostProps = {
   post: AllPostState;
-  commits: commitState[];
+  commits: CommitState[];
   onClickModal: (postId: number) => void;
 };
 

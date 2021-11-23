@@ -4,13 +4,13 @@ import { Viewer } from "@toast-ui/react-editor";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 
-import { AllPostState, commitState } from "../../../modules/user";
+import { AllPostState, CommitState } from "../../../modules/user";
 import Gist from "../../../utils/react-gist/Gist";
 import Commit from "./Commit";
 
 type PostItemProps = {
   allPostItem: AllPostState;
-  commits: commitState[];
+  commits: CommitState[];
   readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
@@ -52,7 +52,7 @@ export const AllPostItem = ({
 
 type PushPostItemProps = {
   pushPostItem: AllPostState;
-  commits: commitState[];
+  commits: CommitState[];
   readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
@@ -85,7 +85,7 @@ export const PushPostItem = ({
             left: "50%",
             right: "auto",
             bottom: "auto",
-            width: "70%",
+            width: "50rem",
             height: "70%",
             transform: "translate(-50%, -50%)",
           },

@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import {
   AllPostState,
-  commitState,
+  CommitState,
   PostCount,
   ProfileState,
 } from "../modules/user";
@@ -70,7 +70,7 @@ const fetchAllPosts: ({
   return axios.get(baseUrl, { headers });
 };
 
-const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
+const fetchCommits: (postId: number) => Promise<AxiosResponse<CommitState[]>> =
   (postId: number) => {
     const headers = getHeaders();
     return axios.get(`${serverUrl}/posts/commit?postId=${postId}`, { headers });

@@ -26,29 +26,30 @@ export type BasePostState = {
 
 export type AllPostState = PushState & GistState & ImageState & BasePostState;
 
-export type commitState = {
+export type CommitState = {
   commitId: number;
   commitSha: string;
   additions: number;
   deletions: number;
   uploadDate: string;
-  commitFiles: commitFileState[];
+  commitFiles: CommitFileState[];
 };
 
-export type commitFileState = {
+export type CommitFileState = {
   commitFileId: number;
   fileSha: string;
   fileName: number;
   fileStatus: string;
   additions: number;
   deletions: number;
+  blobUrl: string;
 };
 export type HeatmapState = {
   [date: string]: number;
 };
 export type PostsState = {
   allPosts: AllPostState[];
-  commits: commitState[];
+  commits: CommitState[];
   heatmap: HeatmapState;
 };
 
@@ -134,7 +135,7 @@ const userSlice = createSlice({
     updateHeatmap(state: UserState, action: PayloadAction<HeatmapState>) {
       state.posts.heatmap = action.payload;
     },
-    updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
+    updateCommits(state: UserState, action: PayloadAction<CommitState[]>) {
       state.posts.commits = action.payload;
     },
     updatePage(state: UserState, action: PayloadAction<PageState>) {

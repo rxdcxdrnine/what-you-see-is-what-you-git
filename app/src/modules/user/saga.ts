@@ -18,7 +18,7 @@ import UserApi, {
 import {
   updateUserError,
   updateProfile,
-  commitState,
+  CommitState,
   updateCommits,
   updateHeatmap,
   HeatmapState,
@@ -67,7 +67,7 @@ export function* getCommits(action: ReturnType<typeof fetchCommits>) {
       action.payload
     );
 
-    const commits: commitState[] = res.data;
+    const commits: CommitState[] = res.data;
     yield put(updateCommits(commits));
   } catch (e: any) {
     yield put(updateUserError(e.message));
