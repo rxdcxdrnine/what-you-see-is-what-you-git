@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../components/layout";
 import { ACCESS_TOKEN } from "../constants";
-import { RootState } from "../modules";
-import { resetUser } from "../modules/user";
+import { logOut, RootState } from "../modules";
+import { updateProfileId } from "../modules/user";
 import { fetchUserProfile } from "../modules/user/saga";
 
 type LayoutContainerProps = {
@@ -16,15 +16,17 @@ const LayoutContainer = ({ main = false, children }: LayoutContainerProps) => {
 
   const dispatch = useDispatch();
   const onClickUser = () => {
-    if (login.userId !== profile.userId) dispatch(resetUser());
-  };
-
-  const onClickFollow = () => {
     if (login.userId !== profile.userId)
       dispatch(fetchUserProfile({ userId: login.userId }));
   };
 
+  const onClickFollow = () => {
+    if (login.userId !== profile.userId)
+      dispatch(updateProfileId(login.userId));
+  };
+
   const onClickLogOut = () => {
+    dispatch(logOut());
     localStorage.removeItem(ACCESS_TOKEN);
   };
 

@@ -151,8 +151,8 @@ const userSlice = createSlice({
 
 export const {
   resetUser,
-  updateLogin,
   resetPage,
+  updateLogin,
   updateProfileId,
   updateProfile,
   updateAllPosts,

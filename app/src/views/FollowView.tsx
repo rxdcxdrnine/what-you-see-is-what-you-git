@@ -13,9 +13,8 @@ const FollowView = () => {
 
   const token = localStorage.getItem(ACCESS_TOKEN);
   if (!token) {
-    if (window.confirm("로그인 후 이용해주세요.")) {
-      return <Redirect to="/" />;
-    }
+    window.alert("로그인 후 이용해주세요.");
+    return <Redirect to="/" />;
   }
 
   return (
