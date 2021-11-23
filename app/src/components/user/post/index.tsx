@@ -42,16 +42,28 @@ const Post = ({
         />
       ) : (
         <div className="post-list-container">
-          {allPosts.map((postItem) => (
-            <div key={postItem.postId}>
-              <AllPostItem
-                allPostItem={postItem}
-                commits={commits}
-                readOnly={readOnly}
-                onClickModal={onClickModal}
-                onClickDelete={onClickDelete}
-              />
-            </div>
+          {allPosts.map((postItem, index) => (
+            <>
+              {index === 0 ||
+              allPosts[index - 1].regDate.split("T")[0] !==
+                allPosts[index].regDate.split("T")[0] ? (
+                <div
+                  className="post-list-date"
+                  style={{ marginTop: index !== 0 ? "2rem" : "1rem" }}
+                >
+                  {allPosts[index].regDate.split("T")[0]}
+                </div>
+              ) : null}
+              <div key={postItem.postId}>
+                <AllPostItem
+                  allPostItem={postItem}
+                  commits={commits}
+                  readOnly={readOnly}
+                  onClickModal={onClickModal}
+                  onClickDelete={onClickDelete}
+                />
+              </div>
+            </>
           ))}
         </div>
       )}

@@ -109,7 +109,6 @@ export const PushPostItem = ({
           className="modal-click-area"
           onClick={() => onOpenModal(pushPostItem.postId)}
         >
-          <div>{pushPostItem.pushId}</div>
           <div>{pushPostItem.repoName}</div>
           <div>{pushPostItem.branchName}</div>
         </div>
@@ -196,7 +195,13 @@ const PostItemTitle = ({
 }: PostItemTitleProps) => {
   return (
     <div className="post-title">
-      <h2>{postItem.regDate.split("T")[0]}</h2>
+      <h2>
+        {postItem.repoName
+          ? "[PUSH] " + postItem.repoName
+          : postItem.gistDescription
+          ? "[GIST] " + postItem.gistDescription
+          : "[IMAGE]"}
+      </h2>
       {readOnly ? (
         <div></div>
       ) : (

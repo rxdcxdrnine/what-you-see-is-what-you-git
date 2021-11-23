@@ -29,6 +29,8 @@ export type AllPostState = PushState & GistState & ImageState & BasePostState;
 export type CommitState = {
   commitId: number;
   commitSha: string;
+  commitMessage: string;
+  commitUrl: string;
   additions: number;
   deletions: number;
   uploadDate: string;
@@ -42,7 +44,7 @@ export type CommitFileState = {
   fileStatus: string;
   additions: number;
   deletions: number;
-  blobUrl: string;
+  commitFileUrl: string;
 };
 export type HeatmapState = {
   [date: string]: number;

@@ -37,8 +37,14 @@ function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
       if (event.type === "PushEvent") {
         pushes.push({
           pushId: event.payload.push_id,
-          repoName: event.repo.name,
-          branchName: event.payload.ref,
+          repoName: event.repo.name.split("/")[1],
+          branchName: event.payload.ref
+            .split("/")
+            .reverse()
+            .slice(0, 2)
+            .reverse()
+            .join("/"),
+          commitMessages: event.payload.commits.map((commit) => commit.message),
           commitUrls: event.payload.commits.map((commit) => commit.url),
           uploadDate: event.created_at,
         });
