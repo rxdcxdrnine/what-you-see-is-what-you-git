@@ -9,11 +9,14 @@ export type FollowItem = {
   avatarUrl: string;
 };
 
+export type FollowComponentState = "" | "search" | "following" | "follower";
+
 type FollowState = {
   followings: FollowItem[];
   followers: FollowItem[];
   users: FollowItem[];
   page: PageState;
+  component: FollowComponentState;
   errorMessage: string;
 };
 
@@ -26,6 +29,7 @@ const initialState: FollowState = {
     last: true,
     number: 0,
   },
+  component: "",
   errorMessage: "",
 };
 
@@ -57,6 +61,12 @@ const followSlice = createSlice({
     appendUsers(state: FollowState, action: PayloadAction<FollowItem[]>) {
       state.users = [...state.users, ...action.payload];
     },
+    updateComponent(
+      state: FollowState,
+      action: PayloadAction<FollowComponentState>
+    ) {
+      state.component = action.payload;
+    },
     updatePage(state: FollowState, action: PayloadAction<PageState>) {
       state.page = action.payload;
     },
@@ -74,6 +84,7 @@ export const {
   updateFollowers,
   updateUsers,
   appendUsers,
+  updateComponent,
   updatePage,
   updateFollowError,
 } = followSlice.actions;

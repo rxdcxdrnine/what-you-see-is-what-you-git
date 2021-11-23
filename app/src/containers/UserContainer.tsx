@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
-import { resetPage, resetUser, updateLogin } from "../modules/user";
+import {
+  resetPage,
+  resetPosts,
+  resetUser,
+  updateComponent,
+  updateLogin,
+  UserComponentState,
+} from "../modules/user";
 import {
   fetchCommits,
   fetchPostCount,
@@ -11,14 +18,6 @@ import {
   removePost,
 } from "../modules/user/saga";
 import { getPayload } from "../utils";
-
-export type UserComponentState =
-  | "all"
-  | "push"
-  | "gist"
-  | "image"
-  | "day"
-  | "heatmap";
 
 export type UserContainerProps = {
   userId: number | null;
@@ -32,9 +31,9 @@ const UserContainer = ({ userId }: UserContainerProps) => {
   );
   const page = useSelector((state: RootState) => state.user.page);
   const readOnly = useSelector((state: RootState) => state.user.readOnly);
+  const component = useSelector((state: RootState) => state.user.component);
   const dispatch = useDispatch();
 
-  const [component, setComponent] = useState<UserComponentState>("heatmap");
   const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
@@ -47,7 +46,9 @@ const UserContainer = ({ userId }: UserContainerProps) => {
     }
 
     return () => {
+      dispatch(updateComponent("heatmap"));
       dispatch(resetUser());
+      dispatch(resetPosts());
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +57,7 @@ const UserContainer = ({ userId }: UserContainerProps) => {
   const onClickComponent = (newComponent: UserComponentState) => {
     if (component === newComponent) return;
 
-    setComponent(newComponent);
+    dispatch(updateComponent(newComponent));
     dispatch(resetPage());
 
     if (
@@ -109,8 +110,8 @@ const UserContainer = ({ userId }: UserContainerProps) => {
   };
 
   const onClickDay = (regDate: string) => {
-    setComponent("day");
     setRegDate(regDate);
+    dispatch(updateComponent("day"));
     dispatch(fetchAllPosts({ userId: profile.userId, regDate }));
   };
 

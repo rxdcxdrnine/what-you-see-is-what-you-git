@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../components/layout";
 import { ACCESS_TOKEN } from "../constants";
 import { logOut, RootState } from "../modules";
-import { updateProfileId } from "../modules/user";
+import { resetPosts, updateComponent, updateProfileId } from "../modules/user";
 import { fetchUserProfile } from "../modules/user/saga";
 
 type LayoutContainerProps = {
@@ -16,8 +16,12 @@ const LayoutContainer = ({ main = false, children }: LayoutContainerProps) => {
 
   const dispatch = useDispatch();
   const onClickUser = () => {
-    if (login.userId !== profile.userId)
+    if (login.userId !== profile.userId) {
       dispatch(fetchUserProfile({ userId: login.userId }));
+      dispatch(resetPosts());
+    }
+
+    dispatch(updateComponent("heatmap"));
   };
 
   const onClickFollow = () => {

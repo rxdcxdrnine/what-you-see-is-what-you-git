@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { UserComponentState } from "../../../containers/UserContainer";
-import { ProfileState } from "../../../modules/user";
+import { ProfileState, UserComponentState } from "../../../modules/user";
 
 type CountProps = {
   profile: ProfileState;

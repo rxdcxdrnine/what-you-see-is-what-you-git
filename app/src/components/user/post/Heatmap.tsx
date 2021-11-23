@@ -2,8 +2,12 @@ import { useState } from "react";
 import Modal from "react-modal";
 import DayPicker from "react-day-picker";
 
-import { AllPostState, CommitState, HeatmapState } from "../../../modules/user";
-import { UserComponentState } from "../../../containers/UserContainer";
+import {
+  AllPostState,
+  CommitState,
+  HeatmapState,
+  UserComponentState,
+} from "../../../modules/user";
 import { AllPostItem } from "./PostItem";
 
 import "react-day-picker/lib/style.css";

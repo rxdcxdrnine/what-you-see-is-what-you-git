@@ -20,7 +20,7 @@ const Commit = ({ commits, onCloseModal }: CommitProps) => {
             style={{ cursor: "pointer" }}
           >
             <div className="commit-text">
-              <div>{commit.commitMessage}</div>
+              <div>message: {commit.commitMessage}</div>
               <div>&nbsp;</div>
               <div>
                 {"additions : "}
@@ -75,7 +75,7 @@ const CommitFiles = ({ commitSha, commitFiles }: CommitFilesProps) => {
           href={commitFile.commitFileUrl}
         >
           <div className="post-wrapper" style={{ backgroundColor: "#f0f0f0" }}>
-            <div>{commitFile.fileName}</div>
+            <div>file: {commitFile.fileName}</div>
             <br />
             <div>
               {"additions : "}

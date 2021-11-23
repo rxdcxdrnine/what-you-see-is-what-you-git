@@ -4,13 +4,13 @@ import {
   HeatmapState,
   PageState,
   ProfileState,
+  UserComponentState,
 } from "../../modules/user";
 
 import Profile from "./profile";
 import Post from "./post";
 
 import "../../styles/user.css";
-import { UserComponentState } from "../../containers/UserContainer";
 
 type UserProps = {
   profile: ProfileState;

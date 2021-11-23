@@ -109,8 +109,8 @@ export const PushPostItem = ({
           className="modal-click-area"
           onClick={() => onOpenModal(pushPostItem.postId)}
         >
-          <div>{pushPostItem.repoName}</div>
-          <div>{pushPostItem.branchName}</div>
+          <div>repository: {pushPostItem.repoName}</div>
+          <div>branch: {pushPostItem.branchName}</div>
         </div>
         <div className="viewer-wrapper">
           <Viewer initialValue={pushPostItem.markdown} />

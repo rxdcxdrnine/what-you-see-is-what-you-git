@@ -1,5 +1,9 @@
-import { UserComponentState } from "../../../containers/UserContainer";
-import { AllPostState, CommitState, HeatmapState } from "../../../modules/user";
+import {
+  AllPostState,
+  CommitState,
+  HeatmapState,
+  UserComponentState,
+} from "../../../modules/user";
 import Heatmap from "./Heatmap";
 import { AllPostItem } from "./PostItem";
 

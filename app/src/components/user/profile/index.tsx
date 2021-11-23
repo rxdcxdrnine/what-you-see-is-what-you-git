@@ -1,5 +1,4 @@
-import { UserComponentState } from "../../../containers/UserContainer";
-import { ProfileState } from "../../../modules/user";
+import { ProfileState, UserComponentState } from "../../../modules/user";
 import Count from "./Count";
 
 type ProfileProps = {

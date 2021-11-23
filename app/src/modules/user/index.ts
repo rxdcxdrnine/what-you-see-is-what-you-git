@@ -66,11 +66,20 @@ export type PageState = {
   number: number;
 };
 
+export type UserComponentState =
+  | "all"
+  | "push"
+  | "gist"
+  | "image"
+  | "day"
+  | "heatmap";
+
 type UserState = {
   login: LoginState;
   profile: ProfileState;
   posts: PostsState;
   page: PageState;
+  component: UserComponentState;
   readOnly: boolean;
   errorMessage: string;
 };
@@ -101,6 +110,7 @@ const initialState: UserState = {
     number: 0,
   },
   readOnly: true,
+  component: "heatmap",
   errorMessage: "",
 };
 
@@ -131,6 +141,11 @@ const userSlice = createSlice({
       state.posts = initialState.posts;
       state.page = initialState.page;
     },
+    resetPosts: (state: UserState) => {
+      state.posts.allPosts = initialState.posts.allPosts;
+      state.posts.commits = initialState.posts.commits;
+      state.posts.heatmap = initialState.posts.heatmap;
+    },
     resetPage: (state: UserState) => {
       state.page = initialState.page;
     },
@@ -155,6 +170,12 @@ const userSlice = createSlice({
     updateCommits(state: UserState, action: PayloadAction<CommitState[]>) {
       state.posts.commits = action.payload;
     },
+    updateComponent(
+      state: UserState,
+      action: PayloadAction<UserComponentState>
+    ) {
+      state.component = action.payload;
+    },
     updatePage(state: UserState, action: PayloadAction<PageState>) {
       state.page = action.payload;
     },
@@ -167,12 +188,14 @@ const userSlice = createSlice({
 export const {
   resetUser,
   resetPage,
+  resetPosts,
   updateLogin,
   updateProfileId,
   updateProfile,
   updateAllPosts,
   updateCommits,
   updateHeatmap,
+  updateComponent,
   updatePage,
   updateUserError,
 } = userSlice.actions;
