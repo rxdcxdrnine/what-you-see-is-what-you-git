@@ -32,7 +32,7 @@ public class PushPostService {
     private final GithubClient githubClient;
 
     @Transactional
-    public void save(PushPostSaveDto dto) {
+    public void save(PushPostSaveDto dto, String OAuthToken) {
         // find user
         Optional<User> user = userRepository.findById(dto.getUserId());
 
@@ -44,7 +44,7 @@ public class PushPostService {
 
         // save commit
         for(String commitUrl : commitUrls) {
-            GithubCommit githubCommit = githubClient.getGithubCommit(commitUrl);
+            GithubCommit githubCommit = githubClient.getGithubCommit(commitUrl, OAuthToken);
             Commit commit = githubCommit.toEntity(push);
             commitRepository.save(commit);
 

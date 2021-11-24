@@ -61,8 +61,8 @@ public class PostController {
     }
 
     @PostMapping("/push")
-    public void savePushPost(@RequestBody PushPostSaveDto dto) {
-        pushPostService.save(dto);
+    public void savePushPost(@RequestBody PushPostSaveDto dto, @RequestHeader String OAuthToken) {
+        pushPostService.save(dto, OAuthToken);
     }
 
     @PostMapping("/gist")

@@ -4,6 +4,7 @@ import com.wysiwyg.project.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,6 +15,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     private Long id;
     private String userName;
+    private OAuth2Token token;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
@@ -37,6 +39,13 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         userPrincipal.setAttributes(attributes);
+        return userPrincipal;
+    }
+
+    public static UserPrincipal create(User user, OAuth2Token accessToken, Map<String, Object> attributes) {
+        UserPrincipal userPrincipal = UserPrincipal.create(user);
+        userPrincipal.setAttributes(attributes);
+        userPrincipal.setToken(accessToken);
         return userPrincipal;
     }
 
@@ -91,5 +100,13 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     @Override
     public String getName() {
         return String.valueOf(id);
+    }
+
+    public OAuth2Token getToken() {
+        return token;
+    }
+
+    public void setToken(OAuth2Token token) {
+        this.token = token;
     }
 }
