@@ -1,3 +1,4 @@
+import { WriteComponentState } from "../../containers/WriteContainer";
 import { GistState, PushState, SelectedItemState } from "../../modules/write";
 import ItemGist from "./ItemGist";
 import ItemImage from "./ItemImage";
@@ -6,62 +7,77 @@ import ItemPush from "./ItemPush";
 type ItemListProps = {
   pushes: PushState[];
   gists: GistState[];
-  selectedButton: "" | "push" | "gist" | "file";
-  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
+  component: WriteComponentState;
+  page: number;
+  next: boolean;
+  onClickComponent: (component: WriteComponentState) => void;
   onClickItem: (item: SelectedItemState) => void;
+  onClickMore: (page: number) => void;
 };
 
 const ItemList = ({
   pushes,
   gists,
-  selectedButton,
+  component,
+  page,
+  next,
   onClickItem,
-  onClickButton,
+  onClickMore,
+  onClickComponent,
 }: ItemListProps) => {
   return (
     <div className="choose-container">
       <div className="choose-button-wrapper">
         <button
           className="choose-button"
-          name="push"
-          onClick={onClickButton}
+          onClick={() => onClickComponent("push")}
           style={{
-            backgroundColor: selectedButton === "push" ? "#e9ecef" : "#ffffff",
+            backgroundColor: component === "push" ? "#e9ecef" : "#ffffff",
           }}
         >
           PUSHS
         </button>
         <button
           className="choose-button"
-          name="gist"
-          onClick={onClickButton}
+          onClick={() => onClickComponent("gist")}
           style={{
-            backgroundColor: selectedButton === "gist" ? "#e9ecef" : "#ffffff",
+            backgroundColor: component === "gist" ? "#e9ecef" : "#ffffff",
           }}
         >
           GISTS
         </button>
         <button
           className="choose-button"
-          name="file"
-          onClick={onClickButton}
+          onClick={() => onClickComponent("file")}
           style={{
-            backgroundColor: selectedButton === "file" ? "#e9ecef" : "#ffffff",
+            backgroundColor: component === "file" ? "#e9ecef" : "#ffffff",
           }}
         >
           IMAGES
         </button>
       </div>
       <div className="choose-content-container">
-        {selectedButton === "push" ? (
+        {component === "push" ? (
           <div className="choose-content-container">
-            <ItemPush pushes={pushes} onClickItem={onClickItem} />
+            <ItemPush
+              pushes={pushes}
+              page={page}
+              next={next}
+              onClickItem={onClickItem}
+              onClickMore={onClickMore}
+            />
           </div>
-        ) : selectedButton === "gist" ? (
+        ) : component === "gist" ? (
           <div className="choose-content-container">
-            <ItemGist gists={gists} onClickItem={onClickItem} />
+            <ItemGist
+              gists={gists}
+              page={page}
+              next={next}
+              onClickItem={onClickItem}
+              onClickMore={onClickMore}
+            />
           </div>
-        ) : selectedButton === "file" ? (
+        ) : component === "file" ? (
           <div className="choose-image-container">
             <ItemImage onClickItem={onClickItem} />
           </div>

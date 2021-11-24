@@ -15,6 +15,7 @@ import {
   updateFollowError,
   appendUsers,
   resetPage,
+  resetUsers,
 } from ".";
 import FollowApi, { FollowSave, FollowDelete } from "../../api/follow";
 import { UserSearchCondition } from "../../api/user";
@@ -98,7 +99,7 @@ export function* postFollow(action: ReturnType<typeof saveFollow>) {
     if (res.status === 200) {
       alert("성공적으로 추가되었습니다.");
 
-      yield put(updateUsers([]));
+      yield put(resetUsers());
       yield put(resetPage());
     }
   } catch (e: any) {

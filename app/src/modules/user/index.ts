@@ -26,29 +26,32 @@ export type BasePostState = {
 
 export type AllPostState = PushState & GistState & ImageState & BasePostState;
 
-export type commitState = {
+export type CommitState = {
   commitId: number;
   commitSha: string;
+  commitMessage: string;
+  commitUrl: string;
   additions: number;
   deletions: number;
   uploadDate: string;
-  commitFiles: commitFileState[];
+  commitFiles: CommitFileState[];
 };
 
-export type commitFileState = {
+export type CommitFileState = {
   commitFileId: number;
   fileSha: string;
   fileName: number;
   fileStatus: string;
   additions: number;
   deletions: number;
+  commitFileUrl: string;
 };
 export type HeatmapState = {
   [date: string]: number;
 };
 export type PostsState = {
   allPosts: AllPostState[];
-  commits: commitState[];
+  commits: CommitState[];
   heatmap: HeatmapState;
 };
 
@@ -63,18 +66,28 @@ export type PageState = {
   number: number;
 };
 
+export type UserComponentState =
+  | "all"
+  | "push"
+  | "gist"
+  | "image"
+  | "day"
+  | "heatmap";
+
 type UserState = {
   login: LoginState;
   profile: ProfileState;
   posts: PostsState;
   page: PageState;
+  component: UserComponentState;
+  readOnly: boolean;
   errorMessage: string;
 };
 
 const initialState: UserState = {
   login: {
-    userId: parseInt(process.env.REACT_APP_SAMPLE_USER_ID as string),
-    userName: process.env.REACT_APP_SAMPLE_GITHUB_USERNAME as string,
+    userId: 0,
+    userName: "",
   },
   profile: {
     userId: 0,
@@ -96,7 +109,19 @@ const initialState: UserState = {
     last: true,
     number: 0,
   },
+  readOnly: true,
+  component: "heatmap",
   errorMessage: "",
+};
+
+const updateReadOnly = (state: UserState) => {
+  if (state.login.userId && state.profile.userId) {
+    if (state.login.userId === state.profile.userId) {
+      state.readOnly = false;
+    } else {
+      state.readOnly = true;
+    }
+  }
 };
 
 const userSlice = createSlice({
@@ -116,11 +141,25 @@ const userSlice = createSlice({
       state.posts = initialState.posts;
       state.page = initialState.page;
     },
+    resetPosts: (state: UserState) => {
+      state.posts.allPosts = initialState.posts.allPosts;
+      state.posts.commits = initialState.posts.commits;
+      state.posts.heatmap = initialState.posts.heatmap;
+    },
     resetPage: (state: UserState) => {
       state.page = initialState.page;
     },
+    updateLogin(state: UserState, action: PayloadAction<LoginState>) {
+      state.login = action.payload;
+      updateReadOnly(state);
+    },
+    updateProfileId(state: UserState, action: PayloadAction<number>) {
+      state.profile.userId = action.payload;
+      updateReadOnly(state);
+    },
     updateProfile(state: UserState, action: PayloadAction<ProfileState>) {
       state.profile = action.payload;
+      updateReadOnly(state);
     },
     updateAllPosts(state: UserState, action: PayloadAction<AllPostState[]>) {
       state.posts.allPosts = action.payload;
@@ -128,8 +167,14 @@ const userSlice = createSlice({
     updateHeatmap(state: UserState, action: PayloadAction<HeatmapState>) {
       state.posts.heatmap = action.payload;
     },
-    updateCommits(state: UserState, action: PayloadAction<commitState[]>) {
+    updateCommits(state: UserState, action: PayloadAction<CommitState[]>) {
       state.posts.commits = action.payload;
+    },
+    updateComponent(
+      state: UserState,
+      action: PayloadAction<UserComponentState>
+    ) {
+      state.component = action.payload;
     },
     updatePage(state: UserState, action: PayloadAction<PageState>) {
       state.page = action.payload;
@@ -143,10 +188,14 @@ const userSlice = createSlice({
 export const {
   resetUser,
   resetPage,
+  resetPosts,
+  updateLogin,
+  updateProfileId,
   updateProfile,
   updateAllPosts,
   updateCommits,
   updateHeatmap,
+  updateComponent,
   updatePage,
   updateUserError,
 } = userSlice.actions;

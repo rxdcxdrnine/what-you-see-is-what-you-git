@@ -28,13 +28,11 @@ sagaMiddleware.run(rootSaga);
 export type AppDispatch = typeof store.dispatch;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router history={customHistory}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  </React.StrictMode>,
+  <Router history={customHistory}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>,
   document.getElementById("root")
 );
 

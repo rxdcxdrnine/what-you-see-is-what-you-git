@@ -6,15 +6,19 @@ import { GistState, PushState, SelectedItemState } from "../../modules/write";
 
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "../../styles/write.css";
+import { WriteComponentState } from "../../containers/WriteContainer";
 
 type WriteProps = {
   markdown: string;
   pushes: PushState[];
   gists: GistState[];
-  selectedButton: "" | "push" | "gist" | "file";
+  component: WriteComponentState;
+  page: number;
+  next: boolean;
   onSave: React.MouseEventHandler<HTMLButtonElement>;
-  onClickButton: React.MouseEventHandler<HTMLButtonElement>;
+  onClickComponent: (component: WriteComponentState) => void;
   onClickItem: (item: SelectedItemState) => void;
+  onClickMore: (page: number) => void;
   onChangeCreator: (editorRef: React.RefObject<Editor>) => () => void;
 };
 
@@ -22,10 +26,13 @@ const Write = ({
   markdown,
   pushes,
   gists,
-  selectedButton,
+  component,
+  page,
+  next,
   onSave,
   onClickItem,
-  onClickButton,
+  onClickMore,
+  onClickComponent,
   onChangeCreator,
 }: WriteProps) => {
   const editorRef = useRef<Editor>(null);
@@ -41,9 +48,12 @@ const Write = ({
       <ItemList
         pushes={pushes}
         gists={gists}
-        selectedButton={selectedButton}
+        component={component}
+        page={page}
+        next={next}
         onClickItem={onClickItem}
-        onClickButton={onClickButton}
+        onClickMore={onClickMore}
+        onClickComponent={onClickComponent}
       />
       {initialValue ? (
         <Editor

@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../components/user";
 import { RootState } from "../modules";
-import { resetPage, resetUser } from "../modules/user";
+import {
+  resetPage,
+  resetPosts,
+  resetUser,
+  updateComponent,
+  updateLogin,
+  UserComponentState,
+} from "../modules/user";
 import {
   fetchCommits,
   fetchPostCount,
@@ -10,14 +17,7 @@ import {
   fetchUserProfile,
   removePost,
 } from "../modules/user/saga";
-
-export type UserComponentState =
-  | "all"
-  | "push"
-  | "gist"
-  | "image"
-  | "day"
-  | "heatmap";
+import { getPayload } from "../utils";
 
 export type UserContainerProps = {
   userId: number | null;
@@ -30,29 +30,34 @@ const UserContainer = ({ userId }: UserContainerProps) => {
     (state: RootState) => state.user.posts
   );
   const page = useSelector((state: RootState) => state.user.page);
+  const readOnly = useSelector((state: RootState) => state.user.readOnly);
+  const component = useSelector((state: RootState) => state.user.component);
   const dispatch = useDispatch();
 
-  const [component, setComponent] = useState<UserComponentState>("heatmap");
-  const [readOnly, setReadonly] = useState<boolean>(false);
   const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
-    const current = userId ? userId : login.userId;
-
-    dispatch(fetchUserProfile({ userId: current }));
-    setReadonly(login.userId !== current);
+    if (!login.userId || !login.userName) {
+      const { userId, userName } = getPayload();
+      dispatch(updateLogin({ userId, userName }));
+      dispatch(fetchUserProfile({ userId }));
+    } else {
+      dispatch(fetchUserProfile({ userId: userId || login.userId }));
+    }
 
     return () => {
+      dispatch(updateComponent("heatmap"));
       dispatch(resetUser());
+      dispatch(resetPosts());
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, login.userId]);
+  }, []);
 
   const onClickComponent = (newComponent: UserComponentState) => {
     if (component === newComponent) return;
 
-    setComponent(newComponent);
+    dispatch(updateComponent(newComponent));
     dispatch(resetPage());
 
     if (
@@ -105,8 +110,8 @@ const UserContainer = ({ userId }: UserContainerProps) => {
   };
 
   const onClickDay = (regDate: string) => {
-    setComponent("day");
     setRegDate(regDate);
+    dispatch(updateComponent("day"));
     dispatch(fetchAllPosts({ userId: profile.userId, regDate }));
   };
 

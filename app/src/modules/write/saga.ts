@@ -1,4 +1,3 @@
-import { GistState, updateGists } from "./index";
 import {
   all,
   call,
@@ -15,19 +14,24 @@ import WriteApi, {
   ImagePostSave,
   PushPostSave,
 } from "../../api/write";
-import { PushState, updatePushes, updateWriteError } from ".";
+
+import GithubApi, { GithubSearchCondition } from "../../api/github";
+import { appendGists, appendPushes, GistState, updateNext } from "./index";
+import { PushState, updateWriteError } from ".";
 
 // fetchGithubPushes
-export const fetchGithubPushes = createAction<string>(
+export const fetchGithubPushes = createAction<GithubSearchCondition>(
   "write/fetchGithubPushes"
 );
 
 function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
   try {
-    const res: SagaReturnType<typeof WriteApi.fetchGithubPushes> = yield call(
-      WriteApi.fetchGithubPushes,
+    const res: SagaReturnType<typeof GithubApi.fetchGithubPushes> = yield call(
+      GithubApi.fetchGithubPushes,
       action.payload
     );
+
+    if (res.data.length === 0) yield put(updateNext(false));
 
     const pushes: PushState[] = [];
 
@@ -35,14 +39,21 @@ function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
       if (event.type === "PushEvent") {
         pushes.push({
           pushId: event.payload.push_id,
-          repoName: event.repo.name,
-          branchName: event.payload.ref,
+          repoName: event.repo.name.split("/")[1],
+          branchName: event.payload.ref
+            .split("/")
+            .reverse()
+            .slice(0, 2)
+            .reverse()
+            .join("/"),
+          commitMessages: event.payload.commits.map((commit) => commit.message),
           commitUrls: event.payload.commits.map((commit) => commit.url),
           uploadDate: event.created_at,
         });
       }
     }
-    yield put(updatePushes(pushes));
+
+    if (pushes.length !== 0) yield put(appendPushes(pushes));
   } catch (e: any) {
     yield put(updateWriteError(e.message));
   }
@@ -53,14 +64,18 @@ function* getGithubPushesSaga() {
 }
 
 // fetchGithubGists
-export const fetchGithubGists = createAction<string>("wriet/fetchGithubGists");
+export const fetchGithubGists = createAction<GithubSearchCondition>(
+  "wriet/fetchGithubGists"
+);
 
 function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
   try {
-    const res: SagaReturnType<typeof WriteApi.fetchGithubGists> = yield call(
-      WriteApi.fetchGithubGists,
+    const res: SagaReturnType<typeof GithubApi.fetchGithubGists> = yield call(
+      GithubApi.fetchGithubGists,
       action.payload
     );
+
+    if (res.data.length === 0) yield put(updateNext(false));
 
     const gists: GistState[] = [];
 
@@ -72,7 +87,8 @@ function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
         uploadDate: gist.created_at,
       });
     }
-    yield put(updateGists(gists));
+
+    if (gists.length !== 0) yield put(appendGists(gists));
   } catch (e: any) {
     yield put(updateWriteError(e.message));
   }

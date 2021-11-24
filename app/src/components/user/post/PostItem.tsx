@@ -4,13 +4,13 @@ import { Viewer } from "@toast-ui/react-editor";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 
-import { AllPostState, commitState } from "../../../modules/user";
+import { AllPostState, CommitState } from "../../../modules/user";
 import Gist from "../../../utils/react-gist/Gist";
 import Commit from "./Commit";
 
 type PostItemProps = {
   allPostItem: AllPostState;
-  commits: commitState[];
+  commits: CommitState[];
   readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
@@ -52,7 +52,7 @@ export const AllPostItem = ({
 
 type PushPostItemProps = {
   pushPostItem: AllPostState;
-  commits: commitState[];
+  commits: CommitState[];
   readOnly: boolean;
   onClickModal: (postId: number) => void;
   onClickDelete: (postId: number) => void;
@@ -85,7 +85,7 @@ export const PushPostItem = ({
             left: "50%",
             right: "auto",
             bottom: "auto",
-            width: "70%",
+            width: "50rem",
             height: "70%",
             transform: "translate(-50%, -50%)",
           },
@@ -109,9 +109,8 @@ export const PushPostItem = ({
           className="modal-click-area"
           onClick={() => onOpenModal(pushPostItem.postId)}
         >
-          <div>{pushPostItem.pushId}</div>
-          <div>{pushPostItem.repoName}</div>
-          <div>{pushPostItem.branchName}</div>
+          <div>repository: {pushPostItem.repoName}</div>
+          <div>branch: {pushPostItem.branchName}</div>
         </div>
         <div className="viewer-wrapper">
           <Viewer initialValue={pushPostItem.markdown} />
@@ -170,11 +169,17 @@ export const ImagePostItem = ({
         onClickDelete={onClickDelete}
       />
       <div className="image-wrapper">
-        <img
-          className="image-post"
-          src={baseUrl + "/images/" + imagePostItem.imageFilename}
-          alt="imagePost"
-        />
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={baseUrl + "/images/" + imagePostItem.imageFilename}
+        >
+          <img
+            className="image-post"
+            src={baseUrl + "/images/" + imagePostItem.imageFilename}
+            alt="imagePost"
+          />
+        </a>
       </div>
       <div className="viewer-wrapper">
         <Viewer initialValue={imagePostItem.markdown} />
@@ -196,7 +201,13 @@ const PostItemTitle = ({
 }: PostItemTitleProps) => {
   return (
     <div className="post-title">
-      <h2>{postItem.regDate.split("T")[0]}</h2>
+      <h2>
+        {postItem.repoName
+          ? "[PUSH] " + postItem.repoName
+          : postItem.gistDescription
+          ? "[GIST] " + postItem.gistDescription
+          : "[IMAGE]"}
+      </h2>
       {readOnly ? (
         <div></div>
       ) : (

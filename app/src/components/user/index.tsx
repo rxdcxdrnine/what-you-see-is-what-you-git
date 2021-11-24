@@ -1,22 +1,22 @@
 import {
   AllPostState,
-  commitState,
+  CommitState,
   HeatmapState,
   PageState,
   ProfileState,
+  UserComponentState,
 } from "../../modules/user";
 
 import Profile from "./profile";
 import Post from "./post";
 
 import "../../styles/user.css";
-import { UserComponentState } from "../../containers/UserContainer";
 
 type UserProps = {
   profile: ProfileState;
   component: UserComponentState;
   allPosts: AllPostState[];
-  commits: commitState[];
+  commits: CommitState[];
   heatmap: HeatmapState;
   page: PageState;
   readOnly: boolean;

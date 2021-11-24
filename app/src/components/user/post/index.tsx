@@ -1,5 +1,9 @@
-import { UserComponentState } from "../../../containers/UserContainer";
-import { AllPostState, commitState, HeatmapState } from "../../../modules/user";
+import {
+  AllPostState,
+  CommitState,
+  HeatmapState,
+  UserComponentState,
+} from "../../../modules/user";
 import Heatmap from "./Heatmap";
 import { AllPostItem } from "./PostItem";
 
@@ -7,7 +11,7 @@ type PostProps = {
   userId: number;
   component: UserComponentState;
   allPosts: AllPostState[];
-  commits: commitState[];
+  commits: CommitState[];
   heatmap: HeatmapState;
   readOnly: boolean;
   onClickDay: (regDate: string) => void;
@@ -42,15 +46,27 @@ const Post = ({
         />
       ) : (
         <div className="post-list-container">
-          {allPosts.map((postItem) => (
+          {allPosts.map((postItem, index) => (
             <div key={postItem.postId}>
-              <AllPostItem
-                allPostItem={postItem}
-                commits={commits}
-                readOnly={readOnly}
-                onClickModal={onClickModal}
-                onClickDelete={onClickDelete}
-              />
+              {index === 0 ||
+              allPosts[index - 1].regDate.split("T")[0] !==
+                allPosts[index].regDate.split("T")[0] ? (
+                <div
+                  className="post-list-date"
+                  style={{ marginTop: index !== 0 ? "2rem" : "1rem" }}
+                >
+                  {allPosts[index].regDate.split("T")[0]}
+                </div>
+              ) : null}
+              <div>
+                <AllPostItem
+                  allPostItem={postItem}
+                  commits={commits}
+                  readOnly={readOnly}
+                  onClickModal={onClickModal}
+                  onClickDelete={onClickDelete}
+                />
+              </div>
             </div>
           ))}
         </div>

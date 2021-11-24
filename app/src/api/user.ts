@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import {
   AllPostState,
-  commitState,
+  CommitState,
   PostCount,
   ProfileState,
 } from "../modules/user";
+import { getHeaders } from "../utils";
 import { Page } from "./page";
 
 const serverUrl: string = process.env.REACT_APP_SERVER_URL as string;
@@ -36,19 +37,18 @@ export type UserProfileFetch = ProfileState & {
 
 const fetchUserProfile: ({
   userId,
-  githubId,
 }: UserSearchCondition) => Promise<AxiosResponse<UserProfileFetch>> = ({
   userId,
-  githubId,
 }) => {
-  let baseUrl = `${serverUrl}/users`;
-  if (userId) baseUrl += `?userId=${userId}`;
-  if (githubId) baseUrl += `?githubId=${githubId}`;
-  return axios.get(baseUrl);
+  const headers = getHeaders();
+  return axios.get(`${serverUrl}/users?userId=${userId}`, { headers });
 };
 
 const fetchPostCount: (userId: number) => Promise<AxiosResponse<PostCount[]>> =
-  (userId: number) => axios.get(`${serverUrl}/posts/count?userId=${userId}`);
+  (userId: number) => {
+    const headers = getHeaders();
+    return axios.get(`${serverUrl}/posts/count?userId=${userId}`, { headers });
+  };
 
 const fetchAllPosts: ({
   userId,
@@ -65,15 +65,23 @@ const fetchAllPosts: ({
   if (type) baseUrl += `&type=${type}`;
   if (regDate) baseUrl += `&regDate=${regDate}`;
   if (page) baseUrl += `&page=${page}`;
-  return axios.get(baseUrl);
+
+  const headers = getHeaders();
+  return axios.get(baseUrl, { headers });
 };
 
-const fetchCommits: (postId: number) => Promise<AxiosResponse<commitState[]>> =
-  (postId: number) => axios.get(`${serverUrl}/posts/commit?postId=${postId}`);
+const fetchCommits: (postId: number) => Promise<AxiosResponse<CommitState[]>> =
+  (postId: number) => {
+    const headers = getHeaders();
+    return axios.get(`${serverUrl}/posts/commit?postId=${postId}`, { headers });
+  };
 
 const fetchPost: (postId: number) => Promise<AxiosResponse<AllPostState>> = (
   postId: number
-) => axios.get(`${serverUrl}/posts/${postId}`);
+) => {
+  const headers = getHeaders();
+  return axios.get(`${serverUrl}/posts/${postId}`, { headers });
+};
 
 const updatePost: ({
   postId,
@@ -81,11 +89,17 @@ const updatePost: ({
 }: PostUpdate) => Promise<AxiosResponse<void>> = ({
   postId,
   payload,
-}: PostUpdate) => axios.put(`${serverUrl}/posts/${postId}`, payload);
+}: PostUpdate) => {
+  const headers = getHeaders();
+  return axios.put(`${serverUrl}/posts/${postId}`, payload, { headers });
+};
 
 const deletePost: (postId: number) => Promise<AxiosResponse<void>> = (
   postId: number
-) => axios.delete(`${serverUrl}/posts/${postId}`);
+) => {
+  const headers = getHeaders();
+  return axios.delete(`${serverUrl}/posts/${postId}`, { headers });
+};
 
 const UserApi = {
   fetchUserProfile,

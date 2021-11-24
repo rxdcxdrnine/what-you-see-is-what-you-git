@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Follow from "../components/follow";
 import { RootState } from "../modules";
-import { resetFollow, resetPage, updateUsers } from "../modules/follow";
+import { resetFollow, resetPage, resetUsers } from "../modules/follow";
 import {
   fetchFollowers,
   fetchFollowings,
@@ -10,6 +10,8 @@ import {
   saveFollow,
   searchUsers,
 } from "../modules/follow/saga";
+import { updateLogin, updateProfileId } from "../modules/user";
+import { getPayload } from "../utils";
 
 export type FollowComponentState = "" | "search" | "following" | "follower";
 
@@ -18,8 +20,9 @@ type FollowContainerProps = {
 };
 
 const FollowContainer = ({ component }: FollowContainerProps) => {
-  const login = useSelector((state: RootState) => state.user.login);
-  const profile = useSelector((state: RootState) => state.user.profile);
+  const { login, profile, readOnly } = useSelector(
+    (state: RootState) => state.user
+  );
   const { followings, followers, users, page } = useSelector(
     (state: RootState) => state.follow
   );
@@ -28,21 +31,25 @@ const FollowContainer = ({ component }: FollowContainerProps) => {
   const [selectedButton, setSelectedButton] =
     useState<FollowComponentState>("");
   const [searchKey, setSearchKey] = useState<string>("");
-  const [readOnly, setReadonly] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!login.userId || !login.userName) {
+      const { userId, userName } = getPayload();
+      dispatch(updateLogin({ userId, userName }));
+      dispatch(updateProfileId(userId));
+    }
+
     onClickComponent(component);
-    setReadonly(login.userId !== profile.userId);
 
     return () => {
       dispatch(resetFollow());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile.userId]);
+  }, []);
 
   const onClickComponent = (component: FollowComponentState) => {
     if (selectedButton === "search") {
-      dispatch(updateUsers([]));
+      dispatch(resetUsers());
       dispatch(resetPage());
     }
 

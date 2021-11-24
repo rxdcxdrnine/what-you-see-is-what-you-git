@@ -116,23 +116,40 @@
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
   margin: 1rem 0;
+  padding-bottom: 1.5rem;
 }
 
 .day-picker-block {
   background-color: rgb(240, 239, 239);
   height: 27px;
   width: 27px;
-  margin: auto;
+  margin: 0;
   border-radius: 5px;
 }
 
 .DayPicker-Day {
+  border-spacing: 0;
   padding: 2px;
-  margin: 0;
 }
 
 .DayPicker-Month {
-  margin: 1rem;
+  margin: 1.5rem;
+}
+
+.day-picker-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 3rem;
+}
+
+.day-picker-today {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: white;
+  border: solid black 0.15rem;
+  border-radius: 5px;
+  margin-right: 0.5rem;
 }
 
 .post-list-container {
@@ -152,16 +169,93 @@
   margin-right: 0.5rem;
 }
 
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal-header-button {
+  padding: 0.25rem;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
 .modal-header {
   display: flex;
   justify-content: flex-end;
-  margin-right: 0.5rem;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.modal-confirm {
+  margin-top: 1rem;
+  display: flex;
+}
+
+.modal-confirm-button {
+  margin-left: 1rem;
+  display: flex;
+  padding: 0.25rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .post-wrapper {
-  margin: 0.5rem;
-  padding: 0 0 0.1rem 0.5rem;
+  margin: 1rem 0.5rem 0.5rem 1rem;
+  padding: 0.5rem;
 
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.post-list-date {
+  margin-left: 1rem;
+  font-size: larger;
+}
+
+.commit-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0.5rem 0.5rem 1rem;
+  padding: 0.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.commit-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.commit-link-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.commit-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.commit-button {
+  flex-grow: 1;
+  padding: 0.5rem;
   border-radius: 5px;
   background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
@@ -191,6 +285,7 @@
 .post-title {
   display: flex;
   justify-content: space-between;
+  margin-left: 0.5rem;
 }
 
 .post-modify {

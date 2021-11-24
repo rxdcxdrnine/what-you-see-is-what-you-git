@@ -47,9 +47,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0.5rem 0.5rem;
+  margin: 0.5rem;
   cursor: pointer;
-  min-height: 4rem;
 
   border-radius: 5px;
   background: #ffffff;
@@ -57,7 +56,42 @@
 }
 
 .choose-content {
-  margin: 1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 1rem;
+}
+
+.choose-content-date {
+  margin-left: 1rem;
+  font-size: larger;
+}
+
+.choose-content-text {
+  display: flex;
+  padding: 1rem 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.choose-content-link-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.choose-content-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.5rem;
+  flex-grow: 1;
+}
+
+.choose-content-button {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
 
 .editor-container {
@@ -81,5 +115,18 @@
 
   border-radius: 5px;
   background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.more-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  min-height: 3rem;
+  cursor: pointer;
+
+  border-radius: 5px;
+  background: #d1d1d1;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
