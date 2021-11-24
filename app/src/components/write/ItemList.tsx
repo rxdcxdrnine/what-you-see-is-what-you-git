@@ -84,7 +84,9 @@ const ItemList = ({
             onClickMore={onClickMore}
           />
         ) : component === "file" ? (
-          <ItemImage onClickItem={onClickItem} />
+          <div>
+            <ItemImage onClickItem={onClickItem} />
+          </div>
         ) : null}
       </div>
       {!isOpen ? (

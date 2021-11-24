@@ -59,9 +59,9 @@ const fetchGithubPushes: ({
 }: GithubSearchCondition) => {
   const OAuthToken = localStorage.getItem(OAUTH_TOKEN);
   return axios.get(
-    `http://api.github.com/users/${userName}/events?page=${page}`,
+    `https://api.github.com/users/${userName}/events?page=${page}`,
     {
-      headers: { Authorization: "token  " + OAuthToken },
+      headers: { Authorization: "token " + OAuthToken },
     }
   );
 };
@@ -127,9 +127,9 @@ const fetchGithubGists: ({
 }: GithubSearchCondition) => {
   const OAuthToken = localStorage.getItem(OAUTH_TOKEN);
   return axios.get(
-    `http://api.github.com/users/${userName}/gists?page=${page}`,
+    `https://api.github.com/users/${userName}/gists?page=${page}`,
     {
-      headers: { Authorization: "token  " + OAuthToken },
+      headers: { Authorization: "token " + OAuthToken },
     }
   );
 };

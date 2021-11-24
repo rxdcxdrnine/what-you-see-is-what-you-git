@@ -11,6 +11,7 @@ import Profile from "./profile";
 import Post from "./post";
 
 import "../../styles/user.css";
+import { useState } from "react";
 
 type UserProps = {
   profile: ProfileState;
@@ -41,6 +42,13 @@ const User = ({
   onClickComponent,
   onClickDelete,
 }: UserProps) => {
+  const [selected, setSelected] = useState("");
+
+  const handleSelect = (e: any) => {
+    setSelected(e.target.value);
+    onClickComponent(e.target.value);
+  };
+
   return (
     <>
       <Profile profile={profile} onClickComponent={onClickComponent} />
@@ -50,22 +58,15 @@ const User = ({
         component === "gist" ||
         component === "image" ? (
           <div className="post-select-container">
-            <select className="post-select">
-              <option
-                defaultValue="all"
-                onClick={() => onClickComponent("all")}
-              >
-                ALL
-              </option>
-              <option value="push" onClick={() => onClickComponent("push")}>
-                PUSH
-              </option>
-              <option value="gist" onClick={() => onClickComponent("gist")}>
-                GIST
-              </option>
-              <option value="image" onClick={() => onClickComponent("image")}>
-                IMAGE
-              </option>
+            <select
+              className="post-select"
+              onChange={handleSelect}
+              value={selected}
+            >
+              <option value="all">ALL</option>
+              <option value="push">PUSH</option>
+              <option value="gist">GIST</option>
+              <option value="image">IMAGE</option>
             </select>
             <button
               className="post-page-button"
