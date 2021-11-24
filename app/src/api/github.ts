@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { OAUTH_TOKEN } from "../constants";
 
 export type GithubSearchCondition = {
   userName: string;
@@ -55,8 +56,15 @@ const fetchGithubPushes: ({
 }: GithubSearchCondition) => Promise<AxiosResponse<GithubPush[]>> = ({
   userName,
   page,
-}: GithubSearchCondition) =>
-  axios.get(`http://api.github.com/users/${userName}/events?page=${page}`);
+}: GithubSearchCondition) => {
+  const OAuthToken = localStorage.getItem(OAUTH_TOKEN);
+  return axios.get(
+    `https://api.github.com/users/${userName}/events?page=${page}`,
+    {
+      headers: { Authorization: "token " + OAuthToken },
+    }
+  );
+};
 
 type GithubGist = {
   url: string;
@@ -116,8 +124,15 @@ const fetchGithubGists: ({
 }: GithubSearchCondition) => Promise<AxiosResponse<GithubGist[]>> = ({
   userName,
   page,
-}: GithubSearchCondition) =>
-  axios.get(`http://api.github.com/users/${userName}/gists?page=${page}`);
+}: GithubSearchCondition) => {
+  const OAuthToken = localStorage.getItem(OAUTH_TOKEN);
+  return axios.get(
+    `https://api.github.com/users/${userName}/gists?page=${page}`,
+    {
+      headers: { Authorization: "token " + OAuthToken },
+    }
+  );
+};
 
 const GithubApi = {
   fetchGithubPushes,

@@ -1,7 +1,7 @@
 import qs from "qs";
 import jwt from "jsonwebtoken";
 import { Redirect, useLocation } from "react-router-dom";
-import { ACCESS_TOKEN } from "../constants";
+import { ACCESS_TOKEN, OAUTH_TOKEN } from "../constants";
 import { useDispatch } from "react-redux";
 import { updateLogin } from "../modules/user";
 
@@ -9,13 +9,15 @@ const CallbackView = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const { token } = qs.parse(location.search, {
+  const { accessToken, OAuthToken } = qs.parse(location.search, {
     ignoreQueryPrefix: true,
   });
 
-  if (token) {
-    localStorage.setItem(ACCESS_TOKEN, token as string);
-    const decoded = jwt.decode(token as string) as jwt.JwtPayload;
+  if (accessToken && OAuthToken) {
+    localStorage.setItem(ACCESS_TOKEN, accessToken as string);
+    localStorage.setItem(OAUTH_TOKEN, OAuthToken as string);
+
+    const decoded = jwt.decode(accessToken as string) as jwt.JwtPayload;
 
     dispatch(
       updateLogin({
