@@ -21,6 +21,8 @@ public class GithubCommit {
     public Commit toEntity(Push push) {
         return Commit.builder()
                 .commitSha(sha)
+                .commitMessage(commit.getMessage())
+                .commitUrl(htmlUrl)
                 .additions(stats.getAdditions())
                 .deletions(stats.getDeletions())
                 .uploadDate(commit.getCommitter().getDate())

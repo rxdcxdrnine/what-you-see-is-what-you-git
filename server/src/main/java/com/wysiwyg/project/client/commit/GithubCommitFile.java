@@ -24,6 +24,7 @@ public class GithubCommitFile {
                 .fileStatus(status)
                 .additions(additions)
                 .deletions(deletions)
+                .commitFileUrl(blobUrl)
                 .commit(commit)
                 .build();
     }
