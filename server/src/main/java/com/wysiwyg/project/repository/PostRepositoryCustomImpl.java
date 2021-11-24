@@ -41,8 +41,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return queryFactory
                 .select(new QPostCountDto(formattedDate, post.count()))
                 .from(post)
-                .where(userIdEq(condition.getUserId()),
-                        githubIdEq(condition.getGithubId()))
+                .where(userIdEq(condition.getUserId()))
                 .groupBy(formattedDate)
                 .fetch();
     }
@@ -56,6 +55,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         regDateEq(condition.getRegDate()),
                         typeEq(condition.getType()))
                 .offset(pageable.getOffset())
+                .orderBy(post.postId.desc())
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
@@ -67,10 +67,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
 
     private BooleanExpression userIdEq(Long userId) {
         return userId == null ? null : user.userId.eq(userId);
-    }
-
-    private BooleanExpression githubIdEq(Long githubId) {
-        return githubId == null ? null : user.githubId.eq(githubId);
     }
 
     private BooleanExpression regDateEq(String regDate) {

@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 public class UserSearchCondition {
 
     private Long userId;
-    private Long githubId;
     private String userName;
 }

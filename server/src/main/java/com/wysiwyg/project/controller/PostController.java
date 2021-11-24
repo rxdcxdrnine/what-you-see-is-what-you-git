@@ -27,7 +27,7 @@ public class PostController {
             @RequestParam Long userId,
             @RequestParam(required = false) String regDate,
             @RequestParam(required = false) String type,
-            @PageableDefault(size = 3, sort = "postId", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 3) Pageable pageable
     ) {
         PostSearchCondition condition = new PostSearchCondition();
         condition.setUserId(userId);

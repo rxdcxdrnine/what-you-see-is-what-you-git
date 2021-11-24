@@ -29,18 +29,22 @@ public class CommitFile extends BaseEntity {
     @Column(nullable = false)
     private Long deletions;
 
+    @Column(nullable = false)
+    private String commitFileUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commit_id")
     private Commit commit;
 
     @Builder
-    public CommitFile(String fileSha, String fileName, String fileStatus, Long additions, Long deletions, Commit commit) {
+    public CommitFile(String fileSha, String fileName, String fileStatus, Long additions, Long deletions, Commit commit, String commitFileUrl) {
         this.fileSha = fileSha;
         this.fileName = fileName;
         this.fileStatus = fileStatus;
         this.additions = additions;
         this.deletions = deletions;
         this.commit = commit;
+        this.commitFileUrl = commitFileUrl;
     }
 
 }

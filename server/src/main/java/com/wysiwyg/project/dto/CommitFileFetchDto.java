@@ -12,6 +12,7 @@ public class CommitFileFetchDto {
     private String fileStatus;
     private Long additions;
     private Long deletions;
+    private String commitFileUrl;
 
     public CommitFileFetchDto(CommitFile commitFile) {
         this.commitFileId = commitFile.getCommitFileId();
@@ -20,5 +21,6 @@ public class CommitFileFetchDto {
         this.fileStatus = commitFile.getFileStatus();
         this.additions = commitFile.getAdditions();
         this.deletions = commitFile.getDeletions();
+        this.commitFileUrl = commitFile.getCommitFileUrl();
     }
 }

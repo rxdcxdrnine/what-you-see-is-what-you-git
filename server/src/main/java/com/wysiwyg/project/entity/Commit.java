@@ -21,6 +21,10 @@ public class Commit extends BaseEntity {
     @Column(nullable = false)
     private String commitSha;
 
+    private String commitMessage;
+
+    private String commitUrl;
+
     @Column(nullable = false)
     private Long additions;
 
@@ -38,8 +42,10 @@ public class Commit extends BaseEntity {
     private List<CommitFile> commitFiles = new ArrayList<>();
 
     @Builder()
-    public Commit(String commitSha, Long additions, Long deletions, LocalDateTime uploadDate, Push push) {
+    public Commit(String commitSha, String commitMessage, String commitUrl, Long additions, Long deletions, LocalDateTime uploadDate, Push push) {
         this.commitSha = commitSha;
+        this.commitMessage = commitMessage;
+        this.commitUrl = commitUrl;
         this.additions = additions;
         this.deletions = deletions;
         this.uploadDate = uploadDate;

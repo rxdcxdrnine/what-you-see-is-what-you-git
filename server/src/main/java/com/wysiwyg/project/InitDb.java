@@ -33,33 +33,33 @@ public class InitDb {
 
         public void dbInit() {
             // user
-            User userA = createUser(50660684L, "rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
+            // User userA = createUser(50660684L, "rxdcxdrnine", "Kang Changgu", "https://avatars.githubusercontent.com/u/50660684?v=4");
             User userB = createUser(45425838L, "handal95", "SangilHan", "https://avatars.githubusercontent.com/u/45425838?v=4");
             User userC = createUser(32982728L, "beeetea", "Lee Ho Jun", "https://avatars.githubusercontent.com/u/32982728?v=4");
             User userD = createUser(43772472L, "gyuZzang", "GyuZzang", "https://avatars.githubusercontent.com/u/43772472?v=4");
 
-            em.persist(userA);
+            // em.persist(userA);
             em.persist(userB);
             em.persist(userC);
             em.persist(userD);
 
-            // post (userA)
-            Push push_userA = createPush(userA);
-            Gist gist_userA = createGist(userA);
-            Image image_userA = createImage(userA, "sample_image.jpg");
-
-            if(push_userA != null) em.persist(push_userA);
-            if(gist_userA != null) em.persist(gist_userA);
-            if(image_userA != null) em.persist(image_userA);
-
             // post (userB)
             Push push_userB = createPush(userB);
             Gist gist_userB = createGist(userB);
-            Image image_userB = createImage(userB, "sample_image2.jpg");
+            Image image_userB = createImage(userB, "sample_image.jpg");
 
             if(push_userB != null) em.persist(push_userB);
             if(gist_userB != null) em.persist(gist_userB);
             if(image_userB != null) em.persist(image_userB);
+
+            // post (userB)
+            Push push_userC = createPush(userB);
+            Gist gist_userC = createGist(userB);
+            Image image_userC = createImage(userB, "sample_image2.jpg");
+
+            if(push_userC != null) em.persist(push_userC);
+            if(gist_userC != null) em.persist(gist_userC);
+            if(image_userC != null) em.persist(image_userC);
         }
 
         private User createUser(Long githubId, String userName, String profileName, String avatarUrl) {

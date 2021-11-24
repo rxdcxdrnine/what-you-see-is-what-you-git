@@ -12,6 +12,8 @@ public class CommitFetchDto {
 
     private Long commitId;
     private String commitSha;
+    private String commitUrl;
+    private String commitMessage;
     private Long additions;
     private Long deletions;
     private LocalDateTime uploadDate;
@@ -19,6 +21,8 @@ public class CommitFetchDto {
 
     public CommitFetchDto(Commit commit) {
         this.commitId = commit.getCommitId();
+        this.commitMessage = commit.getCommitMessage();
+        this.commitUrl = commit.getCommitUrl();
         this.commitSha = commit.getCommitSha();
         this.additions = commit.getAdditions();
         this.deletions = commit.getDeletions();
