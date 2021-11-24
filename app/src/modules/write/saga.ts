@@ -33,6 +33,8 @@ function* getGithubPushes(action: ReturnType<typeof fetchGithubPushes>) {
 
     if (res.data.length === 0) yield put(updateNext(false));
 
+    console.log(res.headers);
+
     const pushes: PushState[] = [];
 
     for (const event of res.data) {
@@ -76,6 +78,8 @@ function* getGithubGists(action: ReturnType<typeof fetchGithubGists>) {
     );
 
     if (res.data.length === 0) yield put(updateNext(false));
+
+    console.log(res.headers);
 
     const gists: GistState[] = [];
 

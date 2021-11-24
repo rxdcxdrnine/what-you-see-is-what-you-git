@@ -1,3 +1,4 @@
+import { OAUTH_TOKEN } from "./../constants/index";
 import axios, { AxiosResponse } from "axios";
 import { ACCESS_TOKEN } from "../constants";
 import { GistState, PushState } from "../modules/write";
@@ -14,8 +15,15 @@ export type PushPostSave = PushState & {
 const savePushPost: (
   pushPost: PushPostSave
 ) => Promise<AxiosResponse<PushPostSave>> = (pushPost: PushPostSave) => {
-  const headers = getHeaders();
-  return axios.post(`${serverUrl}/posts/push`, pushPost, { headers });
+  const accessToken = localStorage.getItem(ACCESS_TOKEN) as string;
+  const OAuthToken = localStorage.getItem(OAUTH_TOKEN) as string;
+
+  return axios.post(`${serverUrl}/posts/push`, pushPost, {
+    headers: {
+      Authorization: "Bearer " + accessToken,
+      OAuthToken: OAuthToken,
+    },
+  });
 };
 
 export type GistPostSave = GistState & {
