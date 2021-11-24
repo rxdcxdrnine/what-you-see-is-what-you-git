@@ -45,10 +45,11 @@ public class GithubClient {
         return githubPushes;
     }
 
-    public GithubCommit getGithubCommit(String githubCommitUrl) {
+    public GithubCommit getGithubCommit(String githubCommitUrl, String OAuthToken) {
 
         Mono<GithubCommit> githubCommitMono = webClient.get()
                 .uri(githubCommitUrl)
+                .header("Authorization", "Token " + OAuthToken)
                 .retrieve()
                 .bodyToMono(GithubCommit.class);
 

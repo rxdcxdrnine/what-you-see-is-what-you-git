@@ -2,6 +2,7 @@ package com.wysiwyg.project.security.oauth2;
 
 import com.wysiwyg.project.config.AppProperties;
 import com.wysiwyg.project.security.TokenProvider;
+import com.wysiwyg.project.security.UserPrincipal;
 import com.wysiwyg.project.security.exception.BadRequestException;
 import com.wysiwyg.project.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String token = tokenProvider.createToken(authentication);
 
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
+                .queryParam("accessToken", token)
+                .queryParam("OAuthToken", userPrincipal.getToken().getTokenValue())
                 .build().toUriString();
     }
 
