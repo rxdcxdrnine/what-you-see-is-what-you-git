@@ -10,6 +10,8 @@ type ItemListProps = {
   component: WriteComponentState;
   page: number;
   next: boolean;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onClickComponent: (component: WriteComponentState) => void;
   onClickItem: (item: SelectedItemState) => void;
   onClickMore: (page: number) => void;
@@ -21,12 +23,17 @@ const ItemList = ({
   component,
   page,
   next,
+  isOpen,
+  setIsOpen,
   onClickItem,
   onClickMore,
   onClickComponent,
 }: ItemListProps) => {
   return (
-    <div className="choose-container">
+    <div
+      className="choose-container"
+      style={{ height: isOpen ? "90%" : "45%" }}
+    >
       <div className="choose-button-wrapper">
         <button
           className="choose-button"
@@ -56,33 +63,39 @@ const ItemList = ({
           IMAGES
         </button>
       </div>
-      <div className="choose-content-container">
+      <div
+        className="choose-content-container"
+        style={{ height: isOpen ? "100%" : "350px" }}
+      >
         {component === "push" ? (
-          <div className="choose-content-container">
-            <ItemPush
-              pushes={pushes}
-              page={page}
-              next={next}
-              onClickItem={onClickItem}
-              onClickMore={onClickMore}
-            />
-          </div>
+          <ItemPush
+            pushes={pushes}
+            page={page}
+            next={next}
+            onClickItem={onClickItem}
+            onClickMore={onClickMore}
+          />
         ) : component === "gist" ? (
-          <div className="choose-content-container">
-            <ItemGist
-              gists={gists}
-              page={page}
-              next={next}
-              onClickItem={onClickItem}
-              onClickMore={onClickMore}
-            />
-          </div>
+          <ItemGist
+            gists={gists}
+            page={page}
+            next={next}
+            onClickItem={onClickItem}
+            onClickMore={onClickMore}
+          />
         ) : component === "file" ? (
-          <div className="choose-image-container">
-            <ItemImage onClickItem={onClickItem} />
-          </div>
+          <ItemImage onClickItem={onClickItem} />
         ) : null}
       </div>
+      {!isOpen ? (
+        <div className="wide-narrow-button" onClick={() => setIsOpen(true)}>
+          {"▼ WIDER"}
+        </div>
+      ) : (
+        <div className="wide-narrow-button" onClick={() => setIsOpen(false)}>
+          {"▲ NARROWER"}
+        </div>
+      )}
     </div>
   );
 };

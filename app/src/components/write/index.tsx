@@ -37,6 +37,7 @@ const Write = ({
 }: WriteProps) => {
   const editorRef = useRef<Editor>(null);
   const [initialValue, setInitialValue] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setInitialValue(markdown);
@@ -51,23 +52,31 @@ const Write = ({
         component={component}
         page={page}
         next={next}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
         onClickItem={onClickItem}
         onClickMore={onClickMore}
         onClickComponent={onClickComponent}
       />
-      {initialValue ? (
-        <Editor
-          height="450px"
-          initialValue={initialValue}
-          ref={editorRef}
-          onChange={onChangeCreator(editorRef)}
-        />
+      {!isOpen && initialValue ? (
+        <>
+          <Editor
+            height="45%"
+            initialValue={initialValue}
+            ref={editorRef}
+            onChange={onChangeCreator(editorRef)}
+          />
+          <div className="write-footer">
+            <button
+              className="write-save-button"
+              type="submit"
+              onClick={onSave}
+            >
+              SAVE
+            </button>
+          </div>
+        </>
       ) : null}
-      <div className="write-footer">
-        <button className="write-save-button" type="submit" onClick={onSave}>
-          SAVE
-        </button>
-      </div>
     </>
   );
 };

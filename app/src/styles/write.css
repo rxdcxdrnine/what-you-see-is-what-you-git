@@ -1,7 +1,6 @@
 .choose-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   margin-bottom: 2rem;
 
   border-radius: 5px;
@@ -12,7 +11,7 @@
 .choose-button-wrapper {
   display: flex;
   justify-content: space-around;
-  height: 10%;
+  height: 3rem;
   margin: 1rem 0.5rem 0.5rem 0.5rem;
 }
 
@@ -26,7 +25,6 @@
 }
 
 .choose-content-container {
-  height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -105,6 +103,7 @@
 .write-footer {
   display: flex;
   justify-content: flex-end;
+  min-height: 5%;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -128,5 +127,18 @@
 
   border-radius: 5px;
   background: #d1d1d1;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.wide-narrow-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  min-height: 3rem;
+  cursor: pointer;
+
+  border-radius: 5px;
+  background: #ffffff;
   box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
 }
