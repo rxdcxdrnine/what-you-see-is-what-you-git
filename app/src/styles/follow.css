@@ -1,0 +1,117 @@
+.follow-page {
+  display: flex;
+  margin-bottom: 2rem;
+  height: 100%;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.follow-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 0.5rem;
+}
+
+.follow-header-container {
+  display: flex;
+  justify-content: space-around;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.follow-header-button {
+  width: 25%;
+  text-align: center;
+  margin: 0.5rem;
+  height: 2.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.follow-search-container {
+  display: flex;
+  justify-content: center;
+  height: 2rem;
+  margin: 1rem 0.5rem;
+  padding: 0.5rem 0;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.follow-search {
+  width: 90%;
+  margin-right: 0.5rem;
+}
+
+.follow-search-button {
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.follow-items-container {
+  flex-grow: 1;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.follow-item-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem;
+  min-height: 4.5rem;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.follow-item-wrapper {
+  display: flex;
+  margin-left: 0.5rem;
+}
+
+.follow-item {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.follow-item-image {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  margin-right: 1rem;
+}
+
+.follow-item-button {
+  margin: 0.5rem;
+  padding: 0 0.5rem;
+  height: 3.5rem;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.follow-next-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  min-height: 3rem;
+  cursor: pointer;
+
+  border-radius: 5px;
+  background: #d1d1d1;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}

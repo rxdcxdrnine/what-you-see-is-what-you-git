@@ -1,0 +1,49 @@
+.login-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: x-large;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 20rem;
+  height: 10rem;
+  font-size: large;
+
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 5px 10px #dbdbdb, -5px -5px 10px #ffffff;
+}
+
+.login-button {
+  margin: 1rem;
+  padding: 1rem;
+  width: 12rem;
+  background-color: black;
+  border-radius: 7.5px;
+}
+
+.github-logo {
+  height: 2.5rem;
+}
+
+.github-mark {
+  height: 2.5rem;
+  margin-right: 1rem;
+}
