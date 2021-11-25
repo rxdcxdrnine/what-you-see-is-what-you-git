@@ -40,24 +40,24 @@ Github Activity/Gists 과 함께 TIL (Today I Learned) 를 작성하는 SNS 서�
 ### 로그인 및 유저 프로필 페이지
 
 <div>
-<img src="https://user-images.githubusercontent.com/50660684/143395563-31bd167b-8a34-4732-9640-9fe78203648d.png" height="300"/>
-<img src="https://user-images.githubusercontent.com/50660684/143396259-fa5b1d36-cd50-4642-8e5d-b279997e68c5.png" height="300" />
-<img src="https://user-images.githubusercontent.com/50660684/143396666-10329368-c3c0-4da8-98cf-8f7f9778b05c.png" height="300" />
+<img src="https://user-images.githubusercontent.com/50660684/143395563-31bd167b-8a34-4732-9640-9fe78203648d.png" height="280"/>
+<img src="https://user-images.githubusercontent.com/50660684/143396259-fa5b1d36-cd50-4642-8e5d-b279997e68c5.png" height="280" />
+<img src="https://user-images.githubusercontent.com/50660684/143396666-10329368-c3c0-4da8-98cf-8f7f9778b05c.png" height="280" />
 </div>
 
 ### 게시물 페이지 및 기록 확인 모달
 
 <div>
-<img src="https://user-images.githubusercontent.com/50660684/143396438-9d66e718-5d75-462d-9b51-4b7b0ec65323.png" height="300" />
-<img src="https://user-images.githubusercontent.com/50660684/143397118-40f43d35-b150-4bf7-b40c-c635eb0677e0.png" height="300" />
-<img src="https://user-images.githubusercontent.com/50660684/143396750-9cf50d21-de30-46fe-9231-24614fcf347e.png" height="300" />
+<img src="https://user-images.githubusercontent.com/50660684/143396438-9d66e718-5d75-462d-9b51-4b7b0ec65323.png" height="280" />
+<img src="https://user-images.githubusercontent.com/50660684/143397118-40f43d35-b150-4bf7-b40c-c635eb0677e0.png" height="280" />
+<img src="https://user-images.githubusercontent.com/50660684/143396750-9cf50d21-de30-46fe-9231-24614fcf347e.png" height="280" />
 </div>
 
 ### 작성 페이지 및 팔로우 페이지
 
 <div>
-<img src="https://user-images.githubusercontent.com/50660684/143397339-2034e977-c1dd-424a-9140-1035fd18c2a4.png" height="300" />
-<img src="https://user-images.githubusercontent.com/50660684/143397245-10505d79-d28c-4ae1-9a7e-f6ff7642c781.png" height="300" />
-<img src="https://user-images.githubusercontent.com/50660684/143397515-bbf2b5b5-07c8-4f4b-83e5-920c3d7d7be1.png" height="300" />
+<img src="https://user-images.githubusercontent.com/50660684/143397339-2034e977-c1dd-424a-9140-1035fd18c2a4.png" height="280" />
+<img src="https://user-images.githubusercontent.com/50660684/143397245-10505d79-d28c-4ae1-9a7e-f6ff7642c781.png" height="280" />
+<img src="https://user-images.githubusercontent.com/50660684/143397515-bbf2b5b5-07c8-4f4b-83e5-920c3d7d7be1.png" height="280" />
 </div>
 
